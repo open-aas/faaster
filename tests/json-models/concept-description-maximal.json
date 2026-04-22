@@ -1,0 +1,102 @@
+{
+  "administration": {
+    "revision": "2",
+    "version": "3",
+    "creator": {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "urn:example14:c4971d26"
+          }
+        ],
+        "type": "ModelReference"
+      }
+  },
+  "category": "something_07a45fb3",
+  "description": [
+    {
+      "language": "en",
+      "text": "something in english"
+    }
+  ],
+  "displayName": [
+    {
+      "language": "pt-br",
+      "text": "something in portuguese"
+    }
+  ],
+  "embeddedDataSpecifications": [
+    {
+      "dataSpecification": {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "urn:example14:c4971d26"
+          }
+        ],
+        "type": "ModelReference"
+      },
+      "dataSpecificationContent": {
+        "modelType": "DataSpecificationIec61360",
+        "preferredName": [
+          {
+            "language": "de-CH",
+            "text": "something_34113ec1"
+          },
+          {
+            "language": "en-UK",
+            "text": "Something random in English 19945c14"
+          }
+        ],
+        "value": "something_a864dcb4",
+        "valueList": {
+          "valueReferencePairs": [
+            {
+              "value": "NameOfSupplier",
+              "value_id": {
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO735#003"
+                  }
+                ],
+                "type": "ModelReference"
+              }
+            },
+            {
+              "value": "GLNOfSupplier",
+              "value_id": {
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAY813#001"
+                  }
+                ],
+                "type": "ModelReference"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "extensions": [
+    {
+      "name": "something_4b532e77"
+    }
+  ],
+  "id": "0173_1#02_AAW338#001",
+  "idShort": "ManufacturerProductDesignation",
+  "isCaseOf": [
+    {
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "urn:some-company09:4fffee11"
+        }
+      ],
+      "type": "ExternalReference"
+    }
+  ],
+  "modelType": "ConceptDescription"
+}

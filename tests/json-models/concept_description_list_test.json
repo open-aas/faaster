@@ -1,0 +1,32 @@
+[
+  {
+    "idShort": "ManufacturerProductDesignation",
+    "id": "0173-1#02-AAU734#006",
+    "modelType": "ConceptDescription"
+  },
+  {
+    "idShort": "ManufacturerProductDescription",
+    "id": "0173-1#02-AAU734#007",
+    "modelType": "ConceptDescription"
+  },
+  {
+    "idShort": "NameOfSupplier",
+    "administration": {
+        "version": "3",
+        "revision": "2"
+    },
+    "id": "0173-1#02-AAU734#008",
+    "modelType": "ConceptDescription"
+    },
+  {
+    "idShort": "MAN_PROD_NUM",
+    "description": [
+        {
+            "language": "en",
+            "text": "product article number of manufacturer"
+        }
+    ],
+    "id": "0173-1#02-AAU734#009",
+    "modelType": "ConceptDescription"
+  }
+]

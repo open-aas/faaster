@@ -1,0 +1,82 @@
+{
+  "assetAdministrationShells": [
+    {
+      "idShort": "Festo_3S7PM0CP4BD",
+      "id": "smart.festo.com/demo/aas/1/1/454576463545648365874",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "HTTP://PK.FESTO.COM/3S7PM0CP4BD"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/4343_5072_7091_3242"
+            }
+          ]
+        }
+      ],
+      "modelType": "AssetAdministrationShell"
+    }
+  ],
+  "submodels": [
+    {
+      "idShort": "Nameplate",
+      "id": "www.company.com/ids/sm/4343_5072_7091_3242",
+      "kind": "Instance",
+      "submodelElements": [
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerName",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO677#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Festo AG & Co. KG",
+          "modelType": "Property"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ],
+  "conceptDescriptions": [
+    {
+      "category": "CONSTANT",
+      "idShort": "ManufacturerName",
+      "administration": {
+        "version": "1.3.0",
+        "revision": "3.4.4",
+        "creator": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "value021030"
+            }
+          ]
+        }
+      },
+      "id": "0173-1#02-AAO677#002",
+      "isCaseOf": [
+        {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "value0391283"
+            }
+          ]
+        }
+      ],
+      "modelType": "ConceptDescription"
+    }
+  ]
+}

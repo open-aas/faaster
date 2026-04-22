@@ -1,0 +1,74 @@
+{
+  "idShort": "ProductionStepsUpdateTest",
+  "id": "https://example.com/0210_3920_2304_3947",
+  "kind": "Instance",
+  "submodelElements": [
+    {
+      "idShort": "Step1UpdateTest",
+      "value": [
+        {
+          "idShort": "ScrewingUpdateTest",
+          "value": [
+            {
+              "idShort": "Point_1UpdateTest",
+              "value": [
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordXUpdateTest",
+                  "valueType": "xs:float",
+                  "value": -31.5,
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordYUpdateTest",
+                  "valueType": "xs:string",
+                  "value": "200.5",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordZUpdateTest",
+                  "valueType": "xs:integer",
+                  "value": 5,
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Point_2UpdateTest",
+              "value": [
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordXUpdateTest",
+                  "valueType": "xs:float",
+                  "value": 1.5,
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordYUpdateTest",
+                  "valueType": "xs:float",
+                  "value": 200.9,
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordZUpdateTest",
+                  "valueType": "xs:float",
+                  "value": 5.3,
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "SubmodelElementCollection"
+    }
+  ],
+  "modelType": "Submodel"
+}

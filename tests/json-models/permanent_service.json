@@ -1,0 +1,55 @@
+[
+  {
+    "_id": "69741b143627e24b5e51b486",
+    "service_name": "Screwing Inference Service",
+    "service_code": "INFERENCE_SERVER_BASE_URL",
+    "description": "External service responsible for executing AI inference related to the screwing process.",
+    "service_type": "permanent",
+    "provisioning_mode": "external",
+    "protocol": "https",
+    "service_url": "https://api.openai.com",
+    "auth": {
+      "type": "api_key",
+      "secret_ref": "secrets/openai_api_key"
+    },
+    "client_policy": {
+      "timeout_ms": 30000,
+      "retries": 2,
+      "healthcheck_path": "/v1/models"
+    },
+    "capacity": {
+      "max_aas_bindings": 20,
+      "warn_at_percent": 80,
+      "enforcement": "block"
+    },
+    "usage": {
+      "current_aas_bindings": 7,
+      "last_updated_at": "2026-01-31T18:10:00-04:00"
+    }
+  },
+  {
+    "_id": "69741b143627e24b5e51b487",
+    "service_name": "Screwing Working Service",
+    "service_code": "WORKING_SERVICE_URL",
+    "description": "Operational service responsible for executing the screwing process.",
+    "service_type": "permanent",
+    "provisioning_mode": "self_hosted",
+    "protocol": ["http", "mqtt"],
+    "service_url": "http://192.168.0.251:8086",
+    "auth": { "type": "none" },
+    "client_policy": {
+      "timeout_ms": 10000,
+      "retries": 1,
+      "healthcheck_path": "/health"
+    },
+    "capacity": {
+      "max_aas_bindings": 20,
+      "warn_at_percent": 80,
+      "enforcement": "block"
+    },
+    "usage": {
+      "current_aas_bindings": 7,
+      "last_updated_at": "2026-01-31T18:10:00-04:00"
+    }
+  }
+]

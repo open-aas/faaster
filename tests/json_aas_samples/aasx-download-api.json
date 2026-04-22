@@ -1,0 +1,56 @@
+{
+  "assetAdministrationShells": [
+    {
+      "idShort": "Festo_3S7PM0CP4BD",
+      "modelType": "AssetAdministrationShell",
+      "id": "smart.festo.com/demo/aas/1/1/454576463545648365874",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "HTTP://PK.FESTO.COM/3S7PM0CP4BD"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/4343_5072_7091_3242"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "submodels": [
+    {
+      "idShort": "Nameplate",
+      "modelType": "Submodel",
+      "id": "www.company.com/ids/sm/4343_5072_7091_3242",
+      "submodelElements": [
+        {
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO677#002"
+              }
+            ]
+          },
+          "category": "PARAMETER",
+          "idShort": "ManufacturerName",
+          "modelType": "Property",
+          "valueType": "xs:string",
+          "value": "Festo AG & Co. KG"
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": [
+    {
+      "idShort": "ManufacturerName",
+      "modelType": "ConceptDescription",
+      "id": "0173-1#02-AAO677#002"
+    }
+  ]
+}

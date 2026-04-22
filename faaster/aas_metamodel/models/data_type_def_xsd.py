@@ -1,0 +1,38 @@
+"""Enumeration listing all xsd anySimpleTypes."""
+
+from enum import Enum
+
+
+class DataTypeDefXsd(str, Enum):
+    """Enumeration listing all xsd anySimpleTypes."""
+
+    ANY_URI = "xs:anyURI"
+    BASE_64_BINARY = "xs:base64Binary"
+    BOOLEAN = "xs:boolean"
+    BYTE = "xs:byte"
+    DATE = "xs:date"
+    DATE_TIME = "xs:dateTime"
+    DECIMAL = "xs:decimal"
+    DOUBLE = "xs:double"
+    DURATION = "xs:duration"
+    G_DAY = "xs:gDay"
+    G_MONTH = "xs:gMonth"
+    G_MONTH_DAY = "xs:gMonthDay"
+    G_YEAR = "xs:gYear"
+    G_YEAR_MONTH = "xs:gYearMonth"
+    FLOAT = "xs:float"
+    HEX_BINARY = "xs:hexBinary"
+    INT = "xs:int"
+    INTEGER = "xs:integer"
+    LONG = "xs:long"
+    NEGATIVE_INTEGER = "xs:negativeInteger"
+    NON_NEGATIVE_INTEGER = "xs:nonNegativeInteger"
+    NON_POSITIVE_INTEGER = "xs:nonPositiveInteger"
+    POSITIVE_INTEGER = "xs:positiveInteger"
+    SHORT = "xs:short"
+    STRING = "xs:string"
+    TIME = "xs:time"
+    UNSIGNED_BYTE = "xs:unsignedByte"
+    UNSIGNED_INT = "xs:unsignedInt"
+    UNSIGNED_LONG = "xs:unsignedLong"
+    UNSIGNED_SHORT = "xs:unsignedShort"

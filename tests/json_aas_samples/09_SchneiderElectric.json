@@ -1,0 +1,3286 @@
+{
+  "assetAdministrationShells": [
+    {
+      "idShort": "SE_Tesys_Island_Power",
+      "id": "www.company.com/ids/aas/2520_6010_8091_1277",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "www.company.com/ids/asset/8220_6010_8091_3593"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/4343_5072_7091_3242"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/2543_5072_7091_2660"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/6053_5072_7091_5102"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/6563_5072_7091_4267"
+            }
+          ]
+        }
+      ],
+      "modelType": "AssetAdministrationShell"
+    }
+  ],
+  "submodels": [
+    {
+      "idShort": "Nameplate",
+      "id": "www.company.com/ids/sm/4343_5072_7091_3242",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://www.hsu-hh.de/aut/aas/nameplate"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerName",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO677#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Schneider Electric",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerProductDesignation",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAW338#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Voltage interface Module, TeSys island",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "PhysicalAddress",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/physicaladdress"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "CountryCode",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO730#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "FR",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Street",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO128#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Rue Joseph Monier",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Zip",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO129#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "92506",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "CityTown",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO132#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Rueil Malmaison",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "StateCounty",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO133#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Hauts de Seine",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerProductFamily",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAU731#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "SerialNumber",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAM556#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "190730000777",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "BatchNumber",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAQ196#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ProductCountryOfOrigin",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO841#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "FR",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "YearOfConstruction",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAP906#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "2019",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Marking_CE",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/productmarking"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "CEQualificationPresent",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-BAF053#008"
+                  }
+                ]
+              },
+              "valueType": "xs:boolean",
+              "value": "1",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Nameplate/marking_ce.png",
+              "contentType": "image/png",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Marking_UL",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/productmarking"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "CEQualificationPresent",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-BAF053#008"
+                  }
+                ]
+              },
+              "valueType": "xs:boolean",
+              "value": "1",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Nameplate/UL.png",
+              "contentType": "image/png",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Marking_WEEE",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/productmarking"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "CEQualificationPresent",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-BAF053#008"
+                  }
+                ]
+              },
+              "valueType": "xs:boolean",
+              "value": "1",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Nameplate/Marking_WEEE.png",
+              "contentType": "image/png",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "Document",
+      "id": "www.company.com/ids/sm/2543_5072_7091_2660",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://www.hsu-hh.de/aut/aas/document"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "category": "PARAMETER",
+          "idShort": "DeclarationCEMarking",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Schneider Electric",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Schneider Electric SAS",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "DE",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "DE",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "SC19062503",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "EU - Declaration of conformity",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "en",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "EU - Declaration of conformity",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Voltage Measurement Module for TeSys Island offer",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "TPRVM001",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "CE_TPRVM_SC19062503.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/CE_TPRVM_SC19062503.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "DeclarationULMarking",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Schneider Electric",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Schneider Electric Automation SAS",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "DE",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "DE",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "en",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "NRAQ.E3220218 - PROGRAMMABLE CONTROLLERS",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "2019",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "PROGRAMMABLE_CONTROLLERS___UL_Product_iQ.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/PROGRAMMABLE_CONTROLLERS___UL_Product_iQ.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Instruction Bulletin",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Technical Documentation",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Schneider Electric",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Schneider Electric SAS",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "DE",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "DE",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "8536IB1901EN",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "System Guide",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "en",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Instruction bulletin",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "This instruction bulletin introduces and describes the main functions of TeSys island.",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "TeSys Island",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "instal_EN.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/Instal_EN.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "Service",
+      "id": "www.company.com/ids/sm/6053_5072_7091_5102",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://www.hsu-hh.de/aut/aas/service"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "category": "PARAMETER",
+          "idShort": "ContactInfo",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/contactinfo"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "NameOfSupplier",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO735#003"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Schneider Elcetric ",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ContactInfo_Role",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu-hh.de/aut/aas/role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Manufacturer",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "PhysicalAddress",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu-hh.de/aut/aas/physicaladdress"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "category": "PARAMETER",
+                  "idShort": "CountryCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO730#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "DE",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO128#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Schneider Platz",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "Zip",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO129#002"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "97816",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO132#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Marktheidenfeld",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "StateCounty",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO133#002"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Email",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu-hh.de/aut/aas/email"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "URL",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO694#001"
+                  }
+                ]
+              },
+              "valueType": "xs:anyURI",
+              "value": "https://www.schneider-electric.com/en/work/support/",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "PhoneNumber",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO136#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Fax",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu-hh.de/aut/aas/fax"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "Identification",
+      "id": "www.company.com/ids/sm/6563_5072_7091_4267",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://www.hsu-hh.de/aut/aas/identification"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerName",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO677#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Schneider Electric",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "GLNOfManufacturer",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAY812#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "TPRVM001",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "SupplierOfTheIdentifier",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAP796#004"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "MAN_PROD_NUM",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO676#003"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerProductDesignation",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAW338#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Voltage interface Module, TeSys island",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerProductDescription",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAU734#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Monitoring of the mains voltage powering the island and Reporting of the voltage to the bus coupler to enable power & energy monitoring",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "NameOfSupplier",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO735#003"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Schneider Electric",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "GLNOfSupplier",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAY813#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "TPRVM001",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "SupplierIdProvider",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/supplieridprovider"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "SUP_PROD_NUM",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO736#004"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "SupplierProductDesignation",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAM551#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Voltage interface Module, TeSys island",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "SupplierProductDescription",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAU730#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Monitoring of the mains voltage powering the island and Reporting of the voltage to the bus coupler to enable power & energy monitoring",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerProductFamily",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAU731#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ClassificationSystem",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO715#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "eclass",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "SecondaryKeyTyp",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/secondarykeytyp"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "TypThumbnail",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "www.company.com/ids/cd/4401_1272_7091_3437"
+              }
+            ]
+          },
+          "value": "/aasx/Identification/TPRVM001.PNG",
+          "contentType": "image/jpeg",
+          "modelType": "File"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "AssetId",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/assetid"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "www.company.com/ids/asset/8220_6010_8091_3593",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "SerialNumber",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAM556#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "190730000777",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "BatchNumber",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAQ196#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "SecondaryKeyInstance",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/secondarykeyinstance"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "DateOfManufacture",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAR972#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "DeviceRevision",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/devicerevision"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "SoftwareRevision",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/softwarerevision"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "HardwareRevision",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/hardwarerevision"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "QrCode",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/qrcode"
+              }
+            ]
+          },
+          "value": "/aasx/Identification/QRCode_Tesys_Island_Power.jpg",
+          "contentType": "image/jpeg",
+          "modelType": "File"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ContactInfo",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/contactinfo"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "NameOfSupplier",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO735#003"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Schneider Electric",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ContactInfo_Role",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu-hh.de/aut/aas/role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Manufacturer",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "PhysicalAddress",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu-hh.de/aut/aas/physicaladdress"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "category": "PARAMETER",
+                  "idShort": "CountryCode",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO730#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "FR",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO128#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Rue Joseph Monier",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "Zip",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO129#002"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "92506",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO132#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Rueil Malmaison",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "StateCounty",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173-1#02-AAO133#002"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Hauts de Seine",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Email",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu-hh.de/aut/aas/email"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "URL",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO694#001"
+                  }
+                ]
+              },
+              "valueType": "xs:anyURI",
+              "value": "https://www.schneider-electric.com/en/",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "PhoneNumber",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173-1#02-AAO136#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Fax",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu-hh.de/aut/aas/fax"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "CompanyLogo",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu-hh.de/aut/aas/companylogo"
+              }
+            ]
+          },
+          "value": "/aasx/Identification/logo_SE.png",
+          "contentType": "image/png",
+          "modelType": "File"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "URL",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-1#02-AAO694#001"
+              }
+            ]
+          },
+          "valueType": "xs:anyURI",
+          "value": "https://www.schneider-electric.com/en/product-range-presentation/65746-tesys-island/?parent-category-id=3000&parent-subcategory-id=3080&filter=business-4-low-voltage-products-and-systems#tabs-top",
+          "modelType": "Property"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ],
+  "conceptDescriptions": [
+    {
+      "idShort": "ManufacturerName",
+      "id": "0173-1#02-AAO677#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ManufacturerProductDesignation",
+      "id": "0173-1#02-AAW338#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "PhysicalAddress",
+      "id": "https://www.hsu-hh.de/aut/aas/physicaladdress",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "CountryCode",
+      "administration": {
+        "version": "",
+        "revision": ""
+      },
+      "id": "0173-1#02-AAO730#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "Street",
+      "id": "0173-1#02-AAO128#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "Zip",
+      "id": "0173-1#02-AAO129#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "CityTown",
+      "id": "0173-1#02-AAO132#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "StateCounty",
+      "id": "0173-1#02-AAO133#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ManufacturerProductFamily",
+      "id": "0173-1#02-AAU731#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SerialNumber",
+      "id": "0173-1#02-AAM556#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "BatchNumber",
+      "id": "0173-1#02-AAQ196#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ProductCountryOfOrigin",
+      "id": "0173-1#02-AAO841#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "YearOfConstruction",
+      "id": "0173-1#02-AAP906#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ProductMarking",
+      "id": "https://www.hsu-hh.de/aut/aas/productmarking",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "CEQualificationPresent",
+      "id": "0173-1#02-BAF053#008",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "File",
+      "id": "0173-1#02-AAD005#008",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DocumentationItem",
+      "id": "0173-1#02-AAD001#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DocumentType",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_DomainId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_IdType",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DocumentId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DocumentDomainId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_Role",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_OrganisationId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_OrganisationName",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_OrganisationOfficialName",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_Description",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/Description",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DocumentPartId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DocumentClassification_ClassId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_ClassName",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_ClassificationSystem",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DocumentVersionId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DocumentVersion_LanguageCode",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_Title",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_Summary",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_Keywords",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_StatusValue",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_SetDate",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_Purpose",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_BasedOnProcedure",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_Comments",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_ReferencedObject_Type",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_ReferencedObject_RefType",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_ReferencedObject_ObjectId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_FileId",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_FileName",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "VDI2770_FileFormat",
+      "id": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "OrganisationContactInfo",
+      "id": "https://www.hsu-hh.de/aut/aas/contactinfo",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "NameOfSupplier",
+      "administration": {
+        "version": "",
+        "revision": ""
+      },
+      "id": "0173-1#02-AAO735#003",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ContactInfo_Role",
+      "id": "https://www.hsu-hh.de/aut/aas/role",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "Email",
+      "id": "https://www.hsu-hh.de/aut/aas/email",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "URL",
+      "id": "0173-1#02-AAO694#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "PhoneNumber",
+      "id": "0173-1#02-AAO136#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "Fax",
+      "id": "https://www.hsu-hh.de/aut/aas/fax",
+      "isCaseOf": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "ConceptDescription",
+              "value": "0173-1#02-AAO136#002"
+            }
+          ]
+        }
+      ],
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "GLNOfManufacturer",
+      "id": "0173-1#02-AAY812#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SupplierOfTheIdentifier",
+      "id": "0173-1#02-AAP796#004",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "MAN_PROD_NUM",
+      "description": [
+        {
+          "language": "EN",
+          "text": "product article number of manufacturer"
+        }
+      ],
+      "id": "0173-1#02-AAO676#003",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ManufacturerProductDescription",
+      "id": "0173-1#02-AAU734#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "GLNOfSupplier",
+      "id": "0173-1#02-AAY813#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SupplierIdProvider",
+      "id": "https://www.hsu-hh.de/aut/aas/supplieridprovider",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SUP_PROD_NUM",
+      "id": "0173-1#02-AAO736#004",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SupplierProductDesignation",
+      "id": "0173-1#02-AAM551#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SupplierProductDescription",
+      "id": "0173-1#02-AAU730#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ClassificationSystem",
+      "id": "0173-1#02-AAO715#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SecondaryKeyTyp",
+      "id": "https://www.hsu-hh.de/aut/aas/secondarykeytyp",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "TypThumbnail",
+      "id": "www.company.com/ids/cd/6044_0150_1191_5121",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "AssetId",
+      "id": "https://www.hsu-hh.de/aut/aas/assetid",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SecondaryKeyInstance",
+      "id": "https://www.hsu-hh.de/aut/aas/secondarykeyinstance",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DateOfManufacture",
+      "id": "0173-1#02-AAR972#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DeviceRevision",
+      "id": "https://www.hsu-hh.de/aut/aas/devicerevision",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SoftwareRevision",
+      "id": "https://www.hsu-hh.de/aut/aas/softwarerevision",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "HardwareRevision",
+      "id": "https://www.hsu-hh.de/aut/aas/hardwarerevision",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "QrCode",
+      "id": "https://www.hsu-hh.de/aut/aas/qrcode",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "CompanyLogo",
+      "id": "https://www.hsu-hh.de/aut/aas/companylogo",
+      "modelType": "ConceptDescription"
+    }
+  ]
+}

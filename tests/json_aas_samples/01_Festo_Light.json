@@ -1,0 +1,5618 @@
+{
+  "assetAdministrationShells": [
+    {
+      "idShort": "Festo_3S7PM0CP4BD",
+      "id": "smart.festo.com/demo/aas/1/1/454576463545648365874",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "HTTP://PK.FESTO.COM/3S7PM0CP4BD"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/4343_5072_7091_3242"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/2543_5072_7091_2660"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/6053_5072_7091_5102"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "www.company.com/ids/sm/6563_5072_7091_4267"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "smart.festo.com/demo/sm/instance/1/1/13B7CCD9BF7A3F24"
+            }
+          ]
+        }
+      ],
+      "modelType": "AssetAdministrationShell"
+    }
+  ],
+  "submodels": [
+    {
+      "idShort": "Nameplate",
+      "id": "www.company.com/ids/sm/4343_5072_7091_3242",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://www.hsu_hh.de/aut/aas/nameplate"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerName",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAO677#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "Festo AG & Co. KG",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerProductDesignation",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAW338#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "OVEL Vacuum generator",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "PhysicalAddress",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu_hh.de/aut/aas/physicaladdress"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "CountryCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO730#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "pt-BR",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Street",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO128#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Ruiter Straße 82",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Zip",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO129#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "73734",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "CityTown",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO132#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Esslingen_Berkheim",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "StateCounty",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO133#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Baden_Württemberg",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ManufacturerProductFamily",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAU731#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "OVEL_5_H_10_P_VQ4_UA_Z_C_A_V1PNLK_H3",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "SerialNumber",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAM556#002"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "JO43",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "BatchNumber",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAQ196#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ProductCountryOfOrigin",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAO841#001"
+              }
+            ]
+          },
+          "valueType": "xs:string",
+          "value": "pt-BR",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "YearOfConstruction",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAP906#001"
+              }
+            ]
+          },
+          "valueType": "xs:integer",
+          "value": "2019",
+          "modelType": "Property"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Marking_CE",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu_hh.de/aut/aas/productmarking"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "CEQualificationPresent",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_BAF053#008"
+                  }
+                ]
+              },
+              "valueType": "xs:boolean",
+              "value": "1",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173_1#07_CAA016#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Nameplate/marking_ce.png",
+              "contentType": "image/png",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Marking_CRUUS",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu_hh.de/aut/aas/productmarking"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "CRUUSLabelingPresent",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAR528#005"
+                  }
+                ]
+              },
+              "valueType": "xs:boolean",
+              "value": "1",
+              "valueId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173_1#07_CAA016#001"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Nameplate/marking_cruus.jpg",
+              "contentType": "image/png",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Marking_RCM",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu_hh.de/aut/aas/productmarking"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "RCMLabelingPresent",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAR528#005"
+                  }
+                ]
+              },
+              "valueType": "xs:boolean",
+              "value": "1",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Nameplate/marking_rcm.jpg",
+              "contentType": "image/png",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "Document",
+      "id": "www.company.com/ids/sm/2543_5072_7091_2660",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://www.hsu_hh.de/aut/aas/document"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "category": "PARAMETER",
+          "idShort": "DeclarationCEMarking",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "02_04",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Zeugnisse, Zertifikate, Bescheinigungen",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "pt-BR",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Erklärung zur CE_Kennzeichnung bei Produkten der Festo AG & Co.KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "CE_Kennzeichnung_2016_de.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/CE_Kennzeichnung_2016_de.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "DeclarationRoHS",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "02_04",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Zeugnisse, Zertifikate, Bescheinigungen",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "pt-BR",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "RoHS 2011/65/EU und delegierte Fassung (EU) 2015/863",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "RoHS_2011_65_EU_Konzern_Information_de.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/RoHS_2011_65_EU_Konzern_Information_de.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "DeclarationCRUUS",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "UL",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Underwriter Laboratories LLC",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "02_04",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Zeugnisse, Zertifikate, Bescheinigungen",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "en",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Certificate of compliance",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "SPAE_UL_4531318___2_EN.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/SPAE_UL_4531318___2_EN.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "DeclarationIOLink",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "02_04",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Zeugnisse, Zertifikate, Bescheinigungen",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "en",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Manufacturer's declaration of conformity",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "OVEL_IO_Link_5439356___3_EN.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/OVEL_IO_Link_5439356___3_EN.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Manual_OVEL_EN",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "8070874",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "03_02",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Bedienung",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "2017_05",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "en",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Operating instructions Vacuum generator OVEL",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "The OVEL vacuum generator is used to generate a vacuum.",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "OVEL_2017_05_8070876g1_EN.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/OVEL_2017_05_8070876g1_EN.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Manual_OVEL_DE",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "8070874",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "03_02",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Bedienung",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "2017_05",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "pt-BR",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Bedienungsanleitung Vakuumsaugdüse OVEL",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Die Vakuumsaugdüse OVEL wird bestimmungsgemäß zur Erzeugung von Vakuum eingesetzt.",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "OVEL_2017_05_8070875d1_DE.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/OVEL_2017_05_8070875d1_DE.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Manual_SPAE_EN",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "8058480",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "03_02",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Bedienung",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "2017_03b",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "en",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Operating instructions Pressure sensor SPAE",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "The SPAE pressure sensor is intended for measuring the relative pressure in pneumatic applications. The SPAE converts pneumatic pressure values into a pressure proportional voltage. The measurement result is shown on the display.",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "SPAE_2017_03b_8058481d1_EN.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/SPAE_2017_03b_8058481d1_EN.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "Manual_SPAE_DE",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "8058480",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "03_02",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Bedienung",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "2017_03b",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "pt-BR",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Bedienungsanleitung Drucksensor SPAE",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Der Drucksensor SPAE dient bestimmungsgemäß zur Erfassung des Relativdrucks in Pneumatikapplikationen. Der SPAE wandelt pneumatische Druckwerte in eine druckproportionale Spannung. Das Messergebnis wird im Display angezeigt.",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "SPAE_2017_03b_8058481d1_DE.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/SPAE_2017_03b_8058481d1_DE.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "PARAMETER",
+          "idShort": "ApplicationNote_SPAE_EN",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173_1#02_AAD001#001"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Single",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_DomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/DomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_IdType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId/IdType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Primary",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentDomainId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentIdDomain/DocumentDomainId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Responsible",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_OrganisationOfficialName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Party/Organisation/OrganisationOfficialName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Description",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "Eine Beschreibung zur Dokumententeile ID. Da eine Sprachangabe nicht möglich ist, sollte die Sprache für dieses Metadatum vor der Lieferung abgestimmt werden."
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentPartId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentPartId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentClassification_ClassId",
+              "description": [
+                {
+                  "language": "pt-BR",
+                  "text": "eindeutige ID der Klasse in einer Klassifikation"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "03_02",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ClassName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Bedienung",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ClassificationSystem",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentClassification/ClassificationSystem"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "VDI2770:2018",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersionId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersionId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "1.10",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "DocumentVersion_LanguageCode",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/LanguageCode"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "en",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Title",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Title"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Application Note IO_Link parameter description",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Summary",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Summary"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "A brief explanation of the contents (identification, parameter and commands, block parameterization, teach_In, process data, using different pressure units, diagnosis)",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Keywords",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/Description/Keywords"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_StatusValue",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/StatusValue"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Released",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_SetDate",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/SetDate"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "09.02.2015",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Purpose",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Purpose"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_BasedOnProcedure",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/BasedOnProcedure"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_Comments",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/LifeCycleStatus/Comments"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_Type",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ReferencedObjectType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Product",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_RefType",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/RefType"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_ReferencedObject_ObjectId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/ReferencedObject/ObjectId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileId",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileId"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileName",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileName"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "SPAE_100017_ApplNote.pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "VDI2770_FileFormat",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "http://www.vdi.de/2770/AssetDocumentation/Document/DocumentVersion/StoredDocumentRepresentation/DigitalFile/FileFormat"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "application/pdf",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "File",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAD005#008"
+                  }
+                ]
+              },
+              "value": "/aasx/Document/SPAE_100017_ApplNote.pdf",
+              "contentType": "application/pdf",
+              "modelType": "File"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "Service",
+      "id": "www.company.com/ids/sm/6053_5072_7091_5102",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://www.hsu_hh.de/aut/aas/service"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "category": "PARAMETER",
+          "idShort": "ContactInfo",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "https://www.hsu_hh.de/aut/aas/contactinfo"
+              }
+            ]
+          },
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "NameOfSupplier",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO735#003"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Festo AG & Co. KG",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "ContactInfo_Role",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu_hh.de/aut/aas/role"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "Manufacturer",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "PhysicalAddress",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu_hh.de/aut/aas/physicaladdress"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "category": "PARAMETER",
+                  "idShort": "CountryCode",
+                  "semanticId": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173_1#02_AAO730#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "pt-BR",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "Street",
+                  "semanticId": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173_1#02_AAO128#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Ruiter Straße 82",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "Zip",
+                  "semanticId": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173_1#02_AAO129#002"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "73734",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "CityTown",
+                  "semanticId": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173_1#02_AAO132#001"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Esslingen_Berkheim",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "PARAMETER",
+                  "idShort": "StateCounty",
+                  "semanticId": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "0173_1#02_AAO133#002"
+                      }
+                    ]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Baden_Württemberg",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Email",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu_hh.de/aut/aas/email"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "technikservice@festo.com",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "URL",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO694#001"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "https://www.festo.com",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "PhoneNumber",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "0173_1#02_AAO136#002"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "+49711347_3000",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "Fax",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "ConceptDescription",
+                    "value": "https://www.hsu_hh.de/aut/aas/fax"
+                  }
+                ]
+              },
+              "valueType": "xs:string",
+              "value": "+49711 347_2190",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ],
+  "conceptDescriptions": [
+    {
+      "idShort": "ManufacturerName",
+      "id": "0173_1#02_AAO677#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "GLNOfManufacturer",
+      "id": "0173_1#02_AAY812#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SupplierOfTheIdentifier",
+      "id": "0173_1#02_AAP796#004",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "MAN_PROD_NUM",
+      "description": [
+        {
+          "language": "EN",
+          "text": "product article number of manufacturer"
+        }
+      ],
+      "id": "0173_1#02_AAO676#003",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ManufacturerProductDesignation",
+      "id": "0173_1#02_AAW338#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ManufacturerProductDescription",
+      "id": "0173_1#02_AAU734#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "NameOfSupplier",
+      "administration": {
+        "version": "1",
+        "revision": "1"
+      },
+      "id": "0173_1#02_AAO735#003",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "GLNOfSupplier",
+      "id": "0173_1#02_AAY813#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SupplierIdProvider",
+      "id": "https://www.hsu_hh.de/aut/aas/supplieridprovider",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SUP_PROD_NUM",
+      "id": "0173_1#02_AAO736#004",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SupplierProductDesignation",
+      "id": "0173_1#02_AAM551#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SupplierProductDescription",
+      "id": "0173_1#02_AAU730#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ManufacturerProductFamily",
+      "id": "0173_1#02_AAU731#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ClassificationSystem",
+      "id": "0173_1#02_AAO715#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SecondaryKeyTyp",
+      "id": "https://www.hsu_hh.de/aut/aas/secondarykeytyp",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "TypThumbnail",
+      "id": "https://www.hsu_hh.de/aut/aas/thumbnail",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "AssetId",
+      "id": "https://www.hsu_hh.de/aut/aas/assetid",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SerialNumber",
+      "id": "0173_1#02_AAM556#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "BatchNumber",
+      "id": "0173_1#02_AAQ196#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SecondaryKeyInstance",
+      "id": "https://www.hsu_hh.de/aut/aas/secondarykeyinstance",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DateOfManufacture",
+      "id": "0173_1#02_AAR972#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "DeviceRevision",
+      "id": "https://www.hsu_hh.de/aut/aas/devicerevision",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "SoftwareRevision",
+      "id": "https://www.hsu_hh.de/aut/aas/softwarerevision",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "HardwareRevision",
+      "id": "https://www.hsu_hh.de/aut/aas/hardwarerevision",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "QrCode",
+      "id": "https://www.hsu_hh.de/aut/aas/qrcode",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "OrganisationContactInfo",
+      "id": "https://www.hsu_hh.de/aut/aas/contactinfo",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "PhysicalAddress",
+      "id": "https://www.hsu_hh.de/aut/aas/physicaladdress",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "CountryCode",
+      "administration": {
+        "version": "1",
+        "revision": "1"
+      },
+      "id": "0173_1#02_AAO730#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "Street",
+      "id": "0173_1#02_AAO128#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "Zip",
+      "id": "0173_1#02_AAO129#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "CityTown",
+      "id": "0173_1#02_AAO132#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "StateCounty",
+      "id": "0173_1#02_AAO133#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "Email",
+      "id": "https://www.hsu_hh.de/aut/aas/email",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "TelephoneContact",
+      "id": "https://www.hsu_hh.de/aut/aas/ContactInfo/TelephoneContact",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "PhoneNumber",
+      "id": "0173_1#02_AAO136#002",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "CompanyLogo",
+      "id": "https://www.hsu_hh.de/aut/aas/companylogo",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "URL",
+      "id": "0173_1#02_AAO694#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "ProductCountryOfOrigin",
+      "id": "0173_1#02_AAO841#001",
+      "modelType": "ConceptDescription"
+    },
+    {
+      "idShort": "YearOfConstruction",
+      "id": "0173_1#02_AAP906#001",
+      "modelType": "ConceptDescription"
+    }
+  ]
+}

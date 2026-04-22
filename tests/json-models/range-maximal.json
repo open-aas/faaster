@@ -1,0 +1,78 @@
+{
+  "category": "VARIABLE",
+  "description": [
+    {
+      "language": "en",
+      "text": "something_be9deae0"
+    }
+  ],
+  "displayName": [
+    {
+      "language": "en",
+      "text": "something_535aeb51"
+    }
+  ],
+  "embeddedDataSpecifications": [
+    {
+      "dataSpecification": {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "urn:another-company15:2bd0986b"
+          }
+        ],
+        "type": "ModelReference"
+      },
+      "dataSpecificationContent": {
+        "modelType": "DataSpecificationIec61360",
+        "preferredName": [
+          {
+            "language": "en-UK",
+            "text": "something_7e795ee2"
+          },
+          {
+            "language": "en-UK",
+            "text": "Something random in English c8512bdf"
+          }
+        ],
+        "value": "something_4e9c19b7"
+      }
+    }
+  ],
+  "extensions": [
+    {
+      "name": "something_aa1af8b3"
+    }
+  ],
+  "idShort": "voltageRange",
+  "max": "1234.1234567890123456789012345678901234567890123456789012345678901234567890",
+  "min": "1000.1238974987564378563856691823091829038809859734856793687365487638645764",
+  "modelType": "Range",
+  "qualifiers": [
+    {
+      "type": "something_500f973e",
+      "valueType": "xs:long"
+    }
+  ],
+  "semanticId": {
+    "keys": [
+      {
+        "type": "GlobalReference",
+        "value": "urn:something00:f4547d0c"
+      }
+    ],
+    "type": "ExternalReference"
+  },
+  "supplementalSemanticIds": [
+    {
+      "keys": [
+        {
+          "type": "Submodel",
+          "value": "urn:another-example10:42487f5a"
+        }
+      ],
+      "type": "ModelReference"
+    }
+  ],
+  "valueType": "xs:decimal"
+}

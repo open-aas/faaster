@@ -1,0 +1,25 @@
+{
+  "embeddedDataSpecifications": [],
+  "extensions": [],
+  "category": "CONSTANT",
+  "idShort": "werqwer",
+  "displayName": [
+    {
+      "language": "pt",
+      "text": "qwerwe"
+    }
+  ],
+  "description": [
+    {
+      "language": "pt",
+      "text": "qwewer"
+    }
+  ],
+  "modelType": "Property",
+  "qualifiers": [],
+  "supplementalSemanticIds": [],
+  "semanticId": null,
+  "value": "qwerqwer",
+  "valueType": "xs:string",
+  "valueId": null
+}

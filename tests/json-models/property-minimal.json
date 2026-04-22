@@ -1,0 +1,30 @@
+{
+  "idShort": "SupplierProductDescription",
+  "modelType": "Property",
+  "value": "Primary-switched QUINT POWER power supply with free choice",
+  "valueType": "xs:string",
+  "semanticId": {
+    "keys": [
+      {
+        "type": "ConceptDescription",
+        "value": "0173-2#02-AAO677#002"
+      }
+    ],
+    "type": "ModelReference"
+  },
+  "qualifiers": [
+    {
+      "type": "something_031fba58",
+      "valueType": "xs:int",
+      "semanticId": {
+        "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "0173-2#02-AAO677#003"
+              }
+            ],
+            "type": "ModelReference"
+          }
+      }
+  ]
+}

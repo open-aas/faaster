@@ -1,0 +1,142 @@
+{
+  "idShort": "Nameplate",
+  "id": "www.company.com/ids/sm/4343_5072_7091_3242",
+  "kind": "Instance",
+  "semanticId": {
+    "type": "ExternalReference",
+    "keys": [
+      {
+        "type": "GlobalReference",
+        "value": "https://www.hsu-hh.de/aut/aas/nameplate"
+      }
+    ]
+  },
+  "submodelElements": [
+    {
+      "idShort": "DeviceSensorManipulation",
+      "inputVariables": [
+        {
+          "value": {
+            "idShort": "temperatureSensor",
+            "valueType": "xs:string",
+            "modelType": "Property"
+          }
+        },
+        {
+          "value": {
+            "idShort": "temperatureSensorCollection",
+            "value": [
+              {
+                "idShort": "coldSensor",
+                "valueType": "xs:string",
+                "modelType": "Property"
+              },
+              {
+                "idShort": "hotSensor",
+                "valueType": "xs:string",
+                "modelType": "Property"
+              }
+            ],
+            "modelType": "SubmodelElementCollection"
+          }
+        }
+      ],
+      "outputVariables": [
+        {
+          "value": {
+            "idShort": "velocitySensor",
+            "valueType": "xs:string",
+            "modelType": "Property"
+          }
+        },
+        {
+          "value": {
+            "idShort": "velocitySensorEntity",
+            "statements": [
+              {
+                "idShort": "totalVelocity",
+                "valueType": "xs:string",
+                "value": "",
+                "modelType": "Property"
+              },
+              {
+                "idShort": "operationEntitySpeed",
+                "inputVariables": [
+                  {
+                    "value": {
+                      "idShort": "OperationInSpeed",
+                      "valueType": "xs:string",
+                      "modelType": "Property"
+                    }
+                  }
+                ],
+                "outputVariables": [
+                  {
+                    "value": {
+                      "idShort": "OperationOutSpeed",
+                      "valueType": "xs:string",
+                      "modelType": "Property"
+                    }
+                  }
+                ],
+                "inoutputVariables": [
+                  {
+                    "value": {
+                      "idShort": "OperationInoutSpeed",
+                      "value": [
+                        {
+                          "idShort": "InoutProperty_01",
+                          "valueType": "xs:string",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "InoutProperty_02",
+                          "valueType": "xs:string",
+                          "modelType": "Property"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    }
+                  }
+                ],
+                "modelType": "Operation"
+              }
+            ],
+            "entityType": "SelfManagedEntity",
+            "modelType": "Entity"
+          }
+        }
+      ],
+      "inoutputVariables": [
+        {
+          "value": {
+            "idShort": "densitySensor",
+            "valueType": "xs:string",
+            "modelType": "Property"
+          }
+        },
+        {
+          "value": {
+            "idShort": "densitySensorList",
+            "typeValueListElement": "SubmodelElement",
+            "value": [
+              {
+                "idShort": "variabilitySensor",
+                "valueType": "xs:string",
+                "modelType": "Property"
+              },
+              {
+                "idShort": "dependenceSensor",
+                "valueType": "xs:string",
+                "modelType": "Property"
+              }
+            ],
+            "modelType": "SubmodelElementList"
+          }
+        }
+      ],
+      "modelType": "Operation"
+    }
+  ],
+  "modelType": "Submodel"
+}

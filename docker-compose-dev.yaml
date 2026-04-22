@@ -1,0 +1,17 @@
+services:
+  faaster-database:
+    image: timescale/timescaledb-ha:pg15
+    container_name: faaster-database
+    environment:
+      - POSTGRES_PASSWORD=faaster
+      - POSTGRES_USER=faaster
+    networks:
+      - faaster-network
+    command: ["postgres", "-c", "shared_preload_libraries=timescaledb"]
+    ports:
+      - "5432:5432"
+
+networks:
+  faaster-network:
+    driver: bridge
+    external: true

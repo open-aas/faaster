@@ -1,0 +1,35 @@
+[
+  {
+    "externalSubjectId": {
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "urn:something15:fa05a0ff"
+        }
+      ],
+      "type": "ExternalReference"
+    },
+    "name": "specific-asset-id-maximal",
+    "semanticId": {
+      "keys": [
+        {
+          "type": "Submodel",
+          "value": "urn:some-company16:26c46e48"
+        }
+      ],
+      "type": "ModelReference"
+    },
+    "supplementalSemanticIds": [
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "urn:an-example17:bb4c21a1"
+          }
+        ],
+        "type": "ModelReference"
+      }
+    ],
+    "value": "https://example.com/9543_1238_8500"
+  }
+]

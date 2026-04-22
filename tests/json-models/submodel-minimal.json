@@ -1,0 +1,13 @@
+{
+  "id": "https://example.com/0210_3920_2304_3945",
+  "modelType": "Submodel",
+  "submodelElements": [
+    {
+      "category": "VARIABLE",
+      "contentType": "application/json",
+      "idShort": "Config_01",
+      "modelType": "File",
+      "value": "/aasx/file-config-01"
+    }
+  ]
+}

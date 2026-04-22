@@ -1,0 +1,127 @@
+{
+  "category": "something_d7cf2dff",
+  "description": [
+    {
+      "language": "pt-BR",
+      "text": "primeiros testes com Operation"
+    }
+  ],
+  "displayName": [
+    {
+      "language": "en",
+      "text": "Operation para os Sensores"
+    }
+  ],
+  "embeddedDataSpecifications": [
+    {
+      "dataSpecification": {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "urn:another-company15:2bd0986b"
+          }
+        ],
+        "type": "ModelReference"
+      },
+      "dataSpecificationContent": {
+        "modelType": "DataSpecificationIec61360",
+        "preferredName": [
+          {
+            "language": "en-UK",
+            "text": "something_7e795ee2"
+          },
+          {
+            "language": "en-UK",
+            "text": "Something random in English c8512bdf"
+          }
+        ],
+        "value": "something_4e9c19b7"
+      }
+    }
+  ],
+  "extensions": [
+    {
+      "name": "something_aa1af8b3"
+    }
+  ],
+  "idShort": "operationMaximal",
+  "inoutputVariables": [
+    {
+      "value": {
+        "idShort": "multiLanguageProperty8645",
+        "modelType": "MultiLanguageProperty"
+      }
+    }
+  ],
+  "inputVariables": [
+    {
+      "value": {
+        "entityType": "SelfManagedEntity",
+        "globalAssetId": "urn:an-example03:cc3a7d47",
+        "idShort": "selfManagedEntity4323",
+        "modelType": "Entity"
+      }
+    },
+    {
+      "value": {
+        "value": "333",
+        "valueType": "xs:int",
+        "idShort": "selfManagedEntity4324",
+        "modelType": "Property"
+      }
+    }
+  ],
+  "modelType": "Operation",
+  "outputVariables": [
+    {
+      "value": {
+        "first": {
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:another-example04:27451000"
+            }
+          ],
+          "type": "ModelReference"
+        },
+        "idShort": "annotatedRelationshipElement0133",
+        "modelType": "AnnotatedRelationshipElement",
+        "second": {
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:example03:74d93fcf"
+            }
+          ],
+          "type": "ModelReference"
+        }
+      }
+    }
+  ],
+  "qualifiers": [
+    {
+      "type": "something_500f973e",
+      "valueType": "xs:long"
+    }
+  ],
+  "semanticId": {
+    "keys": [
+      {
+        "type": "GlobalReference",
+        "value": "urn:something00:f4547d0c"
+      }
+    ],
+    "type": "ExternalReference"
+  },
+  "supplementalSemanticIds": [
+    {
+      "keys": [
+        {
+          "type": "Submodel",
+          "value": "urn:another-example10:42487f5a"
+        }
+      ],
+      "type": "ModelReference"
+    }
+  ]
+}

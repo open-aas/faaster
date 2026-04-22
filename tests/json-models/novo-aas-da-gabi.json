@@ -1,0 +1,128 @@
+{
+  "idShort": "ProductionSteps",
+  "id": "https://example.com/ids/sm/3293_2211_7042_2053",
+  "kind": "Instance",
+  "submodelElements": [
+    {
+      "idShort": "Step1",
+      "value": [
+        {
+          "idShort": "Screwing",
+          "value": [
+            {
+              "idShort": "Point_1",
+              "value": [
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordX",
+                  "valueType": "xs:float",
+                  "value": "-31",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordY",
+                  "valueType": "xs:float",
+                  "value": "201",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordZ",
+                  "valueType": "xs:float",
+                  "value": "5",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Point_2",
+              "value": [
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordX",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordY",
+                  "valueType": "xs:float",
+                  "value": "201",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordZ",
+                  "valueType": "xs:float",
+                  "value": "5",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Point_3",
+              "value": [
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordX",
+                  "valueType": "xs:float",
+                  "value": "33",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordY",
+                  "valueType": "xs:float",
+                  "value": "201",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordZ",
+                  "valueType": "xs:float",
+                  "value": "5",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Point_4",
+              "value": [
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordX",
+                  "valueType": "xs:float",
+                  "value": "-31",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordY",
+                  "valueType": "xs:float",
+                  "value": "169",
+                  "modelType": "Property"
+                },
+                {
+                  "category": "VARIABLE",
+                  "idShort": "ScrewingCoordZ",
+                  "valueType": "xs:float",
+                  "value": "5",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "SubmodelElementCollection"
+    }
+  ],
+  "modelType": "Submodel"
+}

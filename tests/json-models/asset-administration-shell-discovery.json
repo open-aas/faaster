@@ -1,0 +1,79 @@
+{
+  "administration": {},
+  "assetInformation": {
+    "assetKind": "NotApplicable",
+    "assetType": "something_9f4c5692",
+    "defaultThumbnail": {
+      "path": "file:/M5/%bA:'%9c%6b%ed%00Y*/%4C=4h:d:"
+    },
+    "globalAssetId": "something_c71f0c8f"
+  },
+  "category": "something_1dc62cea",
+  "derivedFrom": {
+    "keys": [
+      {
+        "type": "AssetAdministrationShell",
+        "value": "urn:an-example08:f3f73640"
+      }
+    ],
+    "type": "ModelReference"
+  },
+  "description": [
+    {
+      "language": "de-CH",
+      "text": "something_0c9e872c"
+    }
+  ],
+  "displayName": [
+    {
+      "language": "de-CH",
+      "text": "something_1e73716d"
+    }
+  ],
+  "embeddedDataSpecifications": [
+    {
+      "dataSpecification": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "urn:some-company06:e9f47be2"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "dataSpecificationContent": {
+        "modelType": "DataSpecificationIec61360",
+        "preferredName": [
+          {
+            "language": "en-UK",
+            "text": "something_5282e98e"
+          },
+          {
+            "language": "en-UK",
+            "text": "Something random in English 5b15c20d"
+          }
+        ],
+        "value": "something_13759f45"
+      }
+    }
+  ],
+  "extensions": [
+    {
+      "name": "something_94548e46"
+    }
+  ],
+  "id": "https://example.com/0000_0000_0000",
+  "idShort": "asset_administration_maximal",
+  "modelType": "AssetAdministrationShell",
+  "submodels": [
+    {
+      "keys": [
+        {
+          "type": "Submodel",
+          "value": "urn:another-example03:8ad569a7"
+        }
+      ],
+      "type": "ModelReference"
+    }
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "category": "VARIABLE",
+  "description": [
+    {
+      "language": "en",
+      "text": "This is a description in English."
+    },
+    {
+      "language": "pt",
+      "text": "Esta é uma descrição em português."
+    },
+    {
+      "language": "es",
+      "text": "Esta es una descripción en español."
+    }
+  ],
+  "displayName": [
+    {
+      "language": "en",
+      "text": "Display name in english"
+    },
+    {
+      "language": "pt",
+      "text": "Nome de exibição em português"
+    },
+    {
+      "language": "es",
+      "text": "Nombre para mostrar en español"
+    }
+],
+  "embeddedDataSpecifications": [
+    {
+      "dataSpecification": {
+        "type": "ModelReference",
+        "keys": [
+          {
+            "type": "AssetAdministrationShell",
+            "value": "http://example.com/dataSpecifications01"
+          }
+        ]
+      },
+      "dataSpecificationContent": {
+        "preferredName": [
+          {
+            "language": "en-UK",
+            "text": "something_84b0b440"
+          },
+          {
+            "language": "en-UK",
+            "text": "Something random in English 5b15c20d"
+          }
+        ],
+        "shortName": [
+          {
+            "language": "en-UK",
+            "text": "something_65af8271"
+          },
+          {
+            "language": "en-UK",
+            "text": "something_65af8271"
+          }
+        ],
+        "unit": "something_a6bd9450",
+        "unitId": {
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:an-example01:69d96aad"
+            }
+          ],
+          "type": "ModelReference"
+        },
+        "sourceOfDefinition": "something_1bd907c8",
+        "symbol": "something_c13116d7",
+        "dataType": "DATE",
+        "definition": [
+          {
+            "language": "en-UK",
+            "text": "something_2ae95f9f"
+          },
+          {
+            "language": "en-UK",
+            "text": "something_2ae95f9f"
+          }
+        ],
+        "valueFormat": "something_f019e5a8",
+        "valueList": {
+          "valueReferencePairs": [
+            {
+              "value": "firstValue",
+              "valueId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "http://example.com/dataSpecificationContent01"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "secondValue",
+              "valueId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "http://example.com/dataSpecificationContent03"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "value": "something_13759f45",
+        "levelType": {
+          "max": true,
+          "min": true,
+          "nom": true,
+          "typ": true
+        },
+        "modelType": "DataSpecificationIec61360"
+      }
+    },
+    {
+      "dataSpecification": {
+        "type": "ModelReference",
+        "keys": [
+          {
+            "type": "AssetAdministrationShell",
+            "value": "http://example.com/dataSpecifications03"
+          }
+        ]
+      },
+      "dataSpecificationContent": {
+        "preferredName": [
+          {
+            "language": "en-UK",
+            "text": "something_84b0b440"
+          },
+          {
+            "language": "en-UK",
+            "text": "Something random in English 5b15c20d"
+          }
+        ],
+        "shortName": [
+          {
+            "language": "pt-BR",
+            "text": "something_65af8271"
+          },
+          {
+            "language": "pt-BR",
+            "text": "something_65af8271"
+          }
+        ],
+        "unit": "something_a6bd9450",
+        "unitId": {
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:an-example01:69d96aad"
+            }
+          ],
+          "type": "ModelReference"
+        },
+        "sourceOfDefinition": "something_1bd907c8",
+        "symbol": "something_c13116d7",
+        "dataType": "DATE",
+        "definition": [
+          {
+            "language": "pt-BR",
+            "text": "something_2ae95f9f"
+          },
+          {
+            "language": "pt-BR",
+            "text": "something_2ae95f9f"
+          }
+        ],
+        "valueFormat": "something_f019e5a8",
+        "valueList": {
+          "valueReferencePairs": [
+            {
+              "value": "firstValue",
+              "valueId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "http://example.com/dataSpecificationContent01"
+                  }
+                ]
+              }
+            },
+            {
+              "value": "secondValue",
+              "valueId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "http://example.com/dataSpecificationContent03"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "value": "something_13759f45",
+        "levelType": {
+          "max": true,
+          "min": true,
+          "nom": true,
+          "typ": true
+        },
+        "modelType": "DataSpecificationIec61360"
+      }
+    }
+  ],
+  "extensions": [
+      {
+        "semanticId": {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "AssetAdministrationShell",
+              "value": "http://example.com/semanticId01"
+            }
+          ]
+        },
+        "valueType": "xs:string",
+        "value": "value",
+        "name": "PropertyExtension01",
+        "refersTo": [
+          {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "https://example.com/refersTo01"
+              }
+            ]
+          },
+          {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "https://example.com/refersTo03"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "semanticId": {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "AssetAdministrationShell",
+              "value": "http://example.com/semanticId01"
+            }
+          ]
+        },
+        "valueType": "xs:double",
+        "value": 60.5,
+        "name": "PropertyExtension02",
+        "refersTo": [
+          {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "https://example.com/refersTo01"
+              }
+            ]
+          },
+          {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "https://example.com/refersTo03"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+  "idShort": "propertyMaximal",
+  "modelType": "Property",
+  "qualifiers": [
+      {
+        "kind": "ValueQualifier",
+        "type": "teste",
+        "valueType": "xs:string",
+        "value": "123123",
+        "semanticId": {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "AssetAdministrationShell",
+              "value": "semanticId"
+            }
+          ]
+        },
+        "valueId": {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "AssetAdministrationShell",
+              "value": "valueId"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "ConceptQualifier",
+        "type": "teste",
+        "valueType": "xs:string",
+        "value": "123123",
+        "semanticId": {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "AssetAdministrationShell",
+              "value": "semanticId"
+            }
+          ]
+        },
+        "valueId": {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "AssetAdministrationShell",
+              "value": "valueId"
+            }
+          ]
+        }
+      }
+    ],
+  "value": "0061707",
+  "valueId": {
+    "type": "ExternalReference",
+    "keys": [
+      {
+        "type": "GlobalReference",
+        "value": "https://example.com/property/valueId01"
+      }
+    ]
+  },
+  "valueType": "xs:decimal"
+}

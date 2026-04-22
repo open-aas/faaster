@@ -1,0 +1,88 @@
+{
+  "category": "VARIABLE",
+  "description": [
+    {
+      "language": "en",
+      "text": "something_be9deae0"
+    }
+  ],
+  "displayName": [
+    {
+      "language": "en",
+      "text": "something_535aeb51"
+    }
+  ],
+  "embeddedDataSpecifications": [
+    {
+      "dataSpecification": {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "urn:another-company15:2bd0986b"
+          }
+        ],
+        "type": "ModelReference"
+      },
+      "dataSpecificationContent": {
+        "modelType": "DataSpecificationIec61360",
+        "preferredName": [
+          {
+            "language": "en-UK",
+            "text": "something_7e795ee2"
+          },
+          {
+            "language": "en-UK",
+            "text": "Something random in English c8512bdf"
+          }
+        ],
+        "value": "something_4e9c19b7"
+      }
+    }
+  ],
+  "extensions": [
+    {
+      "name": "something_aa1af8b3"
+    }
+  ],
+  "idShort": "MaxRotationSpeedReference",
+  "modelType": "ReferenceElement",
+  "qualifiers": [
+    {
+      "type": "something_500f973e",
+      "valueType": "xs:long"
+    }
+  ],
+  "semanticId": {
+    "keys": [
+      {
+        "type": "GlobalReference",
+        "value": "urn:something00:f4547d0c"
+      }
+    ],
+    "type": "ExternalReference"
+  },
+  "supplementalSemanticIds": [
+    {
+      "keys": [
+        {
+          "type": "Submodel",
+          "value": "urn:another-example10:42487f5a"
+        }
+      ],
+      "type": "ModelReference"
+    }
+  ],
+  "value": {
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "https://customer.com/demo/aas/1/1/1234859590"
+      },
+      {
+        "type": "Property",
+        "value": "MaxRotationSpeed"
+      }
+    ],
+    "type": "ModelReference"
+  }
+}
