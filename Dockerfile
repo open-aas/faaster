@@ -1,12 +1,14 @@
-FROM python:3.11.2-slim
+FROM python:3.12.2-slim
 
-RUN apt-get update -y && apt upgrade -y
+RUN apt update -y && apt upgrade -y
+
+RUN pip install poetry
 
 WORKDIR /app
 
 ADD . .
 
-RUN pip install -r requirements-core.txt
+RUN poetry config virtualenvs.create false && poetry install --no-root --only system
 
 EXPOSE 4840
 

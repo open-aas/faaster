@@ -6,3 +6,10 @@ mongo/
 dist/
 build/
 resources/
+_core/
+_resources/
+_sources/
+aasx-examples/
+models/
+sources/
+tests/
