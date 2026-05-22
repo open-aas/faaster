@@ -98,16 +98,43 @@ def aas_parser_arguments() -> Namespace:
         help="Port to start listening OPC UA server (default: 4840)."
     )
     server.add_argument(
-        "--url-discovery",
+        "--server-discovery",
         action="store",
         type=str,
         required=False,
         default=None,
-        dest="url_discovery",
+        dest="server_discovery",
         metavar="URL",
         help=(
             "OPC UA Local Discovery Service (LDS) URL for automatic registration "
             "(e.g. opc.tcp://localhost:4840)."
+        )
+    )
+
+    server.add_argument(
+        '--discovery-url',
+        action='store',
+        type=str,
+        required=False,
+        default="opc.tcp://0.0.0.0/faaster/server",
+        dest='discovery_url',
+        metavar="URL",
+        help=(
+            "OPCUA external url inform to Local Discovery Service (LDS) "
+            "default: opc.tcp://0.0.0.0/faaster/server"
+        )
+    )
+
+    server.add_argument(
+        "--renew-interval",
+        action="store",
+        type=int,
+        required=False,
+        default=60,
+        dest="renew_interval",
+        metavar="INTERVAL",
+        help=(
+            "The duration of the renew discovery process"
         )
     )
 

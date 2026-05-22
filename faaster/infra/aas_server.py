@@ -1,8 +1,8 @@
 from argparse import Namespace
 from datetime import datetime
 from typing import Optional, List
-from asyncua import Server
-from asyncua.ua import BuildInfo
+from asyncua import Server, Client
+from asyncua.ua import BuildInfo, RegisteredServer, ApplicationType, LocalizedText, EndpointType
 
 from faaster.extensions import ExtensionLoader
 from faaster.interfaces import IOPCUAServer, IAddressSpace
@@ -135,7 +135,7 @@ class OPCUAServer(IOPCUAServer):
         async with self._opcua_server:
             logger.info("opcua_server.run.listening")
 
-            if self._args.url_discovery:
+            if self._args.server_discovery:
                 asyncio.create_task(
                     self._register_lds(),
                     name="faaster.lds_registration",
@@ -151,7 +151,7 @@ class OPCUAServer(IOPCUAServer):
 
     async def stop(self) -> None:
         logger.info("opcua_opcua_server.stop")
-        for name, extension in self._extension_loader.instances:
+        for name, extension in self._extension_loader.instances.items():
             extension.stop()
 
         for task in self._extensions_tasks:
@@ -165,12 +165,25 @@ class OPCUAServer(IOPCUAServer):
         Registra o servidor no LDS periodicamente.
         O OPC UA exige re-registro a cada 10 minutos.
         """
-        url = self._args.url_discovery
-        interval = 600
+        url = self._args.server_discovery
+        interval = self._args.renew_interval
 
         while not self._stop_event.is_set():
+            client = Client(url)
             try:
-                await self._opcua_server.register_to_discovery(url)
+                await client.connect()
+                serv = RegisteredServer()
+                print(self._opcua_server.get_application_uri())
+
+                serv.ServerUri = self._opcua_server.get_application_uri()
+                serv.ProductUri = self._args.product_uri
+                serv.DiscoveryUrls = [self._args.discovery_url]
+                serv.ServerType = ApplicationType.Server
+                serv.ServerNames = [LocalizedText(Text=self._args.product_name, Locale='pt-br')]
+                serv.IsOnline = True
+
+                await client.uaclient.register_server(serv)
+
                 logger.info(
                     "opcua_server.lds.registered",
                     url=url,
@@ -181,6 +194,9 @@ class OPCUAServer(IOPCUAServer):
                     url=url,
                     error=str(e),
                 )
+
+            else:
+                await client.disconnect()
 
             try:
                 await asyncio.wait_for(
@@ -200,6 +216,9 @@ class OPCUAServer(IOPCUAServer):
         build_info.BuildDate = datetime.fromisoformat(
             args.build_date.replace("Z", "+00:00")
         )
+
+        self._opcua_server.set_server_name(args.product_name)
+        await self._opcua_server.set_application_uri(build_info.ProductUri)
 
         await self._opcua_server.set_build_info(
             product_uri=build_info.ProductUri,

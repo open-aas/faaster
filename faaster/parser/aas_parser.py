@@ -301,7 +301,7 @@ class AASParser:
                     semantic_id = keys[0].value
 
             # resolve o variant_type
-            variant_type = resolve_variant_type(element.type_model)
+            variant_type = resolve_variant_type(element.value_type)
 
             #extrai o nome do submodel via path
             submodel_name = path.split("/")[0]

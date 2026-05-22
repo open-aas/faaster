@@ -1,7 +1,7 @@
 services:
   faaster-database:
     image: timescale/timescaledb-ha:pg15
-    container_name: faaster-database
+    container_name: faaster-database-develop
     environment:
       - POSTGRES_PASSWORD=faaster
       - POSTGRES_USER=faaster

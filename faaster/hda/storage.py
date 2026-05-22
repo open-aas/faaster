@@ -15,6 +15,19 @@ import statistics
 logger = get_logger(__name__)
 
 
+_NUMERIC_VARIANT_TYPES = {
+    VariantType.Boolean,
+    VariantType.Int16,
+    VariantType.UInt16,
+    VariantType.Int32,
+    VariantType.UInt32,
+    VariantType.Int64,
+    VariantType.UInt64,
+    VariantType.Float,
+    VariantType.Double,
+}
+
+
 class TimescaleHDAStorage(IHDAStorage):
 
     def __init__(
@@ -117,9 +130,18 @@ class TimescaleHDAStorage(IHDAStorage):
         if metadata.is_virtual:
             return
 
+        ua_vtype = data_value.Value.VariantType
+        if ua_vtype not in _NUMERIC_VARIANT_TYPES:
+            logger.warning(
+                "hda.save_node_value.skipped.non_numeric",
+                path=metadata.path,
+                variant_type=ua_vtype.name,
+            )
+            return
+
         value = data_value.Value.Value
         timestamp = data_value.SourceTimestamp or datetime.now(tz=timezone.utc)
-        variant_type = data_value.Value.VariantType.value
+        variant_type = ua_vtype.value
 
         index = build_index(metadata.submodel_id, metadata.path)
         table_name = build_table_name(index)
@@ -312,14 +334,22 @@ def _compute_aggregate(
         return values[-1]
     return statistics.mean(values)
 
+def _cast_db_value(value: float, vtype: VariantType):
+    if vtype in (
+        VariantType.Int16, VariantType.UInt16,
+        VariantType.Int32, VariantType.UInt32,
+        VariantType.Int64, VariantType.UInt64,
+    ):
+        return int(value)
+    if vtype == VariantType.Boolean:
+        return bool(value)
+    return value  # Float, Double — mantém como float
+
+
 def _row_to_data_value(row: dict, level: str) -> DataValue:
     if level == "raw":
-        val = row["value"]
-        vtype =VariantType(row["variant_type"])
-
-        if isinstance(val, float):
-            vtype = VariantType.Double
-
+        vtype = VariantType(row["variant_type"])
+        val = _cast_db_value(row["value"], vtype)
         dv = DataValue(
             Value=Variant(Value=val, VariantType=vtype),
             SourceTimestamp=row["source_timestamp"],
