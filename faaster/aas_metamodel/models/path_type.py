@@ -8,6 +8,7 @@ import re
 
 FILE_URI_REGEX = re.compile(
     r"^(?:"
+     r"https?://[^\s]+|"
     r"/.*|"  # POSIX absolute
     r"\.{1,2}/.*|"  # ./ ou ../
     r"[^/:]+|"  # simple name (without / :)
