@@ -12,5 +12,7 @@ build/
 venv/
 .venv/
 env/
+models/
+sources/
 
 execute.xml

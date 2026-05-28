@@ -31,15 +31,16 @@ def _to_pascal_case(name: str) -> str:
 
 class ExtensionLoader:
     """
-    Carrega os scripts customizados da pasta extensions/,
-    instancia as classes e chama init() em cada uma.
+    Carrega extensões customizadas da pasta sources/, instancia as classes
+    e chama init() em cada uma.
 
-    Convenção:
-        extensions/{id_short_snake_case}.py
+    Convenção (módulo tem prioridade sobre script plano):
+        sources/{id_short_snake_case}/__init__.py   ← módulo Python
+        sources/{id_short_snake_case}.py            ← script plano (fallback)
         class {IdShortPascalCase}(ISubmodelExtension)
 
     Exemplo:
-        extensions/condition_monitoring.py
+        sources/condition_monitoring/__init__.py
         class ConditionMonitoring(ISubmodelExtension)
     """
 
@@ -106,17 +107,23 @@ class ExtensionLoader:
         submodel_id_short: str,
     ) -> None:
         snake_name = _to_snake_case(submodel_id_short)
+        module_path = self._extensions_dir / snake_name
         script_path = self._extensions_dir / f"{snake_name}.py"
 
-        if not script_path.exists():
+        if (module_path / "__init__.py").exists():
+            load_path = module_path
+        elif script_path.exists():
+            load_path = script_path
+        else:
             logger.info(
-                "extension_loader.script_not_found",
+                "extension_loader.extension_not_found",
                 id_short=submodel_id_short,
-                path=str(script_path),
+                module_path=str(module_path),
+                script_path=str(script_path),
             )
             return
 
-        module = self._import_module(snake_name, script_path)
+        module = self._import_module(snake_name, load_path)
         if module is None:
             return
 
@@ -151,12 +158,21 @@ class ExtensionLoader:
 
     @staticmethod
     def _import_module(name: str, path: Path):
-        """Importa um módulo Python a partir do path."""
+        """Importa um módulo ou pacote Python a partir do path."""
         try:
-            spec = importlib.util.spec_from_file_location(name, path)
-            module = importlib.util.module_from_spec(spec)
-            sys.modules[name] = module
-            spec.loader.exec_module(module)
+            if path.is_dir():
+                # Pacote: adiciona sources/ ao sys.path para que imports
+                # relativos internos ao módulo funcionem corretamente.
+                sources_dir = str(path.parent.resolve())
+                if sources_dir not in sys.path:
+                    sys.path.insert(0, sources_dir)
+                import importlib as _il
+                module = _il.import_module(name)
+            else:
+                spec = importlib.util.spec_from_file_location(name, path)
+                module = importlib.util.module_from_spec(spec)
+                sys.modules[name] = module
+                spec.loader.exec_module(module)
             return module
 
         except Exception as e:
