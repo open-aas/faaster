@@ -1,6 +1,7 @@
 from argparse import ArgumentParser, Namespace
 from enum import Enum
 from .cli_identification import make_identification_cli, resolve_build_date
+from faaster.security.server_security import SecurityPolicy, SecurityMode
 
 
 class DatabaseBackend(str, Enum):
@@ -126,6 +127,22 @@ def aas_parser_arguments() -> Namespace:
     )
 
     server.add_argument(
+        "--gds-url",
+        action="store",
+        type=str,
+        required=False,
+        default=None,
+        dest="gds_url",
+        metavar="URL",
+        help=(
+            "Global Discovery Server (GDS) URL for application registration "
+            "(e.g. opc.tcp://gds:58810). "
+            "When provided, the server registers itself with the GDS on startup "
+            "and periodically renews the registration (OPC 10000-12 §6.4)."
+        )
+    )
+
+    server.add_argument(
         "--renew-interval",
         action="store",
         type=int,
@@ -135,6 +152,144 @@ def aas_parser_arguments() -> Namespace:
         metavar="INTERVAL",
         help=(
             "The duration of the renew discovery process"
+        )
+    )
+
+    # -------------------------------------------------------------------------
+    # Segurança — certificados e PKI
+    # -------------------------------------------------------------------------
+    security = parser.add_argument_group("Security")
+    security.add_argument(
+        "--pki-dir",
+        action="store",
+        type=str,
+        required=False,
+        default=None,
+        dest="pki_dir",
+        metavar="PATH",
+        help=(
+            "Directory for the OPC UA certificate store (PKI). "
+            "Layout follows OPC 10000-12 Annex F: pki/own/, pki/trusted/, "
+            "pki/issuers/, pki/rejected/. "
+            "When provided, the server loads its certificate from this directory "
+            "and manages it via the GDS (if --gds-url is also set)."
+        )
+    )
+    security.add_argument(
+        "--gds-username",
+        action="store",
+        type=str,
+        required=False,
+        default=None,
+        dest="gds_username",
+        metavar="USERNAME",
+        help=(
+            "Username for GDS authentication (OPC 10000-12 §7.2). "
+            "Requires ApplicationSelfAdmin or DiscoveryAdmin role on the GDS."
+        )
+    )
+    security.add_argument(
+        "--gds-password",
+        action="store",
+        type=str,
+        required=False,
+        default=None,
+        dest="gds_password",
+        metavar="PASSWORD",
+        help="Password for GDS authentication (used together with --gds-username)."
+    )
+    security.add_argument(
+        "--cert-common-name",
+        action="store",
+        type=str,
+        required=False,
+        default=None,
+        dest="cert_common_name",
+        metavar="CN",
+        help=(
+            "Common Name (CN) for the OPC UA certificate. "
+            "Defaults to the product name (--product-name). "
+            "Example: \"Faaster AAS Server\"."
+        )
+    )
+    security.add_argument(
+        "--cert-san-dns",
+        action="append",
+        type=str,
+        required=False,
+        default=None,
+        dest="cert_san_dns",
+        metavar="DNS",
+        help=(
+            "DNS Subject Alternative Name for the certificate. "
+            "Can be repeated: --cert-san-dns host1 --cert-san-dns host2."
+        )
+    )
+    security.add_argument(
+        "--cert-san-ip",
+        action="append",
+        type=str,
+        required=False,
+        default=None,
+        dest="cert_san_ips",
+        metavar="IP",
+        help=(
+            "IP Address Subject Alternative Name for the certificate. "
+            "Can be repeated: --cert-san-ip 192.168.1.10 --cert-san-ip 10.0.0.1."
+        )
+    )
+    security.add_argument(
+        "--security-policy",
+        action="append",
+        type=SecurityPolicy,
+        choices=list(SecurityPolicy),
+        required=False,
+        default=None,
+        dest="security_policy",
+        metavar="POLICY",
+        help=(
+            "OPC UA security policy to enable. Can be repeated to allow multiple policies. "
+            f"Choices: basic256 (Basic256Sha256), aes128 (Aes128_Sha256_RsaOaep), "
+            f"aes256 (Aes256_Sha256_RsaPss). "
+            "Requires --pki-dir. Example: --security-policy basic256."
+        )
+    )
+    security.add_argument(
+        "--security-mode",
+        action="store",
+        type=SecurityMode,
+        choices=list(SecurityMode),
+        required=False,
+        default=SecurityMode.sign_and_encrypt,
+        dest="security_mode",
+        metavar="MODE",
+        help=(
+            f"OPC UA security mode applied to all configured policies. "
+            f"Choices: {', '.join(str(m) for m in SecurityMode)} "
+            f"(default: {SecurityMode.sign_and_encrypt})."
+        )
+    )
+    security.add_argument(
+        "--allow-anonymous",
+        action="store_true",
+        required=False,
+        default=False,
+        dest="allow_anonymous",
+        help=(
+            "Keep a NoSecurity endpoint alongside secure ones, allowing clients "
+            "without certificates to connect. Not recommended for production."
+        )
+    )
+    security.add_argument(
+        "--auto-accept-clients",
+        action="store_true",
+        required=False,
+        default=False,
+        dest="auto_accept_clients",
+        help=(
+            "Automatically trust any client certificate presented during connection "
+            "(moves certs from pki/rejected/ to pki/trusted/ every 5 seconds). "
+            "For development only — never use in production."
         )
     )
 
@@ -260,6 +415,21 @@ def _post_validate(args: Namespace) -> None:
     if args.db_backend is not None and args.url_database is None:
         raise SystemExit(
             "error: --db-backend requires --url-database to be specified."
+        )
+
+    if args.security_policy and not args.pki_dir:
+        raise SystemExit(
+            "error: --security-policy requires --pki-dir to be specified."
+        )
+
+    if args.auto_accept_clients and not args.pki_dir:
+        raise SystemExit(
+            "error: --auto-accept-clients requires --pki-dir to be specified."
+        )
+
+    if args.auto_accept_clients and not args.security_policy:
+        raise SystemExit(
+            "error: --auto-accept-clients only makes sense with --security-policy."
         )
 
 
