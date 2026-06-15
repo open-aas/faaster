@@ -1,6 +1,6 @@
 [project]
 name = "faaster"
-version = "1.0.0a1"
+version = "1.0.0a2"
 description = "Framework for automated deployment of Reactive Asset Administration Shell (Type 2) over OPC UA"
 readme = "README.md"
 license = { file = "LICENSE" }
