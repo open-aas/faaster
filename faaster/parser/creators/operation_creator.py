@@ -1,6 +1,7 @@
 from faaster.interfaces import IAddressSpace, INode
 from faaster.interfaces.types import MethodArgument
 from faaster.aas_metamodel.models.operation import Operation
+from faaster.extensions.method_binder import MethodBinder
 from .base import BaseCreator, resolve_variant_type
 from faaster.log import get_logger
 
@@ -15,15 +16,14 @@ class OperationCreator(BaseCreator):
         parent: INode,
         element: Operation,
         address_space: IAddressSpace,
-    ) -> INode:
+    ) -> tuple[INode, MethodBinder]:
         name = element.id_short or "Operation"
         op_node = await address_space.add_object(parent, name)
 
-        await address_space.add_property(op_node, IdShort, name)
+        await address_space.add_property(op_node, "IdShort", name)
         await address_space.add_property(op_node, "ModelType", element.modelType)
 
-        async def _placeholder_callback(*args):
-            ...
+        binder = MethodBinder()
 
         input_args = [
             MethodArgument(
@@ -45,12 +45,19 @@ class OperationCreator(BaseCreator):
             if var.value
         ]
 
-        await address_space.add_method(
+        method_node = await address_space.add_method(
             parent=op_node,
             name=name,
-            callback=_placeholder_callback,
+            callback=binder,
             input_args=input_args,
             output_args=output_args,
         )
 
-        return op_node
+        logger.info(
+            "operation_creator.created",
+            name=name,
+            input_count=len(input_args),
+            output_count=len(output_args),
+        )
+
+        return method_node, binder

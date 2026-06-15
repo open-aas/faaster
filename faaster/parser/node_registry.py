@@ -1,10 +1,13 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, TYPE_CHECKING
 from datetime import datetime
 from faaster.interfaces import INode
 from faaster.interfaces.types import FaasterVariantType
 from faaster.log import get_logger
 from faaster.hda.policies import AggregationPolicy
+
+if TYPE_CHECKING:
+    from faaster.extensions.method_binder import MethodBinder
 
 import asyncio
 
@@ -75,6 +78,14 @@ class NodeMetadata:
             return ""
         return f"_{self.level}"
 
+@dataclass
+class OperationEntry:
+    """Operação AAS registrada durante o parser, pronta para binding."""
+    id_short: str
+    method_node: INode
+    binder: "MethodBinder"
+
+
 class NodeRegistry:
     """
     Registra os nós OPC UA criados pelo parser indexados
@@ -93,6 +104,11 @@ class NodeRegistry:
         self._by_semantic_id: Dict[str, str] = {}    # semantic_id → node_id
         self._by_submodel: Dict[str, Dict[str, NodeMetadata]] = {}    # nodes variables dos submodels
         self._submodel_nodes: Dict[str, INode] = {}
+
+        # operações AAS por submodelo — submodel_id_short → [OperationEntry]
+        self._operations: Dict[str, List[OperationEntry]] = {}
+
+        self._aas_id_short: Optional[str] = None
 
     def register(self, metadata: NodeMetadata) -> None:
         node_id = str(metadata.node.node_id)
@@ -119,6 +135,34 @@ class NodeRegistry:
             semantic_id=metadata.semantic_id,
             variant_type=str(metadata.variant_type),
         )
+
+    def set_aas_id_short(self, aas_id_short: str) -> None:
+        self._aas_id_short = aas_id_short
+
+    @property
+    def aas_id_short(self) -> Optional[str]:
+        """idShort da AAS raiz carregada — ex: 'AAS_STATION_MAGFRONT'."""
+        return self._aas_id_short
+
+    def register_operation(
+        self,
+        submodel_id_short: str,
+        id_short: str,
+        method_node: INode,
+        binder: "MethodBinder",
+    ) -> None:
+        entry = OperationEntry(id_short=id_short, method_node=method_node, binder=binder)
+        if submodel_id_short not in self._operations:
+            self._operations[submodel_id_short] = []
+        self._operations[submodel_id_short].append(entry)
+        logger.info(
+            "node_registry.operation_registered",
+            submodel=submodel_id_short,
+            id_short=id_short,
+        )
+
+    def get_operations(self, submodel_id_short: str) -> List[OperationEntry]:
+        return self._operations.get(submodel_id_short, [])
 
     def register_submodel_node(self, id_short, node: INode):
         self._submodel_nodes[id_short] = node

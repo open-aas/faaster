@@ -7,6 +7,8 @@ from faaster.log import get_logger
 from .context import SubmodelContext
 from .interfaces import ISubmodelExtension
 
+from asyncua.common.methods import uamethod
+
 import importlib.util
 import inspect
 import re
@@ -141,7 +143,9 @@ class ExtensionLoader:
         )
 
         try:
-            self._instances[submodel_id_short] = instance(context)
+            loaded_instance = instance(context)
+            self._instances[submodel_id_short] = loaded_instance
+            self._bind_operations(submodel_id_short, loaded_instance)
             logger.info(
                 "extension_loader.loaded",
                 id_short=submodel_id_short,
@@ -154,6 +158,48 @@ class ExtensionLoader:
                 id_short=submodel_id_short,
                 class_name=class_name,
                 error=str(e),
+            )
+
+    def _bind_operations(self, submodel_id_short: str, instance) -> None:
+        """
+        Associa métodos da instância às operações OPC UA do submodelo.
+
+        Para cada operação registrada no NodeRegistry, deriva o nome do
+        método Python via pascal_to_snake e, se existir na instância,
+        envolve com uamethod (conversão automática de tipos) e conecta
+        ao MethodBinder.
+
+        Operações sem método correspondente ficam registradas no address
+        space mas retornam lista vazia ao cliente (não geram erro).
+        """
+        operations = self._registry.get_operations(submodel_id_short)
+        if not operations:
+            return
+
+        bound, unbound = [], []
+
+        for op in operations:
+            method_name = _to_snake_case(op.id_short)
+            handler = getattr(instance, method_name, None)
+
+            if handler is not None and callable(handler):
+                op.binder.bind(uamethod(handler))
+                bound.append(method_name)
+            else:
+                unbound.append(method_name)
+
+        if bound:
+            logger.info(
+                "extension_loader.operations_bound",
+                id_short=submodel_id_short,
+                bound=bound,
+            )
+        if unbound:
+            logger.info(
+                "extension_loader.operations_unbound",
+                id_short=submodel_id_short,
+                unbound=unbound,
+                hint="Implemente o método ou ignore — sem impacto no servidor",
             )
 
     @staticmethod

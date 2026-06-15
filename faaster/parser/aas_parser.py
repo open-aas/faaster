@@ -114,6 +114,8 @@ class AASParser:
     ) -> None:
         logger.info("aas_parser.aas.start", id_short=aas.id_short, id=aas.id)
 
+        self._node_registry.set_aas_id_short(aas.id_short)
+
         await self._creator.create_aas(
             parent=parent,
             element=aas,
@@ -206,7 +208,8 @@ class AASParser:
             await self._parse_collection(parent, element, submodel_id, current_path)
 
         elif model_type == "Operation":
-            await self._parse_operation(parent, element)
+            submodel_id_short = current_path.split("/")[0]
+            await self._parse_operation(parent, element, submodel_id_short)
 
         elif model_type in _DATA_ELEMENT_TYPES:
             await self._parse_data_element(parent, element, submodel_id, current_path)
@@ -245,14 +248,23 @@ class AASParser:
         self,
         parent: INode,
         element: SubmodelElement,
+        submodel_id_short: str,
     ) -> None:
         operation = Operation(**element.model_dump())
 
-        await self._creator.create_operation(
+        method_node, binder = await self._creator.create_operation(
             parent=parent,
             element=operation,
             address_space=self._address_space,
         )
+
+        if method_node is not None and operation.id_short:
+            self._node_registry.register_operation(
+                submodel_id_short=submodel_id_short,
+                id_short=operation.id_short,
+                method_node=method_node,
+                binder=binder,
+            )
 
     async def _parse_data_element(
         self,
