@@ -5,7 +5,17 @@ from asyncua import Server, Client
 from asyncua.ua import BuildInfo, RegisteredServer, ApplicationType, LocalizedText, EndpointType
 
 from faaster.extensions import ExtensionLoader
+from faaster.gds import GDSClient, GDSCertificateClient, GDSRegistrationManager, ApplicationRecord
 from faaster.interfaces import IOPCUAServer, IAddressSpace
+from faaster.security import (
+    CertificateStore,
+    CertificateManager,
+    SecurityMode,
+    bootstrap_pki,
+    build_security_policy_list,
+    configure_server_security,
+    auto_accept_task,
+)
 from faaster.log import get_logger
 from faaster.interfaces import INode
 from faaster.interfaces.ihda import IHDAStorage, IHDAManager
@@ -35,6 +45,7 @@ class OPCUAServer(IOPCUAServer):
         self._historized_nodes: list = []
         self._extension_loader = extension_loader
         self._extensions_tasks: List[asyncio.Task] = []
+        self._trust_store = None  # definido em setup() quando --pki-dir é fornecido
 
     async def set_history_storage(self, storage: IHDAStorage) -> None:
         self._opcua_server.iserver.history_manager.set_storage(storage)
@@ -67,10 +78,54 @@ class OPCUAServer(IOPCUAServer):
         self._opcua_server.set_server_name(args.product_name)
         await self._configure_build_info(args)
 
+        if getattr(args, "pki_dir", None):
+            await self._setup_security(args)
+
         logger.info(
             "opcua_server.setup.done",
             endpoint=endpoint,
             product_name=args.product_name,
+        )
+
+    async def _setup_security(self, args: Namespace) -> None:
+        """
+        Configura PKI e políticas de segurança OPC UA.
+
+        Pode ser standalone (self-signed + políticas locais) ou integrado
+        ao GDS quando --gds-url também estiver configurado.
+        """
+        store = CertificateStore(pki_dir=args.pki_dir)
+
+        common_name = getattr(args, "cert_common_name", None) or args.product_name
+        application_uri = self._opcua_server.get_application_uri()
+
+        await bootstrap_pki(
+            store=store,
+            common_name=common_name,
+            application_uri=application_uri,
+            san_dns=getattr(args, "cert_san_dns", None),
+            san_ips=getattr(args, "cert_san_ips", None),
+        )
+
+        policies = build_security_policy_list(
+            policies=getattr(args, "security_policy", None),
+            mode=getattr(args, "security_mode", None) or SecurityMode.sign_and_encrypt,
+            allow_anonymous=getattr(args, "allow_anonymous", False),
+        )
+
+        self._trust_store = await configure_server_security(
+            opcua_server=self._opcua_server,
+            store=store,
+            policies=policies,
+        )
+
+        # Guarda o store para reutilização na task de auto-accept e no CertificateManager
+        self._cert_store = store
+
+        logger.info(
+            "opcua_server.security_configured",
+            pki_dir=args.pki_dir,
+            policy_count=len(policies),
         )
 
     async def build_address_space(self, modeling_file: str) -> None:
@@ -141,6 +196,28 @@ class OPCUAServer(IOPCUAServer):
                     name="faaster.lds_registration",
                 )
 
+            if self._args.gds_url:
+                asyncio.create_task(
+                    self._register_gds(),
+                    name="faaster.gds_registration",
+                )
+
+            if self._args.gds_url and getattr(self._args, "pki_dir", None):
+                asyncio.create_task(
+                    self._manage_certificates(),
+                    name="faaster.certificate_management",
+                )
+
+            if getattr(self._args, "auto_accept_clients", False) and self._trust_store:
+                asyncio.create_task(
+                    auto_accept_task(
+                        store=self._cert_store,
+                        trust_store=self._trust_store,
+                        stop_event=self._stop_event,
+                    ),
+                    name="faaster.auto_accept_clients",
+                )
+
             for name, extension in self._extension_loader.instances.items():
                 task = asyncio.create_task(extension.init(), name=f'TaskSubmodel:{name}')
                 self._extensions_tasks.append(task)
@@ -159,6 +236,86 @@ class OPCUAServer(IOPCUAServer):
                 task.cancel()
 
         self._stop_event.set()
+
+    async def _register_gds(self) -> None:
+        """Registra o servidor no GDS e mantém o registro ativo (OPC 10000-12 §6.4)."""
+        args = self._args
+
+        record = ApplicationRecord(
+            application_uri=self._opcua_server.get_application_uri(),
+            application_type=ApplicationType.Server,
+            application_names=[LocalizedText(Text=args.product_name, Locale="pt-br")],
+            product_uri=args.product_uri,
+            discovery_urls=[args.discovery_url],
+            server_capabilities=[],
+        )
+
+        client = GDSClient(
+            url=args.gds_url,
+            username=getattr(args, "gds_username", None),
+            password=getattr(args, "gds_password", None),
+        )
+        manager = GDSRegistrationManager(
+            client=client,
+            record=record,
+            renew_interval=args.renew_interval,
+        )
+
+        await manager.run(self._stop_event)
+
+    async def _manage_certificates(self) -> None:
+        """
+        Gerencia o ciclo de vida de certificados via GDS Pull Management
+        (OPC 10000-12 §7.9).
+
+        Registra a aplicação no GDS para obter o applicationId, depois delega
+        ao CertificateManager o bootstrap, emissão e renovação de certificados.
+        Cada sessão GDS (registro, emissão, TrustList) abre/fecha a conexão
+        de forma independente.
+        """
+        args = self._args
+        store = CertificateStore(pki_dir=args.pki_dir)
+        common_name = getattr(args, "cert_common_name", None) or args.product_name
+        application_uri = self._opcua_server.get_application_uri()
+
+        record = ApplicationRecord(
+            application_uri=application_uri,
+            application_type=ApplicationType.Server,
+            application_names=[LocalizedText(Text=args.product_name, Locale="pt-br")],
+            product_uri=args.product_uri,
+            discovery_urls=[args.discovery_url],
+            server_capabilities=[],
+        )
+
+        gds_client = GDSCertificateClient(
+            url=args.gds_url,
+            username=getattr(args, "gds_username", None),
+            password=getattr(args, "gds_password", None),
+        )
+
+        # Registro inicial — GDSRegistrationManager gerencia sua própria sessão
+        reg_manager = GDSRegistrationManager(
+            client=gds_client,
+            record=record,
+            renew_interval=args.renew_interval,
+        )
+        try:
+            await reg_manager.register()
+        except Exception:
+            logger.exception("certificate_manager.registration_failed")
+            return
+
+        cert_manager = CertificateManager(
+            gds_client=gds_client,
+            store=store,
+            record=record,
+            common_name=common_name,
+            application_uri=application_uri,
+            san_dns=getattr(args, "cert_san_dns", None),
+            san_ips=getattr(args, "cert_san_ips", None),
+        )
+
+        await cert_manager.run(self._stop_event, renew_interval=args.renew_interval)
 
     async def _register_lds(self) -> None:
         """
