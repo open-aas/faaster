@@ -32,7 +32,9 @@ However, implementing a Reactive AAS (Type 2) over OPC UA still requires signifi
 - **Selective HDA** — Enables Historical Data Access for variables marked as `VARIABLE` in the metamodel, with configurable time-series backends (TimescaleDB)
 - **Policy-driven storage** — HDA aggregation and retention policies defined directly in the AAS model via `Extension` elements (`faaster:hda:*`), aligned with industrial standards such as IEC 61000-4-30 and ANEEL Module 8
 - **Threshold-based OPC UA events** — Configurable event generation via JSON configuration file, with custom `EventType` derived from `BaseEventType`
-- **Extension mechanism** — User-defined runtime extensions via Python scripts loaded from the `sources/` directory, receiving a `SubmodelContext` with full access to the OPC UA address space and node registry
+- **Extension mechanism** — User-defined runtime extensions via Python scripts or packages loaded from the `sources/` directory, receiving a `SubmodelContext` with full access to the OPC UA address space and node registry
+- **OPC UA Security** — Standalone X.509 certificate management (self-signed bootstrap + PKI store per OPC 10000-12 Annex F) with configurable security policies (`basic256`, `aes128`, `aes256`) and modes (`sign`, `sign-and-encrypt`)
+- **GDS Integration** — Application registration and Pull Certificate Management against an OPC UA Global Discovery Server (OPC 10000-12 §6–7), including automatic TrustList updates
 - **Automatic LDS registration** — Registers the server in the OPC UA Local Discovery Service (LDS) with periodic re-registration
 - **Edge-ready** — Runs on any Linux device with a Python interpreter, from conventional servers to embedded edge devices
 
@@ -43,12 +45,14 @@ However, implementing a Reactive AAS (Type 2) over OPC UA still requires signifi
 Faaster initializes in the following sequential steps:
 
 ```
-1. OPC UA server configuration  →  endpoint, build_info, security
-2. AAS metamodel loading        →  JSON parsing + AASd constraint validation
-3. Address space construction   →  automatic OPC UA node generation
-4. Extension loading            →  user scripts loaded from sources/
-5. HDA initialization           →  time-series backend + node historization
-6. Main server loop             →  OPC UA server running + LDS registration
+1. OPC UA server configuration  →  endpoint, build_info
+2. PKI bootstrap                →  certificate generation/loading (if --pki-dir)
+3. Security policies            →  security mode + trust store configuration
+4. AAS metamodel loading        →  JSON parsing + AASd constraint validation
+5. Address space construction   →  automatic OPC UA node generation
+6. Extension loading            →  user scripts/packages loaded from sources/
+7. HDA initialization           →  time-series backend + node historization
+8. Main server loop             →  OPC UA server running + LDS/GDS registration
 ```
 
 ### AAS V3 → OPC UA Mapping
@@ -153,6 +157,130 @@ python server.py -m models/my_asset.json --validate-only
 
 ---
 
+## OPC UA Security
+
+Faaster supports two security modes: **standalone** (self-signed certificate, no external dependencies) and **GDS-managed** (certificates issued and renewed by a Global Discovery Server). Both modes use the same PKI directory layout (OPC 10000-12 Annex F).
+
+### PKI directory layout
+
+```
+pki/
+├── own/
+│   ├── certs/          ← server certificate (DER)
+│   └── private/        ← private key (PEM, chmod 600)
+├── trusted/
+│   ├── certs/          ← trusted client/server certificates
+│   └── crl/            ← CRLs from trusted issuers
+├── issuers/
+│   ├── certs/          ← CA chain certificates
+│   └── crl/            ← CA CRLs
+└── rejected/           ← untrusted client certificates (pending approval)
+```
+
+### Standalone mode
+
+On first startup, Faaster generates a self-signed RSA-2048 certificate compatible with Basic256Sha256 (OPC 10000-7). On subsequent startups, the existing certificate is loaded from the PKI store.
+
+```bash
+python server.py \
+  -m models/my_asset.json \
+  --pki-dir ./pki \
+  --security-policy basic256 \
+  --security-mode sign-and-encrypt
+```
+
+To allow both secure and unauthenticated connections (useful for gradual migration):
+
+```bash
+python server.py -m models/my_asset.json \
+  --pki-dir ./pki \
+  --security-policy basic256 \
+  --allow-anonymous
+```
+
+### Security policies
+
+| CLI value   | OPC UA policy             | Notes                        |
+|-------------|---------------------------|------------------------------|
+| `basic256`  | Basic256Sha256            | Widely supported, recommended |
+| `aes128`    | Aes128_Sha256_RsaOaep     | More efficient, newer clients |
+| `aes256`    | Aes256_Sha256_RsaPss      | Strongest available           |
+
+Multiple policies can be specified by repeating `--security-policy`. The `--security-mode` flag (`sign` or `sign-and-encrypt`, default) applies to all configured policies.
+
+### Client certificate approval
+
+When a client presents an untrusted certificate, the connection is rejected and the certificate is saved to `pki/rejected/` for review. To approve a client manually, move its certificate to `pki/trusted/certs/` and restart the server (or wait for the next trust store reload).
+
+For development environments, use `--auto-accept-clients` to automatically approve any connecting client:
+
+```bash
+python server.py -m models/my_asset.json \
+  --pki-dir ./pki \
+  --security-policy basic256 \
+  --auto-accept-clients
+```
+
+> **Warning:** `--auto-accept-clients` accepts any certificate without validation. Never use in production.
+
+### Client connection workflow (UaExpert example)
+
+1. Connect to the server without security to retrieve its certificate
+2. Add the server certificate to your client's trusted store
+3. Set the security policy to match (e.g. `Basic256Sha256 - Sign & Encrypt`)
+4. Reconnect — the server will place your client certificate in `pki/rejected/`
+5. Approve the client certificate (move to `pki/trusted/certs/` or use `--auto-accept-clients`)
+6. Reconnect again — secure session established
+
+---
+
+## GDS Integration
+
+Faaster can register itself with an OPC UA Global Discovery Server and delegate full certificate lifecycle management to it (OPC 10000-12 §6–7).
+
+### Application registration (§6.4)
+
+When `--gds-url` is provided, Faaster registers the server with the GDS on startup and keeps the registration alive with periodic `UpdateApplication` calls. On shutdown, `UnregisterApplication` is called automatically.
+
+```bash
+python server.py \
+  -m models/my_asset.json \
+  --pki-dir ./pki \
+  --gds-url opc.tcp://gds-server:58810 \
+  --gds-username admin \
+  --gds-password secret \
+  --renew-interval 3600
+```
+
+### Pull Certificate Management (§7.9)
+
+When both `--pki-dir` and `--gds-url` are provided, Faaster performs the full Pull Management workflow automatically:
+
+```
+GetCertificateGroups     → lists available certificate groups
+GetCertificateStatus     → checks if certificate renewal is needed
+StartSigningRequest      → submits a CSR (key stays local, GDS signs it)
+FinishRequest            → polls until the CA issues the signed certificate
+GetTrustList             → retrieves the TrustList node from the GDS
+read_trust_list          → reads TrustListDataType via FileType (OpenWithMasks)
+CertificateStore.apply   → applies the trust list to the local PKI store
+```
+
+The private key is always generated locally and never sent to the GDS. Only the Certificate Signing Request (CSR) is transmitted.
+
+Certificate renewal runs automatically every `--renew-interval` seconds. If the GDS reports that a certificate update is required (`GetCertificateStatus → true`), the renewal cycle starts immediately.
+
+### GDS CLI reference
+
+```
+--gds-url URL           GDS endpoint (e.g. opc.tcp://gds:58810)
+--gds-username NAME     GDS user with ApplicationSelfAdmin or DiscoveryAdmin role
+--gds-password PASS     GDS password
+--renew-interval SEC    Registration and certificate renewal interval (default: 60s)
+```
+
+---
+
 ## Writing a Submodel Extension
 
 Extensions are Python scripts placed in the `sources/` directory. Each script corresponds to a submodel, following the naming convention `{submodel_id_short_snake_case}.py`.
@@ -209,7 +337,26 @@ Modeling:
 OPC UA Server:
   --host HOST                   Host address to bind (default: 0.0.0.0)
   --port PORT                   OPC UA server port (default: 4840)
-  --url-discovery URL           OPC UA LDS URL for automatic registration
+  --server-discovery URL        OPC UA LDS URL for automatic registration
+  --discovery-url URL           External URL advertised to the LDS
+  --gds-url URL                 GDS URL for registration and certificate management
+  --renew-interval SEC          LDS/GDS renewal interval in seconds (default: 60)
+
+Security:
+  --pki-dir PATH                PKI directory (OPC 10000-12 Annex F layout)
+  --security-policy POLICY      Security policy: basic256 | aes128 | aes256
+                                  basic256  →  Basic256Sha256
+                                  aes128    →  Aes128_Sha256_RsaOaep
+                                  aes256    →  Aes256_Sha256_RsaPss
+                                Repeatable. Requires --pki-dir.
+  --security-mode MODE          sign | sign-and-encrypt (default: sign-and-encrypt)
+  --allow-anonymous             Keep a NoSecurity endpoint alongside secure ones
+  --auto-accept-clients         Auto-trust any client certificate (dev only)
+  --gds-username NAME           GDS username (ApplicationSelfAdmin role)
+  --gds-password PASS           GDS password
+  --cert-common-name CN         Certificate CN (default: --product-name)
+  --cert-san-dns DNS            DNS SAN for the certificate (repeatable)
+  --cert-san-ip IP              IP SAN for the certificate (repeatable)
 
 Historical Data Access (HDA):
   --url-database URL            Time-series database connection URL
@@ -269,15 +416,25 @@ faaster/
 ├── aas_metamodel/       — AAS V3 metamodel Pydantic models + validators
 ├── cli/                 — CLI argument parsing
 ├── extensions/          — Extension loader, context and interfaces
+├── gds/                 — GDS client, registration manager, certificate client
+│   ├── client.py        — GDSClient: DirectoryType methods (§6.5)
+│   ├── certificate_client.py  — GDSCertificateClient: Pull Management methods (§7.9)
+│   ├── manager.py       — GDSRegistrationManager: registration lifecycle
+│   └── models.py        — ApplicationRecord dataclass
 ├── hda/                 — HDA manager, storage, policies and factory
 ├── infra/               — asyncua server and address space implementations
 ├── interfaces/          — IOPCUAServer, IAddressSpace, INode, IDatabase, types
 ├── loader/              — AAS file loaders (JSON, XML, AASX)
 ├── log/                 — structlog configuration
 ├── parser/              — AAS parser, element creators, node registry
+├── security/            — PKI store, certificate management, server security
+│   ├── certificate_store.py   — CertificateStore: PKI directory (Annex F)
+│   ├── certificate_manager.py — CertificateManager: Pull Management workflow
+│   ├── crypto_utils.py        — RSA key/cert generation, CSR, thumbprint
+│   └── server_security.py     — Security policy mapping, TrustStore, auto-accept
 ├── asset_administration_shell.py  — dependency container
 models/                  — place your AAS JSON models here
-sources/                 — place your submodel extension scripts here
+sources/                 — place your submodel extension scripts or packages here
 server.py                — entry point
 ```
 
@@ -289,7 +446,8 @@ server.py                — entry point
 - [ ] Sensor driver SDK for direct mapping between AAS variables and physical devices
 - [ ] OPC UA events based on `Range` and `BasicEventElement` metamodel elements
 - [ ] Machine Learning integration at the edge for anomaly detection in historized variables
-- [ ] Global Discovery Server (OPC UA Part 12) with automatic X.509 certificate management
+- [x] OPC UA security with X.509 certificates (standalone PKI + GDS Pull Management)
+- [x] Global Discovery Server integration (OPC UA Part 12 §6–7)
 - [ ] Horizontal scaling of Faaster instances in distributed industrial environments
 - [ ] MongoDB HDA backend
 
