@@ -9,6 +9,7 @@ from faaster.aas_metamodel.submodel_element_processor import SubmodelElementProc
 from faaster.aas_metamodel.models.model_type import ModelType
 from faaster.aas_metamodel.models.submodel_element import SubmodelElement
 from faaster.aas_metamodel.exceptions import InvalidFieldException
+from faaster.aas_metamodel.validators import validate_children_id_short
 
 
 class SubmodelElementCollection(SubmodelElement):
@@ -57,6 +58,8 @@ class SubmodelElementCollection(SubmodelElement):
         """
         if not value:
             return value
+
+        validate_children_id_short(value, "SubmodelElementCollection/value")
 
         id_shorts = []
         for elem in value:

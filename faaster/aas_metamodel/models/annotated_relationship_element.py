@@ -1,7 +1,8 @@
 """Relationship element that can be annotated with additional data elements."""
 
 from typing import List, Literal, Optional
-from pydantic import Field
+from pydantic import Field, field_validator
+from faaster.aas_metamodel.validators import validate_children_id_short
 from faaster.aas_metamodel.submodel_element_processor import SubmodelElementProcessor
 from faaster.aas_metamodel.models.model_type import ModelType
 from faaster.aas_metamodel.models.reference import Reference
@@ -38,3 +39,11 @@ class AnnotatedRelationshipElement(SubmodelElement):
                 processed_annotation.append(instance.model_dump(by_alias=True))
             attrs["annotation"] = processed_annotation
         super().__init__(**attrs)
+
+
+    @field_validator("annotation")
+    @classmethod
+    def check_children_id_short(cls, value):
+        """Constraint AASd-117: every child of AnnotatedRelationshipElement/annotation must have an idShort."""
+        validate_children_id_short(value, "AnnotatedRelationshipElement/annotation")
+        return value
