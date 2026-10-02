@@ -40,16 +40,19 @@ class Referable(HasExtensions):
     def validate_id_short(cls, value):
         """Constraint AASd-002.
 
-        The idShort of Referables shall only feature letters, digits, underscore ("_");
-        starting mandatory with a letter, i.e. [a-zA-Z][a-zA-Z0-9_]*.
+        idShort of Referables shall consist of at least two characters and shall only
+        feature letters, digits, hyphen ("-") and underscore ("_"); starting mandatory
+        with a letter, and not ending with a hyphen, i.e.
+        ^[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9_]+$.
         """
         if value is None:
             return value
 
-        if not re.match(r"^[a-zA-Z][a-zA-Z0-9_]*$", value):
+        if not re.match(r"^[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9_]+$", value):
             raise InvalidFieldException(
                 detail=f"Invalid idShort value: '{value}'. "
-                "The idShort must begin with a letter and may only contain letters, digits, "
-                "or underscores (Constraint AASd-002)."
+                "The idShort must have at least two characters, begin with a letter, "
+                "contain only letters, digits, hyphens or underscores and not end with "
+                "a hyphen (Constraint AASd-002)."
             )
         return value
