@@ -1,6 +1,8 @@
 """A submodel defines a specific aspect of the asset represented by the AAS."""
 
 from typing import List, Optional
+from pydantic import field_validator
+from faaster.aas_metamodel.validators import validate_children_id_short
 from faaster.aas_metamodel.models.has_data_specification import HasDataSpecification
 from faaster.aas_metamodel.models.has_kind import HasKind
 from faaster.aas_metamodel.models.has_semantics import HasSemantics
@@ -19,3 +21,11 @@ class Submodel(Identifiable, HasKind, HasSemantics, Qualifiable, HasDataSpecific
     """
 
     submodel_elements: Optional[List[SubmodelElementUnion]] = []
+
+
+    @field_validator("submodel_elements")
+    @classmethod
+    def check_children_id_short(cls, value):
+        """Constraint AASd-117: every child of Submodel/submodelElements must have an idShort."""
+        validate_children_id_short(value, "Submodel/submodelElements")
+        return value

@@ -1,6 +1,5 @@
 """A submodel element is an element suitable for the description and differentiation of assets."""
 
-from pydantic import Field
 from faaster.aas_metamodel.models.has_data_specification import HasDataSpecification
 from faaster.aas_metamodel.models.has_kind import HasKind
 from faaster.aas_metamodel.models.has_semantics import HasSemantics
@@ -18,6 +17,9 @@ class SubmodelElement(
     """A submodel element is an element suitable for the description and differentiation of assets.
 
     It is recommended to add a semanticId to a SubmodelElement.
+
+    idShort is inherited as optional from Referable: direct children of a
+    SubmodelElementList have none, and every other container enforces it on
+    its children (Constraint AASd-117).
     """
 
-    id_short: str = Field(..., max_length=128)
