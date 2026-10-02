@@ -33,8 +33,8 @@ python server.py -m models/my_asset.json --validate-only
 
 ### Run tests
 ```bash
-pytest tests/
-pytest tests/interfaces/test_base_client.py   # single file
+pytest tests/unit tests/integration          # tests/interfaces is broken (imports legacy `core` module)
+pytest tests/unit/test_hda_policies.py       # single file
 ```
 
 ### Versioning / changelog
@@ -91,3 +91,15 @@ Policies are `Extension` elements prefixed `faaster:hda:` on any `VARIABLE` prop
 
 ### Interfaces and decoupling
 All infrastructure is hidden behind interfaces in `faaster/interfaces/`. Parser and HDA components depend only on `IAddressSpace`, `INode`, etc. — never on asyncua directly. New backends (e.g. MongoDB) implement `IHDAStorage` and register via `HDAManagerFactory`.
+
+## Project context files
+- `.kiro/steering/` — `product.md`, `tech.md`, `structure.md`, `conventions.md` (contexto sempre incluído; leia antes de mudanças grandes)
+- Skills (`.claude/skills/`): `faaster-extension` (extensões em `sources/` + bind de Operations), `faaster-hda-policy` (extensions `faaster:hda:*`), `faaster-element-creator` (novo mapeamento AAS → OPC UA)
+- Agents (`.claude/agents/`): `aas-model-validator` (valida modelo antes de subir), `faaster-reviewer` (revisão arquitetural/segurança do diff)
+
+## Gotchas
+- `models/` e `sources/` estão no `.gitignore` (atenção: a regra `models/` também casa com `faaster/aas_metamodel/models/` — arquivos novos ali precisam de `git add -f`).
+- Operations: idShort PascalCase → método snake_case na extensão; sem método → retorna `[]` (não é erro).
+- Só Properties com `category: VARIABLE` entram no `NodeRegistry` e podem ser historizadas.
+- `docker-compose-dev.yaml` usa rede externa: `docker network create faaster-network` antes do `up`.
+- Instalar testes: `poetry install --with system,tests`.
