@@ -1,5 +1,5 @@
 """
-Testes do OperationCreator com IAddressSpace mockado.
+Testes do OperationCreator com IAddressSpace mockado e elementos reais do metamodelo.
 
 Foco:
     - Retorna (method_node, MethodBinder) para qualquer operação
@@ -12,6 +12,8 @@ Assinatura do método:  create(self, parent, element, address_space)
 import pytest
 from unittest.mock import AsyncMock, MagicMock, call
 
+from faaster.aas_metamodel.models.operation import Operation
+from faaster.aas_metamodel.models.operation_variable import OperationVariable
 from faaster.parser.creators.operation_creator import OperationCreator
 from faaster.extensions.method_binder import MethodBinder
 
@@ -35,22 +37,20 @@ def _make_element(
     input_vars=None,
     output_vars=None,
 ):
-    """Stub de elemento Operation com os atributos acessados pelo creator."""
-    el = MagicMock()
-    el.id_short = id_short
-    el.modelType = model_type
-    el.inputVariables = input_vars or []
-    el.outputVariables = output_vars or []
-    return el
+    """Operation real do metamodelo (stubs MagicMock escondiam nomes de atributo errados)."""
+    data = {"modelType": model_type}
+    if id_short is not None:
+        data["idShort"] = id_short
+    if input_vars:
+        data["inputVariables"] = input_vars
+    if output_vars:
+        data["outputVariables"] = output_vars
+    return Operation.model_validate(data)
 
 
 def _make_var(id_short="temperature", value_type="xs:float"):
-    """Stub de OperationVariable com .value.id_short e .value.valueType."""
-    var = MagicMock()
-    var.value = MagicMock()
-    var.value.id_short = id_short
-    var.value.valueType = value_type
-    return var
+    """OperationVariable no formato JSON da AAS (value = Property)."""
+    return {"value": {"idShort": id_short, "modelType": "Property", "valueType": value_type}}
 
 
 # ------------------------------------------------------------------
@@ -157,10 +157,10 @@ async def test_var_without_value_skipped():
     creator = OperationCreator()
     as_ = _make_address_space()
 
-    empty_var = MagicMock()
-    empty_var.value = None
+    element = _make_element()
+    element.input_variables = [OperationVariable.model_construct(value=None)]
 
-    await creator.create(MagicMock(), _make_element(input_vars=[empty_var]), as_)
+    await creator.create(MagicMock(), element, as_)
 
     kwargs = as_.add_method.call_args.kwargs
     assert kwargs["input_args"] == []
@@ -193,7 +193,7 @@ async def test_binder_can_be_bound_after_creation():
 async def test_multiple_input_output_args():
     creator = OperationCreator()
     as_ = _make_address_space()
-    inputs = [_make_var("a", "xs:float"), _make_var("b", "xs:string")]
+    inputs = [_make_var("speed", "xs:float"), _make_var("mode", "xs:string")]
     outputs = [_make_var("ok", "xs:boolean")]
 
     await creator.create(MagicMock(), _make_element(input_vars=inputs, output_vars=outputs), as_)
@@ -201,5 +201,5 @@ async def test_multiple_input_output_args():
     kwargs = as_.add_method.call_args.kwargs
     assert len(kwargs["input_args"]) == 2
     assert len(kwargs["output_args"]) == 1
-    assert kwargs["input_args"][0].name == "a"
-    assert kwargs["input_args"][1].name == "b"
+    assert kwargs["input_args"][0].name == "speed"
+    assert kwargs["input_args"][1].name == "mode"

@@ -10,6 +10,8 @@ Usa asyncua.Server in-memory para verificar que:
 """
 import pytest
 from unittest.mock import MagicMock
+
+from faaster.aas_metamodel.models.operation import Operation
 from asyncua.common.methods import uamethod
 
 from faaster.infra.address_space import NodeAdapter
@@ -23,20 +25,18 @@ from faaster.interfaces.types import FaasterVariantType
 # ------------------------------------------------------------------
 
 def _op_element(id_short="StartProcess", input_vars=None, output_vars=None):
-    el = MagicMock()
-    el.id_short = id_short
-    el.modelType = "Operation"
-    el.inputVariables = input_vars or []
-    el.outputVariables = output_vars or []
-    return el
+    """Operation real do metamodelo (stubs MagicMock escondiam nomes de atributo errados)."""
+    data = {"idShort": id_short, "modelType": "Operation"}
+    if input_vars:
+        data["inputVariables"] = input_vars
+    if output_vars:
+        data["outputVariables"] = output_vars
+    return Operation.model_validate(data)
 
 
 def _var(id_short, value_type="xs:float"):
-    v = MagicMock()
-    v.value = MagicMock()
-    v.value.id_short = id_short
-    v.value.valueType = value_type
-    return v
+    """OperationVariable no formato JSON da AAS (value = Property)."""
+    return {"value": {"idShort": id_short, "modelType": "Property", "valueType": value_type}}
 
 
 # ------------------------------------------------------------------
@@ -88,8 +88,8 @@ async def test_two_operations_have_different_node_ids(address_space, objects_nod
 @pytest.mark.asyncio
 async def test_two_operations_have_independent_binders(address_space, objects_node):
     creator = OperationCreator()
-    _, binder1 = await creator.create(objects_node, _op_element("A"), address_space)
-    _, binder2 = await creator.create(objects_node, _op_element("B"), address_space)
+    _, binder1 = await creator.create(objects_node, _op_element("OpA"), address_space)
+    _, binder2 = await creator.create(objects_node, _op_element("OpB"), address_space)
 
     async def handler_a(parent): return ["a"]
     binder1.bind(handler_a)
