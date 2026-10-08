@@ -21,27 +21,27 @@ class OperationCreator(BaseCreator):
         op_node = await address_space.add_object(parent, name)
 
         await address_space.add_property(op_node, "IdShort", name)
-        await address_space.add_property(op_node, "ModelType", element.modelType)
+        await address_space.add_property(op_node, "ModelType", element.type_model)
 
         binder = MethodBinder()
 
         input_args = [
             MethodArgument(
-                name=var.value.id_short or "input",
-                variant_type=resolve_variant_type(var.value.valueType),
-                description=f"Input: {var.value.id_short}",
+                name=var.value.get("idShort") or "input",
+                variant_type=resolve_variant_type(var.value.get("valueType")),
+                description=f"Input: {var.value.get('idShort')}",
             )
-            for var in (element.inputVariables or [])
+            for var in (element.input_variables or [])
             if var.value
         ]
 
         output_args = [
             MethodArgument(
-                name=var.value.id_short or "output",
-                variant_type=resolve_variant_type(var.value.valueType),
-                description=f"Output: {var.value.id_short}",
+                name=var.value.get("idShort") or "output",
+                variant_type=resolve_variant_type(var.value.get("valueType")),
+                description=f"Output: {var.value.get('idShort')}",
             )
-            for var in (element.outputVariables or [])
+            for var in (element.output_variables or [])
             if var.value
         ]
 
