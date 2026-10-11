@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+import re
 from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 from faaster.interfaces import INode
 from faaster.interfaces.types import FaasterVariantType
@@ -67,13 +68,32 @@ class OperationEntry:
     binder: "MethodBinder"
 
 
+def id_short_path_from_segments(segments: List[str]) -> str:
+    """["Coll", "List", "[0]", "Prop"] → "Coll.List[0].Prop" (índices colados ao pai)."""
+    path = ""
+    for segment in segments:
+        if segment.startswith("["):
+            path += segment
+        else:
+            path = f"{path}.{segment}" if path else segment
+    return path
+
+
+def segments_from_id_short_path(id_short_path: str) -> List[str]:
+    """Inverso de id_short_path_from_segments: "List[0].Prop" → ["List", "[0]", "Prop"]."""
+    return re.findall(r"\[\d+\]|[^.\[\]]+", id_short_path)
+
+
 def _parent_path(id_short_path: str) -> str:
+    """Pai de "A.B[2]" é "A.B"; de "A.B" é "A"; de "A" é ""."""
+    if id_short_path.endswith("]"):
+        return id_short_path[: id_short_path.rindex("[")]
     return id_short_path.rsplit(".", 1)[0] if "." in id_short_path else ""
 
 
 def _id_short_path(metadata: "NodeMetadata") -> str:
-    # "Submodel/Coll/Prop/Value" ou ".../Value@1min" → "Coll.Prop"
-    return ".".join(metadata.path.split("/")[1:-1])
+    # "Submodel/Coll/Prop/Value" ou ".../Value@1min" → "Coll.Prop"; "Submodel/List/[0]/Value" → "List[0]"
+    return id_short_path_from_segments(metadata.path.split("/")[1:-1])
 
 
 def _in_subtree(path: str, root: str) -> bool:
@@ -201,6 +221,14 @@ class NodeRegistry:
         id_short_path: str,
     ) -> Optional[ValueNodeEntry]:
         return self._value_nodes.get((submodel_id, id_short_path))
+
+    def value_nodes_in_subtree(self, submodel_id: str, id_short_path: str) -> Dict[str, ValueNodeEntry]:
+        """Nós de valor do elemento e de todos os seus descendentes, por idShortPath."""
+        return {
+            path: entry
+            for (sm_id, path), entry in self._value_nodes.items()
+            if sm_id == submodel_id and _in_subtree(path, id_short_path)
+        }
 
     def register_submodel_node(self, id_short, node: INode):
         self._submodel_nodes[id_short] = node

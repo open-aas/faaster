@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import MagicMock
 from faaster.parser.node_registry import NodeRegistry, NodeMetadata, OperationEntry
+from faaster.parser.node_registry import id_short_path_from_segments, segments_from_id_short_path
 from faaster.extensions.method_binder import MethodBinder
 from faaster.interfaces.types import FaasterVariantType
 
@@ -120,3 +121,45 @@ def test_register_multiple_operations_same_submodel():
     for name in ("Start", "Stop", "Reset"):
         registry.register_operation("Ctrl", name, _make_node(f"ns=1;i={ord(name[0])}"), MethodBinder())
     assert len(registry.get_operations("Ctrl")) == 3
+
+
+# ------------------------------------------------------------------
+# idShortPath com itens de SubmodelElementList
+# ------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("segments, path", [
+    (["Prop"], "Prop"),
+    (["Coll", "Prop"], "Coll.Prop"),
+    (["List", "[0]"], "List[0]"),
+    (["List", "[0]", "[1]", "Prop"], "List[0][1].Prop"),
+    (["Entity", "List", "[2]"], "Entity.List[2]"),
+])
+def test_id_short_path_segments_round_trip(segments, path):
+    assert id_short_path_from_segments(segments) == path
+    assert segments_from_id_short_path(path) == segments
+
+
+def test_list_items_are_children_of_the_list():
+    registry = NodeRegistry()
+    for path in ("List", "List[0]", "List[1]", "List[1].Prop", "Other"):
+        registry.register_element_node("urn:sub", path, _make_node(path))
+
+    assert {n.node_id for n in registry.child_element_nodes("urn:sub", "List")} == {"List[0]", "List[1]"}
+    assert {n.node_id for n in registry.child_element_nodes("urn:sub", "")} == {"List", "Other"}
+
+
+def test_value_nodes_in_subtree():
+    registry = NodeRegistry()
+    for path in ("List[1]", "List[1].Prop", "List[10]", "Other"):
+        registry.register_value_node("urn:sub", path, _make_node(path))
+
+    assert set(registry.value_nodes_in_subtree("urn:sub", "List[1]")) == {"List[1]", "List[1].Prop"}
+
+
+def test_historized_list_item_path():
+    registry = NodeRegistry()
+    registry.register(_make_metadata(path="Sub/List/[1]/Value", id_short="[1]"))
+
+    assert registry.nodes_in_use("urn:sub", "List") == ["List[1] (historized)"]
+    assert registry.nodes_in_use("urn:sub", "List[0]") == []

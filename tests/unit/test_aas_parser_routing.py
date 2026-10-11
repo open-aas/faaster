@@ -206,8 +206,29 @@ async def test_routes_property_to_parse_data_element():
         mock_de.assert_called_once()
 
 
+_REF = {"type": "ModelReference", "keys": [{"type": "Submodel", "value": "urn:sm"}]}
+_CHILD = {"modelType": "Property", "idShort": "p", "valueType": "xs:int"}
+
+
+def _element(model_type, **attrs):
+    el = MagicMock()
+    el.type_model = model_type
+    el.id_short = "Element"
+    el.model_dump.return_value = {"idShort": "Element", "modelType": model_type, **attrs}
+    return el
+
+
 @pytest.mark.asyncio
-async def test_routes_collection_to_parse_collection():
+@pytest.mark.parametrize("element, create, children, indexed", [
+    (_collection_element(), "create_submodel_element_collection", [], False),
+    (_element("SubmodelElementList", typeValueListElement="Property", value=[_CHILD]),
+     "create_submodel_element_list", 1, True),
+    (_element("Entity", statements=[_CHILD]), "create_entity", 1, False),
+    (_element("AnnotatedRelationshipElement", first=_REF, second=_REF, annotations=[_CHILD]),
+     "create_relationship_element", 1, False),
+    (_element("RelationshipElement", first=_REF, second=_REF), "create_relationship_element", [], False),
+])
+async def test_routes_elements_with_children_to_parse_container(element, create, children, indexed):
     registry = NodeRegistry()
     creator, _, _ = _make_creator()
     parser = AASParser(
@@ -216,14 +237,39 @@ async def test_routes_collection_to_parse_collection():
         node_registry=registry,
     )
 
-    with patch.object(parser, "_parse_collection", new=AsyncMock()) as mock_col:
+    with patch.object(parser, "_parse_container", new=AsyncMock()) as mock_container:
         await parser._parse_submodel_element(
             parent=MagicMock(),
-            element=_collection_element(),
+            element=element,
             submodel_id="urn:sub",
             current_path="MySub",
         )
-        mock_col.assert_called_once()
+
+    mock_container.assert_called_once()
+    args, kwargs = mock_container.call_args
+    assert args[3] == getattr(creator, create)
+    assert len(args[2] or []) == (children if isinstance(children, int) else len(children))
+    assert kwargs.get("indexed", False) is indexed
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("model_type", ["Capability", "Blob"])
+async def test_routes_capability_and_blob_to_parse_data_element(model_type):
+    parser = AASParser(
+        address_space=_make_address_space(),
+        creator=_make_creator()[0],
+        node_registry=NodeRegistry(),
+    )
+
+    with patch.object(parser, "_parse_data_element", new=AsyncMock()) as mock_de:
+        await parser._parse_submodel_element(
+            parent=MagicMock(),
+            element=_element(model_type),
+            submodel_id="urn:sub",
+            current_path="MySub",
+        )
+
+    mock_de.assert_called_once()
 
 
 # ------------------------------------------------------------------

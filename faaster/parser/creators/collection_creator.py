@@ -1,3 +1,4 @@
+from typing import Optional
 from faaster.interfaces import IAddressSpace, INode
 from faaster.aas_metamodel.models.submodel_element_collection import SubmodelElementCollection
 from .base import BaseCreator
@@ -14,8 +15,9 @@ class CollectionCreator(BaseCreator):
         parent: INode,
         element: SubmodelElementCollection,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
-        name = element.id_short or "Collection"
+        name = name or element.id_short or "Collection"
         node = await address_space.add_object(parent, name)
         await self.add_metadata(node, element, address_space)
         return node
@@ -26,9 +28,7 @@ class CollectionCreator(BaseCreator):
         element: SubmodelElementCollection,
         address_space: IAddressSpace,
     ) -> None:
-        name = element.id_short or "Collection"
-
-        await address_space.add_property(node, "IdShort", name)
+        await self.add_id_short(node, element, address_space)
         await address_space.add_property(node, "ModelType", element.type_model)
         await address_space.add_property(node, "Category", element.category)
 

@@ -1,3 +1,4 @@
+from typing import Optional
 from faaster.interfaces import IAddressSpace, INode
 from faaster.interfaces.types import MethodArgument
 from faaster.aas_metamodel.models.operation import Operation
@@ -16,11 +17,12 @@ class OperationCreator(BaseCreator):
         parent: INode,
         element: Operation,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> tuple[INode, MethodBinder]:
-        name = element.id_short or "Operation"
+        name = name or element.id_short or "Operation"
         op_node = await address_space.add_object(parent, name)
 
-        await address_space.add_property(op_node, "IdShort", name)
+        await self.add_id_short(op_node, element, address_space)
         await address_space.add_property(op_node, "ModelType", element.type_model)
 
         binder = MethodBinder()

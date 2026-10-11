@@ -204,9 +204,12 @@ async def test_elements_without_live_node_are_not_implemented(client, path, valu
     assert (await client.patch(url, json=value)).status_code == 501
 
 
-async def test_list_children_without_live_node_are_not_implemented(client):
-    # o parser ainda não cria nós OPC UA para SubmodelElementList
-    assert (await client.patch(f"{ELEMENTS}/Setpoints/$value", json=[1, 2])).status_code == 501
+async def test_list_items_are_written_to_their_nodes(client, registry):
+    response = await client.patch(f"{ELEMENTS}/Setpoints/$value", json=[1, 2])
+
+    assert response.status_code == 204
+    assert await registry.get_value_node(OPERATIONAL_ID, "Setpoints[1]").node.get_value() == 2.0
+    assert (await client.get(f"{ELEMENTS}/Setpoints/$value")).json() == [1.0, 2.0]
 
 
 async def test_list_length_must_match(client):

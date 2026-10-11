@@ -8,6 +8,10 @@ from faaster.log import get_logger
 logger = get_logger(__name__)
 
 
+def _enum_value(value: Any) -> Any:
+    return getattr(value, "value", value)
+
+
 _VALUE_TYPE_MAP = {
     "xs:float": FaasterVariantType.Float,
     "xs:double": FaasterVariantType.Double,
@@ -71,8 +75,38 @@ class BaseCreator:
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> Optional[INode]:
+        """
+        Cria o nó do elemento sob parent. name substitui o idShort como nome do
+        nó — itens de SubmodelElementList não têm idShort (AASd-120) e são
+        nomeados pelo índice ("[0]").
+        """
         raise NotImplementedError
+
+    @staticmethod
+    async def add_id_short(
+        node: INode,
+        element: Any,
+        address_space: IAddressSpace,
+    ) -> None:
+        """Propriedade IdShort, só quando o elemento tem um (não nos itens de listas)."""
+        if element.id_short:
+            await address_space.add_property(node, "IdShort", element.id_short)
+
+    @staticmethod
+    async def add_reference(
+        parent: INode,
+        name: str,
+        reference: Reference,
+        address_space: IAddressSpace,
+    ) -> INode:
+        """Pasta com o tipo da Reference e uma propriedade Key[i]@<tipo> por chave."""
+        folder = await address_space.add_folder(parent, name)
+        await address_space.add_property(folder, "Type", _enum_value(reference.type))
+        for i, key in enumerate(reference.keys or []):
+            await address_space.add_property(folder, f"Key[{i}]@{_enum_value(key.type)}", key.value)
+        return folder
 
     @staticmethod
     async def add_semantic_id(

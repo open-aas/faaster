@@ -1,3 +1,4 @@
+from typing import Optional
 from faaster.interfaces import IAddressSpace, INode
 from faaster.aas_metamodel.models.basic_event_element import BasicEventElement
 from .base import BaseCreator
@@ -14,11 +15,12 @@ class BasicEventElementCreator(BaseCreator):
         parent: INode,
         element: BasicEventElement,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
-        name = element.id_short or "BasicEventElement"
+        name = name or element.id_short or "BasicEventElement"
         node = await address_space.add_object(parent, name)
 
-        await address_space.add_property(node, "IdShort", name)
+        await self.add_id_short(node, element, address_space)
         await address_space.add_property(node, "ModelType", element.type_model)
         await address_space.add_property(node, "Category", element.category)
         await address_space.add_property(node, "Direction", element.direction)

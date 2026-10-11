@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Any
+from typing import Any, Optional
 from .inode import INode
 from .iaddress_space import IAddressSpace
 
@@ -34,6 +34,7 @@ class IElementCreator(ABC):
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
         ...
 
@@ -43,6 +44,7 @@ class IElementCreator(ABC):
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
         ...
 
@@ -52,6 +54,7 @@ class IElementCreator(ABC):
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
         ...
 
@@ -61,6 +64,7 @@ class IElementCreator(ABC):
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
         ...
 
@@ -70,6 +74,7 @@ class IElementCreator(ABC):
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
         ...
 
@@ -79,6 +84,7 @@ class IElementCreator(ABC):
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
         ...
 
@@ -88,6 +94,7 @@ class IElementCreator(ABC):
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
         ...
 
@@ -97,8 +104,59 @@ class IElementCreator(ABC):
         parent: INode,
         element: Any,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
         ...
+
+    async def create_submodel_element_list(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+        name: Optional[str] = None,
+    ) -> INode:
+        """SubmodelElementList (só o nó da lista; os itens são criados pelo parser)."""
+        raise NotImplementedError
+
+    async def create_entity(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+        name: Optional[str] = None,
+    ) -> INode:
+        """Entity (só o nó da entidade; os statements são criados pelo parser)."""
+        raise NotImplementedError
+
+    async def create_relationship_element(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+        name: Optional[str] = None,
+    ) -> INode:
+        """RelationshipElement e AnnotatedRelationshipElement (as annotations são criadas pelo parser)."""
+        raise NotImplementedError
+
+    async def create_capability(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+        name: Optional[str] = None,
+    ) -> INode:
+        """Capability."""
+        raise NotImplementedError
+
+    async def create_blob(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+        name: Optional[str] = None,
+    ) -> INode:
+        """Blob."""
+        raise NotImplementedError
 
     async def refresh_metadata(
         self,

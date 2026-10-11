@@ -10,18 +10,28 @@ from faaster.aas_metamodel.models.concept_description import ConceptDescription
 from faaster.aas_metamodel.models.asset_administration_shell import AssetAdministrationShell as AASModel
 from faaster.aas_metamodel.models.submodel_element import SubmodelElement
 from faaster.aas_metamodel.models.submodel_element_collection import SubmodelElementCollection
+from faaster.aas_metamodel.models.submodel_element_list import SubmodelElementList
+from faaster.aas_metamodel.models.entity import Entity
+from faaster.aas_metamodel.models.relationship_element import RelationshipElement
+from faaster.aas_metamodel.models.annotated_relationship_element import AnnotatedRelationshipElement
 from faaster.aas_metamodel.models.operation import Operation
 from faaster.aas_metamodel.submodel_element_processor import SubmodelElementProcessor
 from faaster.interfaces import IAddressSpace, IElementCreator, INode
 from faaster.interfaces.types import FaasterVariantType
 from faaster.hda import HDAMode, extract_policy, AggregationPolicy
 from faaster.log import get_logger
-from .node_registry import NodeMetadata, NodeRegistry
+from .node_registry import (
+    NodeMetadata,
+    NodeRegistry,
+    id_short_path_from_segments,
+    segments_from_id_short_path,
+)
 
 logger = get_logger(__name__)
 
 
-_DATA_ELEMENT_TYPES = {
+# elementos sem filhos: um creator e o registro do nó
+_LEAF_ELEMENT_TYPES = {
     "Property",
     "MultiLanguageProperty",
     "Range",
@@ -29,6 +39,7 @@ _DATA_ELEMENT_TYPES = {
     "Blob",
     "ReferenceElement",
     "BasicEventElement",
+    "Capability",
 }
 
 _VARIABLE_CATEGORY = "VARIABLE"
@@ -208,7 +219,12 @@ class AASParser:
         element: SubmodelElement,
         submodel_id: str,
         current_path: str,
+        name: Optional[str] = None,
     ) -> None:
+        """
+        name: nome do nó e segmento do path no lugar do idShort — "[i]" para
+        os itens de SubmodelElementList, que não têm idShort (AASd-120).
+        """
 
         if isinstance(element, dict):
             submodel_element_module, model_type = SubmodelElementProcessor.process_elements(element)
@@ -225,13 +241,45 @@ class AASParser:
         )
 
         if model_type == "SubmodelElementCollection":
-            await self._parse_collection(parent, element, submodel_id, current_path)
+            collection = SubmodelElementCollection(**element.model_dump())
+            await self._parse_container(
+                parent, collection, collection.value, self._creator.create_submodel_element_collection,
+                submodel_id, current_path, name,
+            )
+
+        elif model_type == "SubmodelElementList":
+            sml = SubmodelElementList(**element.model_dump())
+            await self._parse_container(
+                parent, sml, sml.value, self._creator.create_submodel_element_list,
+                submodel_id, current_path, name, indexed=True,
+            )
+
+        elif model_type == "Entity":
+            entity = Entity(**element.model_dump())
+            await self._parse_container(
+                parent, entity, entity.statements, self._creator.create_entity,
+                submodel_id, current_path, name,
+            )
+
+        elif model_type == "AnnotatedRelationshipElement":
+            relationship = AnnotatedRelationshipElement(**element.model_dump())
+            await self._parse_container(
+                parent, relationship, relationship.annotations, self._creator.create_relationship_element,
+                submodel_id, current_path, name,
+            )
+
+        elif model_type == "RelationshipElement":
+            relationship = RelationshipElement(**element.model_dump())
+            await self._parse_container(
+                parent, relationship, [], self._creator.create_relationship_element,
+                submodel_id, current_path, name,
+            )
 
         elif model_type == "Operation":
-            await self._parse_operation(parent, element, submodel_id, current_path)
+            await self._parse_operation(parent, element, submodel_id, current_path, name)
 
-        elif model_type in _DATA_ELEMENT_TYPES:
-            await self._parse_data_element(parent, element, submodel_id, current_path)
+        elif model_type in _LEAF_ELEMENT_TYPES:
+            await self._parse_data_element(parent, element, submodel_id, current_path, name)
 
         else:
             logger.warning(
@@ -240,28 +288,38 @@ class AASParser:
                 model_type=model_type,
             )
 
-    async def _parse_collection(
+    async def _parse_container(
         self,
         parent: INode,
         element: SubmodelElement,
+        children: Optional[List[dict]],
+        create,
         submodel_id: str,
         current_path: str,
+        name: Optional[str],
+        indexed: bool = False,
     ) -> None:
-        collection = SubmodelElementCollection(**element.model_dump())
-
-        collection_node = await self._creator.create_submodel_element_collection(
+        """
+        Elemento com filhos (coleção, lista, entidade, relacionamento anotado):
+        cria o nó e percorre os filhos sob ele. Os itens de uma lista são
+        nomeados pelo índice ("[0]", "[1]"...), como no idShortPath da API.
+        """
+        segment = name or element.id_short
+        node = await create(
             parent=parent,
-            element=collection,
+            element=element,
             address_space=self._address_space,
+            name=name,
         )
-        self._register_element_node(submodel_id, current_path, collection.id_short, collection_node)
+        self._register_element_node(submodel_id, current_path, segment, node)
 
-        if collection.value:
-            await self._parse_submodel_elements(
-                parent=collection_node,
-                elements=collection.value,
-                submodel_id=submodel_id,
-                current_path=f"{current_path}/{element.id_short}",  # ← acumula
+        for index, child in enumerate(children or []):
+            await self._parse_submodel_element(
+                node,
+                child,
+                submodel_id,
+                f"{current_path}/{segment}",  # ← acumula
+                name=f"[{index}]" if indexed else None,
             )
 
     async def _parse_operation(
@@ -270,27 +328,30 @@ class AASParser:
         element: SubmodelElement,
         submodel_id: str,
         current_path: str,
+        name: Optional[str] = None,
     ) -> None:
         operation = Operation(**element.model_dump())
         submodel_id_short, *parents = current_path.split("/")
+        segment = name or operation.id_short
 
         method_node, binder = await self._creator.create_operation(
             parent=parent,
             element=operation,
             address_space=self._address_space,
+            name=name,
         )
 
-        if method_node is not None and operation.id_short:
+        if method_node is not None and segment:
             self._register_element_node(
-                submodel_id, current_path, operation.id_short, await method_node.get_parent()
+                submodel_id, current_path, segment, await method_node.get_parent()
             )
             self._node_registry.register_operation(
                 submodel_id_short=submodel_id_short,
-                id_short=operation.id_short,
+                id_short=segment,
                 method_node=method_node,
                 binder=binder,
                 submodel_id=submodel_id,
-                id_short_path=".".join([*parents, operation.id_short]),
+                id_short_path=id_short_path_from_segments([*parents, segment]),
             )
 
     async def _parse_data_element(
@@ -299,8 +360,10 @@ class AASParser:
         element: SubmodelElement,
         submodel_id: str,
         current_path: str,
+        name: Optional[str] = None,
     ) -> None:
         model_type = element.type_model
+        segment = name or element.id_short
 
         creator_map = {
             "Property": self._creator.create_property,
@@ -309,6 +372,8 @@ class AASParser:
             "File": self._creator.create_file,
             "ReferenceElement": self._creator.create_reference_element,
             "BasicEventElement": self._creator.create_basic_event_element,
+            "Blob": self._creator.create_blob,
+            "Capability": self._creator.create_capability,
         }
 
         creator_fn = creator_map.get(model_type)
@@ -325,26 +390,33 @@ class AASParser:
             parent=parent,
             element=element,
             address_space=self._address_space,
+            name=name,
         )
 
-        if node is not None and element.id_short:
+        if node is not None and segment:
             # Property devolve o nó Value; o elemento é o Object pai
             element_node = await node.get_parent() if model_type == "Property" else node
-            self._register_element_node(submodel_id, current_path, element.id_short, element_node)
+            self._register_element_node(submodel_id, current_path, segment, element_node)
 
-        if model_type == "Property" and node is not None and element.id_short:
-            # current_path = "<SubmodelIdShort>/<Coll>/..." → idShortPath "Coll.Prop"
+        if model_type == "Property" and node is not None and segment:
+            # current_path = "<SubmodelIdShort>/<Coll>/..." → idShortPath "Coll.Prop" (ou "List[0]")
             parents = current_path.split("/")[1:]
             self._node_registry.register_value_node(
                 submodel_id=submodel_id,
-                id_short_path=".".join([*parents, element.id_short]),
+                id_short_path=id_short_path_from_segments([*parents, segment]),
                 node=node,
                 value_type=element.value_type,
             )
 
-        if element.category == _VARIABLE_CATEGORY and node is not None and self._historize:
+        if (
+            model_type == "Property"
+            and element.category == _VARIABLE_CATEGORY
+            and node is not None
+            and segment
+            and self._historize
+        ):
             # monta o path relativo ao submodel
-            path = f"{current_path}/{element.id_short}/Value"
+            path = f"{current_path}/{segment}/Value"
 
             # extrai o semantic_id se existir
             semantic_id = None
@@ -363,7 +435,7 @@ class AASParser:
             metadata = NodeMetadata(
                 node=node,
                 path=path,
-                id_short=element.id_short or "",
+                id_short=segment,
                 submodel=submodel_name,
                 submodel_id=submodel_id,
                 category=element.category or "VARIABLE",
@@ -400,13 +472,15 @@ class AASParser:
         self,
         submodel_id: str,
         current_path: str,
-        id_short: Optional[str],
+        segment: Optional[str],
         node: INode,
     ) -> None:
-        if not id_short:
+        if not segment:
             return
         parents = current_path.split("/")[1:]
-        self._node_registry.register_element_node(submodel_id, ".".join([*parents, id_short]), node)
+        self._node_registry.register_element_node(
+            submodel_id, id_short_path_from_segments([*parents, segment]), node
+        )
 
     # -------------------------------------------------------------------------
     # Alterações estruturais em tempo de execução (API HTTP/REST)
@@ -431,20 +505,20 @@ class AASParser:
         submodel_id_short: str,
         parent_path: str,
         element: SubmodelElement,
+        name: Optional[str] = None,
     ) -> None:
         """
-        Cria o elemento sob o submodelo (parent_path "") ou coleção. Elementos
-        cujo pai não tem nó OPC UA (ex.: dentro de SubmodelElementList) só
-        existem no modelo — como na partida.
+        Cria o elemento sob o submodelo (parent_path "") ou um elemento com
+        filhos. name é "[i]" para um item de SubmodelElementList.
         """
         parent = self._node_registry.get_element_node(submodel_id, parent_path)
         if parent is None:
             return
 
-        current_path = "/".join([submodel_id_short or "Submodel", *filter(None, parent_path.split("."))])
+        current_path = "/".join([submodel_id_short or "Submodel", *segments_from_id_short_path(parent_path)])
         self._historize = False
         try:
-            await self._parse_submodel_element(parent, element, submodel_id, current_path)
+            await self._parse_submodel_element(parent, element, submodel_id, current_path, name)
         finally:
             self._historize = True
 
@@ -457,9 +531,10 @@ class AASParser:
 
     async def refresh_metadata(self, submodel_id: str, id_short_path: str, element) -> None:
         """
-        Recria só os nós de metadados de um Submodel, SubmodelElementCollection
-        ou Property, preservando filhos e nós de valor — e, com eles, os
-        NodeIds, as assinaturas OPC UA e o HDA.
+        Recria só os nós de metadados de um Submodel, de um elemento com filhos
+        (coleção, lista, entidade, relacionamento anotado) ou de uma Property,
+        preservando filhos e nós de valor — e, com eles, os NodeIds, as
+        assinaturas OPC UA e o HDA.
         """
         node = self._node_registry.get_element_node(submodel_id, id_short_path)
         if node is None:

@@ -17,8 +17,9 @@ class PropertyCreator(BaseCreator):
         parent: INode,
         element: Property,
         address_space: IAddressSpace,
+        name: Optional[str] = None,
     ) -> INode:
-        name = element.id_short or "Property"
+        name = name or element.id_short or "Property"
         prop_node = await address_space.add_object(parent, name)
 
         variant_type = resolve_variant_type(element.value_type)
@@ -42,9 +43,7 @@ class PropertyCreator(BaseCreator):
         element: Property,
         address_space: IAddressSpace,
     ) -> None:
-        name = element.id_short or "Property"
-
-        await address_space.add_property(prop_node, "IdShort", name)
+        await self.add_id_short(prop_node, element, address_space)
         await address_space.add_property(prop_node, "Category", element.category)
         await address_space.add_property(prop_node, "ModelType", element.type_model)
         await address_space.add_property(prop_node, "ValueType", element.value_type)
