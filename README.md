@@ -58,14 +58,27 @@ Faaster initializes in the following sequential steps:
 
 ### AAS V3 → OPC UA Mapping
 
-| AAS V3 Element              | OPC UA Type               |
-|-----------------------------|---------------------------|
-| AAS, Submodel, SubmodelElement | ObjectType             |
-| SubmodelElementList         | ObjectType + FolderType   |
-| Property                    | VariableType (DataVariable) |
-| Operation                   | MethodType                |
+Every element becomes an Object named after its `idShort`, with its metadata as properties (`IdShort`,
+`ModelType`, `Category`, `SemanticId`, `Description`...) and its children below it:
 
-Variables marked with `category = VARIABLE` in the metamodel have HDA enabled automatically and are included in the historized node list, avoiding the overhead of historizing all nodes.
+| AAS V3 Element | OPC UA nodes |
+|---|---|
+| AAS, Submodel, SubmodelElementCollection | Object with its elements as children |
+| SubmodelElementList | Object with `OrderRelevant`, `TypeValueListElement`, `ValueTypeListElement`, `SemanticIdListElement`; items as children named by index (`[0]`, `[1]`...), as in the API `idShortPath` |
+| Entity | Object with `EntityType`, `GlobalAssetId`, `SpecificAssetIds`; statements as children |
+| RelationshipElement | Object with `First` and `Second` reference folders (`Type`, `Key[i]@<type>`) |
+| AnnotatedRelationshipElement | As RelationshipElement, with the annotations as children |
+| Property | Object with a `Value` DataVariable of the `valueType` |
+| MultiLanguageProperty | Object with one property per language |
+| Range | Object with `Min` and `Max` DataVariables |
+| File | Object with `ContentType` and `Value` (path or URL) |
+| Blob | Object with `ContentType` and `Value` (ByteString) |
+| ReferenceElement | Object with its keys |
+| BasicEventElement | Object with its attributes |
+| Capability | Object (metadata only) |
+| Operation | Object with a Method |
+
+Variables marked with `category = VARIABLE` in the metamodel have HDA enabled automatically and are included in the historized node list, avoiding the overhead of historizing all nodes — including properties inside lists, entities and annotations.
 
 ---
 
@@ -375,8 +388,11 @@ curl -X PATCH -H 'Content-Type: application/json' -d '{"Temperature": 21.5, "Mot
 ```
 
 The whole body is validated against each `valueType` (and the OPC UA node type) before anything is
-written: an invalid value returns `400` and leaves every node untouched. Elements whose value is not
-backed by an OPC UA node yet (MultiLanguageProperty, Range, File, Blob, …) return `501`.
+written: an invalid value returns `400` and leaves every node untouched. Properties are writable
+wherever they are — in collections, lists (`Setpoints[1]`, or the whole list as an array), entity
+statements and relationship annotations. Elements whose value is not backed by an OPC UA node yet
+(MultiLanguageProperty, Range, File, Blob, and Entity/AnnotatedRelationshipElement as a whole) return
+`501`.
 
 Operations are invoked through the same OPC UA Call service used by OPC UA clients, so the handler is
 the method of the submodel extension bound to the Operation (method name = `idShort` in snake_case):
@@ -410,10 +426,13 @@ The old and new models are reconciled element by element, touching only what cha
 
 - new / removed elements get their OPC UA subtree created / removed (new elements are live but not
   historized: HDA tables are built at startup);
-- a Submodel, SubmodelElementCollection or Property whose runtime attributes (`valueType`, `category`,
+- a Submodel, an element with children (SubmodelElementCollection, SubmodelElementList, Entity,
+  AnnotatedRelationshipElement) or a Property whose runtime attributes (`valueType`, `category`,
   `extensions`, `semanticId`) are unchanged is **updated in place** — only its metadata nodes are recreated
   and new values written, so NodeIds, OPC UA subscriptions, HDA and extensions keep working. A
   `GET` → edit → `PUT` round trip therefore never disturbs the address space beyond the edit;
+- list items are matched by position; removing an item from the middle of a list recreates the
+  following items with their new index (`[2]` becomes `[1]`), carrying their live values;
 - any other change rebuilds the element's subtree;
 - removing or rebuilding a subtree in use by the runtime (a historized property or an Operation bound to
   an extension) returns `409`; values remain writable with `PATCH …/$value`.
@@ -434,7 +453,7 @@ curl -X DELETE "http://localhost:8080/api/v3/submodels/$SM/submodel-elements/Mot
 | `/serialization` (JSON, with live values and referenced Concept Descriptions) | ✅ |
 | `/attachment`, `asset-information/thumbnail`, `$recent-changes`, XML/AASX serialization | 🚧 |
 | Value writes — `PatchSubmodelById-ValueOnly`, `PatchSubmodelElementByPath-ValueOnly` (Property → OPC UA node, also via the superpath) | ✅ |
-| Value writes for MultiLanguageProperty, Range, File, Blob, SubmodelElementList | 🚧 |
+| Value writes for MultiLanguageProperty, Range, File, Blob, Entity, AnnotatedRelationshipElement | 🚧 |
 | Operation invocation — `/invoke`, `/invoke-async`, `operation-status`, `operation-results` (normal and `$value`, also via the superpath) | ✅ |
 | Operations with `inoutputVariables` or non-Property arguments | 🚧 |
 | Structural writes — `PostSubmodel`, `Put`/`Patch`(+`$metadata`)/`DeleteSubmodelById`, `PostSubmodelElement(ByPath)`, `Put`/`Patch`(+`$metadata`)/`DeleteSubmodelElementByPath`, synchronized with the OPC UA address space | ✅ |
