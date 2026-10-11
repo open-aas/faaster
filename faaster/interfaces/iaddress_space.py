@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
-from typing import Optional, Any, List, Callable
-from .types import FaasterVariantType, MethodArgument, FaasterLocalizedText
+from typing import Optional, Any, List, Callable, Tuple
+from .types import FaasterVariantType, MethodArgument, MethodCallResult, FaasterLocalizedText
 from .inode import INode
 
 
@@ -65,6 +65,21 @@ class IAddressSpace(ABC):
         output_args: Optional[List[MethodArgument]] = None,
     ) -> INode:
         ...
+
+    async def delete_node(self, node: INode, recursive: bool = True) -> None:
+        """Remove o nó (e, com recursive, toda a subárvore) do address space."""
+        raise NotImplementedError
+
+    async def call_method(
+        self,
+        method_node: INode,
+        inputs: List[Tuple[Any, FaasterVariantType]],
+    ) -> MethodCallResult:
+        """
+        Chama um método OPC UA pelo mesmo caminho de um cliente (Call
+        service), sobre o objeto pai do método. inputs: (valor, tipo).
+        """
+        raise NotImplementedError
 
     @abstractmethod
     async def set_value(

@@ -1,9 +1,9 @@
 from datetime import datetime, timezone
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Optional, Tuple
 from asyncua import Server, Node, ua
 
 from faaster.interfaces import IAddressSpace, INode
-from faaster.interfaces.types import FaasterVariantType, MethodArgument, FaasterLocalizedText
+from faaster.interfaces.types import FaasterVariantType, MethodArgument, MethodCallResult, FaasterLocalizedText
 from faaster.log import get_logger
 
 
@@ -241,6 +241,33 @@ class AddressSpaceAdapter(IAddressSpace):
             ns, name, callback, ua_input, ua_output
         )
         return NodeAdapter(node)
+
+    async def delete_node(self, node: INode, recursive: bool = True) -> None:
+        await self._server.delete_nodes([self._unwrap(node)], recursive=recursive)
+
+    async def call_method(
+        self,
+        method_node: INode,
+        inputs: List[Tuple[Any, FaasterVariantType]],
+    ) -> MethodCallResult:
+        raw_method = self._unwrap(method_node)
+        parent = await raw_method.get_parent()
+
+        request = ua.CallMethodRequest()
+        request.ObjectId = parent.nodeid
+        request.MethodId = raw_method.nodeid
+        request.InputArguments = [
+            ua.Variant(value, _to_ua_variant_type(variant_type)) for value, variant_type in inputs
+        ]
+
+        # Call service do servidor: mesmo caminho (e mesmos StatusCodes) de um cliente OPC UA
+        [result] = await self._server.iserver.method_service.call([request])
+
+        return MethodCallResult(
+            status=result.StatusCode.name,
+            is_good=result.StatusCode.is_good(),
+            outputs=[variant.Value for variant in result.OutputArguments or []],
+        )
 
     async def set_value(
         self,

@@ -17,6 +17,16 @@ class SubmodelCreator(BaseCreator):
     ) -> INode:
         name = element.id_short or "Submodel"
         node = await address_space.add_object(parent, name)
+        await self.add_metadata(node, element, address_space)
+        return node
+
+    async def add_metadata(
+        self,
+        node: INode,
+        element: Submodel,
+        address_space: IAddressSpace,
+    ) -> None:
+        name = element.id_short or "Submodel"
 
         await address_space.add_property(node, "Id", element.id)
         await address_space.add_property(node, "IdShort", name)
@@ -34,5 +44,3 @@ class SubmodelCreator(BaseCreator):
 
         if element.semantic_id:
             await self.add_semantic_id(node, element.semantic_id, address_space)
-
-        return node

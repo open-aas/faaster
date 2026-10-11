@@ -1,5 +1,6 @@
 from enum import Enum
 from dataclasses import dataclass, field
+from typing import Any, List
 
 class FaasterVariantType(str, Enum):
     """
@@ -41,3 +42,14 @@ class MethodArgument:
     description: str = ""
     array_dimensions: list = field(default_factory=list)
     value_rank: int = -1  # -1 = escalar, 0 = array unidimensional
+
+
+@dataclass
+class MethodCallResult:
+    """
+    Resultado de uma chamada de método OPC UA feita pelo próprio servidor.
+    status é o nome do StatusCode OPC UA (ex.: "Good", "BadUnexpectedError").
+    """
+    status: str
+    is_good: bool
+    outputs: List[Any] = field(default_factory=list)

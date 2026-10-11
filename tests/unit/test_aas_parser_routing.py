@@ -27,9 +27,16 @@ def _make_address_space():
     return as_
 
 
+def _method_node(node_id="ns=1;i=99"):
+    """Nó Method: INode.get_parent é assíncrono (devolve o Object da Operation)."""
+    node = MagicMock(node_id=node_id)
+    node.get_parent = AsyncMock(return_value=MagicMock(node_id=f"{node_id}:parent"))
+    return node
+
+
 def _make_creator(method_node=None, binder=None):
     """IElementCreator com create_operation mockado."""
-    m_node = method_node or MagicMock(node_id="ns=1;i=99")
+    m_node = method_node or _method_node()
     b = binder or MethodBinder()
     creator = AsyncMock()
     creator.create_operation.return_value = (m_node, b)
@@ -92,7 +99,7 @@ async def test_parse_operation_registers_in_registry():
         mock_op = MagicMock()
         mock_op.id_short = "StartProcess"
         MockOp.return_value = mock_op
-        await parser._parse_operation(parent, element, "MySub")
+        await parser._parse_operation(parent, element, "urn:sub", "MySub")
 
     ops = registry.get_operations("MySub")
     assert len(ops) == 1
@@ -115,7 +122,7 @@ async def test_parse_operation_does_not_register_when_method_node_is_none():
         mock_op = MagicMock()
         mock_op.id_short = "StartProcess"
         MockOp.return_value = mock_op
-        await parser._parse_operation(MagicMock(), _operation_element(), "Sub")
+        await parser._parse_operation(MagicMock(), _operation_element(), "urn:sub", "Sub")
 
     assert registry.get_operations("Sub") == []
 
@@ -134,7 +141,7 @@ async def test_parse_operation_does_not_register_when_id_short_is_none():
         mock_op = MagicMock()
         mock_op.id_short = None
         MockOp.return_value = mock_op
-        await parser._parse_operation(MagicMock(), _operation_element(), "Sub")
+        await parser._parse_operation(MagicMock(), _operation_element(), "urn:sub", "Sub")
 
     assert registry.get_operations("Sub") == []
 
@@ -149,7 +156,7 @@ async def test_parse_operation_calls_create_operation():
 
     with patch("faaster.parser.aas_parser.Operation") as MockOp:
         MockOp.return_value = MagicMock(id_short="Calibrate")
-        await parser._parse_operation(parent, _operation_element("Calibrate"), "Sub")
+        await parser._parse_operation(parent, _operation_element("Calibrate"), "urn:sub", "Sub")
 
     creator.create_operation.assert_called_once()
 
@@ -224,52 +231,34 @@ async def test_routes_collection_to_parse_collection():
 # ------------------------------------------------------------------
 
 @pytest.mark.asyncio
-async def test_submodel_id_short_extracted_from_path_root():
-    """'MySub' → submodel_id_short = 'MySub'"""
+@pytest.mark.parametrize("current_path, id_short_path", [
+    ("ElectricData", "Calibrate"),
+    ("ElectricData/Sensors/Status", "Sensors.Status.Calibrate"),
+])
+async def test_operation_registered_by_submodel_and_id_short_path(current_path, id_short_path):
+    """
+    A raiz do current_path é o idShort do submodelo (binding das extensões);
+    o restante vira o idShortPath usado pela API HTTP/REST.
+    """
     registry = NodeRegistry()
-    creator, _, _ = _make_creator()
+    creator, _, binder = _make_creator()
     parser = AASParser(
         address_space=_make_address_space(),
         creator=creator,
         node_registry=registry,
     )
 
-    with patch.object(parser, "_parse_operation", new=AsyncMock()) as mock_op:
+    with patch("faaster.parser.aas_parser.Operation") as MockOp:
+        MockOp.return_value = MagicMock(id_short="Calibrate")
         await parser._parse_submodel_element(
             parent=MagicMock(),
-            element=_operation_element(),
+            element=_operation_element("Calibrate"),
             submodel_id="urn:sub",
-            current_path="ElectricData",
-        )
-        _, kwargs = mock_op.call_args
-        assert kwargs.get("submodel_id_short") == "ElectricData" or mock_op.call_args[0][2] == "ElectricData"
-
-
-@pytest.mark.asyncio
-async def test_submodel_id_short_extracted_from_nested_path():
-    """'ElectricData/Sensors/Status' → submodel_id_short = 'ElectricData'"""
-    registry = NodeRegistry()
-    creator, _, _ = _make_creator()
-    parser = AASParser(
-        address_space=_make_address_space(),
-        creator=creator,
-        node_registry=registry,
-    )
-
-    captured = {}
-
-    async def capture(parent, element, submodel_id_short):
-        captured["id_short"] = submodel_id_short
-
-    with patch.object(parser, "_parse_operation", new=capture):
-        await parser._parse_submodel_element(
-            parent=MagicMock(),
-            element=_operation_element(),
-            submodel_id="urn:sub",
-            current_path="ElectricData/Sensors/Status",
+            current_path=current_path,
         )
 
-    assert captured["id_short"] == "ElectricData"
+    assert [op.id_short for op in registry.get_operations("ElectricData")] == ["Calibrate"]
+    assert registry.get_operation("urn:sub", id_short_path).binder is binder
 
 
 @pytest.mark.asyncio
@@ -277,7 +266,7 @@ async def test_multiple_operations_same_submodel_all_registered():
     registry = NodeRegistry()
     creator = AsyncMock()
     nodes_binders = [
-        (MagicMock(node_id=f"ns=1;i={i}"), MethodBinder())
+        (_method_node(f"ns=1;i={i}"), MethodBinder())
         for i in range(3)
     ]
     creator.create_operation.side_effect = nodes_binders
@@ -293,7 +282,7 @@ async def test_multiple_operations_same_submodel_all_registered():
     for name in op_names:
         with patch("faaster.parser.aas_parser.Operation") as MockOp:
             MockOp.return_value = MagicMock(id_short=name)
-            await parser._parse_operation(MagicMock(), _operation_element(name), "Ctrl")
+            await parser._parse_operation(MagicMock(), _operation_element(name), "urn:sub", "Ctrl")
 
     ops = registry.get_operations("Ctrl")
     assert len(ops) == 3

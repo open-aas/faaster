@@ -99,3 +99,16 @@ class IElementCreator(ABC):
         address_space: IAddressSpace,
     ) -> INode:
         ...
+
+    async def refresh_metadata(
+        self,
+        node: INode,
+        element: Any,
+        address_space: IAddressSpace,
+    ) -> None:
+        """
+        Recria os nós de metadados (IdShort, Description, SemanticId...) de um
+        elemento já existente, sem tocar nos filhos nem no nó de valor.
+        Os nós de metadados antigos já devem ter sido removidos.
+        """
+        raise NotImplementedError

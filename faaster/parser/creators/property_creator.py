@@ -32,6 +32,18 @@ class PropertyCreator(BaseCreator):
             variant_type=variant_type
         )
 
+        await self.add_metadata(prop_node, element, address_space)
+
+        return value_node
+
+    async def add_metadata(
+        self,
+        prop_node: INode,
+        element: Property,
+        address_space: IAddressSpace,
+    ) -> None:
+        name = element.id_short or "Property"
+
         await address_space.add_property(prop_node, "IdShort", name)
         await address_space.add_property(prop_node, "Category", element.category)
         await address_space.add_property(prop_node, "ModelType", element.type_model)
@@ -42,8 +54,6 @@ class PropertyCreator(BaseCreator):
 
         if element.description:
             await self.add_descriptions(prop_node, element.description, address_space)
-
-        return value_node
 
     @staticmethod
     async def _create_virtual_nodes(

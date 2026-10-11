@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, TYPE_CHECKING
+from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 from datetime import datetime
 from faaster.interfaces import INode
 from faaster.interfaces.types import FaasterVariantType
@@ -79,11 +79,36 @@ class NodeMetadata:
         return f"_{self.level}"
 
 @dataclass
+class ValueNodeEntry:
+    """
+    Nó OPC UA que guarda o valor vivo de um SubmodelElement,
+    endereçado como na API HTTP/REST: (submodel id, idShortPath).
+    """
+    node: INode
+    value_type: Optional[str] = None
+
+
+@dataclass
 class OperationEntry:
     """Operação AAS registrada durante o parser, pronta para binding."""
     id_short: str
     method_node: INode
     binder: "MethodBinder"
+
+
+def _parent_path(id_short_path: str) -> str:
+    return id_short_path.rsplit(".", 1)[0] if "." in id_short_path else ""
+
+
+def _id_short_path(metadata: "NodeMetadata") -> str:
+    # "Submodel/Coll/Prop/Value" ou ".../Value@1min" → "Coll.Prop"
+    return ".".join(metadata.path.split("/")[1:-1])
+
+
+def _in_subtree(path: str, root: str) -> bool:
+    if not root:
+        return True
+    return path == root or path.startswith(f"{root}.") or path.startswith(f"{root}[")
 
 
 class NodeRegistry:
@@ -107,6 +132,16 @@ class NodeRegistry:
 
         # operações AAS por submodelo — submodel_id_short → [OperationEntry]
         self._operations: Dict[str, List[OperationEntry]] = {}
+
+        # mesmas operações endereçadas como na API HTTP/REST — (submodel_id, idShortPath)
+        self._operations_by_path: Dict[Tuple[str, str], OperationEntry] = {}
+
+        # nós de valor de todas as Properties — (submodel_id, idShortPath) → entry
+        self._value_nodes: Dict[Tuple[str, str], ValueNodeEntry] = {}
+
+        # nó OPC UA (Object) de cada submodelo e elemento — (submodel_id, idShortPath);
+        # o próprio submodelo usa o idShortPath ""
+        self._element_nodes: Dict[Tuple[str, str], INode] = {}
 
         self._aas_id_short: Optional[str] = None
 
@@ -150,11 +185,15 @@ class NodeRegistry:
         id_short: str,
         method_node: INode,
         binder: "MethodBinder",
+        submodel_id: Optional[str] = None,
+        id_short_path: Optional[str] = None,
     ) -> None:
         entry = OperationEntry(id_short=id_short, method_node=method_node, binder=binder)
         if submodel_id_short not in self._operations:
             self._operations[submodel_id_short] = []
         self._operations[submodel_id_short].append(entry)
+        if submodel_id is not None and id_short_path is not None:
+            self._operations_by_path[(submodel_id, id_short_path)] = entry
         logger.info(
             "node_registry.operation_registered",
             submodel=submodel_id_short,
@@ -164,8 +203,99 @@ class NodeRegistry:
     def get_operations(self, submodel_id_short: str) -> List[OperationEntry]:
         return self._operations.get(submodel_id_short, [])
 
+    def get_operation(self, submodel_id: str, id_short_path: str) -> Optional[OperationEntry]:
+        return self._operations_by_path.get((submodel_id, id_short_path))
+
+    def register_value_node(
+        self,
+        submodel_id: str,
+        id_short_path: str,
+        node: INode,
+        value_type: Optional[str] = None,
+    ) -> None:
+        """
+        Indexa o nó Value de um SubmodelElement pelo idShortPath
+        (separado por pontos, relativo ao submodelo), independente da
+        categoria — usado pela API HTTP/REST para ler valores vivos.
+        """
+        self._value_nodes[(submodel_id, id_short_path)] = ValueNodeEntry(
+            node=node,
+            value_type=value_type,
+        )
+
+    def get_value_node(
+        self,
+        submodel_id: str,
+        id_short_path: str,
+    ) -> Optional[ValueNodeEntry]:
+        return self._value_nodes.get((submodel_id, id_short_path))
+
     def register_submodel_node(self, id_short, node: INode):
         self._submodel_nodes[id_short] = node
+
+    # -------------------------------------------------------------------------
+    # Nós por elemento — alterações estruturais em tempo de execução (API REST)
+    # -------------------------------------------------------------------------
+
+    def register_element_node(self, submodel_id: str, id_short_path: str, node: INode) -> None:
+        self._element_nodes[(submodel_id, id_short_path)] = node
+
+    def get_element_node(self, submodel_id: str, id_short_path: str) -> Optional[INode]:
+        return self._element_nodes.get((submodel_id, id_short_path))
+
+    def child_element_nodes(self, submodel_id: str, id_short_path: str) -> List[INode]:
+        """Nós dos filhos diretos de um submodelo ("") ou coleção."""
+        return [
+            node
+            for (sm_id, path), node in self._element_nodes.items()
+            if sm_id == submodel_id and path and _parent_path(path) == id_short_path
+        ]
+
+    def runtime_value_nodes(self, submodel_id: str, id_short_path: str) -> List[INode]:
+        """Nó Value (e nós virtuais Value@nível do HDA) de uma Property."""
+        nodes = [
+            metadata.node
+            for metadata in self._nodes.values()
+            if metadata.submodel_id == submodel_id and _id_short_path(metadata) == id_short_path
+        ]
+        entry = self._value_nodes.get((submodel_id, id_short_path))
+        if entry is not None:
+            nodes.append(entry.node)
+        return list({node.node_id: node for node in nodes}.values())
+
+    def nodes_in_use(self, submodel_id: str, id_short_path: str) -> List[str]:
+        """
+        Elementos da subárvore que o runtime usa e que, por isso, não podem ser
+        removidos nem recriados: Properties historizadas/acessíveis às extensões
+        (NodeMetadata) e Operations vinculadas a um método de extensão.
+        """
+        in_use = {
+            f"{_id_short_path(metadata)} (historized)"
+            for metadata in self._nodes.values()
+            if metadata.submodel_id == submodel_id
+            and _in_subtree(_id_short_path(metadata), id_short_path)
+        }
+        in_use |= {
+            f"{path} (bound operation)"
+            for (sm_id, path), entry in self._operations_by_path.items()
+            if sm_id == submodel_id and _in_subtree(path, id_short_path) and entry.binder.is_bound
+        }
+        return sorted(in_use)
+
+    def remove_subtree(self, submodel_id: str, id_short_path: str) -> None:
+        """Esquece os nós da subárvore (o submodelo inteiro com idShortPath "")."""
+        def inside(key: Tuple[str, str]) -> bool:
+            return key[0] == submodel_id and _in_subtree(key[1], id_short_path)
+
+        for index in (self._element_nodes, self._value_nodes):
+            for key in [k for k in index if inside(k)]:
+                del index[key]
+
+        removed = {id(e) for k, e in self._operations_by_path.items() if inside(k)}
+        for key in [k for k in self._operations_by_path if inside(k)]:
+            del self._operations_by_path[key]
+        for id_short, entries in self._operations.items():
+            self._operations[id_short] = [e for e in entries if id(e) not in removed]
 
     def get_by_node_id(self, node_id: str) -> Optional[NodeMetadata]:
         """

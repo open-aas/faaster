@@ -73,3 +73,14 @@ class AASElementCreator(IElementCreator):
 
     async def create_concept_description(self, parent, element, address_space):
         return await self._concept_description.create(parent, element, address_space)
+
+    async def refresh_metadata(self, node, element, address_space):
+        creators = {
+            "Submodel": self._submodel,
+            "SubmodelElementCollection": self._collection,
+            "Property": self._property,
+        }
+        creator = creators.get(element.type_model)
+        if creator is None:
+            raise NotImplementedError(f"Metadata refresh is not supported for {element.type_model}")
+        await creator.add_metadata(node, element, address_space)

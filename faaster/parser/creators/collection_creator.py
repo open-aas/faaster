@@ -17,6 +17,16 @@ class CollectionCreator(BaseCreator):
     ) -> INode:
         name = element.id_short or "Collection"
         node = await address_space.add_object(parent, name)
+        await self.add_metadata(node, element, address_space)
+        return node
+
+    async def add_metadata(
+        self,
+        node: INode,
+        element: SubmodelElementCollection,
+        address_space: IAddressSpace,
+    ) -> None:
+        name = element.id_short or "Collection"
 
         await address_space.add_property(node, "IdShort", name)
         await address_space.add_property(node, "ModelType", element.type_model)
@@ -27,5 +37,3 @@ class CollectionCreator(BaseCreator):
 
         if element.description:
             await self.add_descriptions(node, element.description, address_space)
-
-        return node

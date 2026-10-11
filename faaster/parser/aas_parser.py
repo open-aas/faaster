@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from .creators.base import resolve_variant_type
 from .creators.property_creator import PropertyCreator
@@ -53,6 +53,21 @@ class AASParser:
         self._creator = creator
         self._node_registry = node_registry
         self._historized_nodes: List[INode] = []
+        self._environment: Optional[Environment] = None
+        self._document: Optional[dict] = None
+        self._root: Optional[INode] = None
+        # False nas alterações em tempo de execução: o HDA só é montado na partida
+        self._historize = True
+
+    @property
+    def environment(self) -> Optional[Environment]:
+        """Environment validado do último parse()."""
+        return self._environment
+
+    @property
+    def document(self) -> Optional[dict]:
+        """Documento AAS V3 original (JSON) do último parse()."""
+        return self._document
 
     async def parse(self, modeling_file: str) -> List[INode]:
         """
@@ -70,7 +85,10 @@ class AASParser:
 
         loader = LoaderFactory.create(modeling_file)
         environment = await loader.load(Path(modeling_file))
+        self._environment = environment
+        self._document = loader.document
         root = await self._create_environment_node(environment)
+        self._root = root
 
         await self._parse_aas_list(root, environment)
         await self._parse_submodel_list(root, environment)
@@ -157,6 +175,7 @@ class AASParser:
         )
 
         self._node_registry.register_submodel_node(submodel.id_short, submodel_node)
+        self._node_registry.register_element_node(submodel.id, "", submodel_node)
 
         if submodel.submodel_elements:
             await self._parse_submodel_elements(
@@ -208,8 +227,7 @@ class AASParser:
             await self._parse_collection(parent, element, submodel_id, current_path)
 
         elif model_type == "Operation":
-            submodel_id_short = current_path.split("/")[0]
-            await self._parse_operation(parent, element, submodel_id_short)
+            await self._parse_operation(parent, element, submodel_id, current_path)
 
         elif model_type in _DATA_ELEMENT_TYPES:
             await self._parse_data_element(parent, element, submodel_id, current_path)
@@ -235,6 +253,7 @@ class AASParser:
             element=collection,
             address_space=self._address_space,
         )
+        self._register_element_node(submodel_id, current_path, collection.id_short, collection_node)
 
         if collection.value:
             await self._parse_submodel_elements(
@@ -248,9 +267,11 @@ class AASParser:
         self,
         parent: INode,
         element: SubmodelElement,
-        submodel_id_short: str,
+        submodel_id: str,
+        current_path: str,
     ) -> None:
         operation = Operation(**element.model_dump())
+        submodel_id_short, *parents = current_path.split("/")
 
         method_node, binder = await self._creator.create_operation(
             parent=parent,
@@ -259,11 +280,16 @@ class AASParser:
         )
 
         if method_node is not None and operation.id_short:
+            self._register_element_node(
+                submodel_id, current_path, operation.id_short, await method_node.get_parent()
+            )
             self._node_registry.register_operation(
                 submodel_id_short=submodel_id_short,
                 id_short=operation.id_short,
                 method_node=method_node,
                 binder=binder,
+                submodel_id=submodel_id,
+                id_short_path=".".join([*parents, operation.id_short]),
             )
 
     async def _parse_data_element(
@@ -300,7 +326,22 @@ class AASParser:
             address_space=self._address_space,
         )
 
-        if element.category == _VARIABLE_CATEGORY and node is not None:
+        if node is not None and element.id_short:
+            # Property devolve o nó Value; o elemento é o Object pai
+            element_node = await node.get_parent() if model_type == "Property" else node
+            self._register_element_node(submodel_id, current_path, element.id_short, element_node)
+
+        if model_type == "Property" and node is not None and element.id_short:
+            # current_path = "<SubmodelIdShort>/<Coll>/..." → idShortPath "Coll.Prop"
+            parents = current_path.split("/")[1:]
+            self._node_registry.register_value_node(
+                submodel_id=submodel_id,
+                id_short_path=".".join([*parents, element.id_short]),
+                node=node,
+                value_type=element.value_type,
+            )
+
+        if element.category == _VARIABLE_CATEGORY and node is not None and self._historize:
             # monta o path relativo ao submodel
             path = f"{current_path}/{element.id_short}/Value"
 
@@ -352,6 +393,88 @@ class AASParser:
                 )
 
                 self._node_registry.register(metadata)
+
+    def _register_element_node(
+        self,
+        submodel_id: str,
+        current_path: str,
+        id_short: Optional[str],
+        node: INode,
+    ) -> None:
+        if not id_short:
+            return
+        parents = current_path.split("/")[1:]
+        self._node_registry.register_element_node(submodel_id, ".".join([*parents, id_short]), node)
+
+    # -------------------------------------------------------------------------
+    # Alterações estruturais em tempo de execução (API HTTP/REST)
+    #
+    # Reaproveitam a mesma travessia da partida, mas sem historizar: o HDA
+    # monta suas tabelas só na partida. Os elementos criados aqui ganham nós
+    # de valor (leitura/escrita via API e OPC UA), mas não são historizados.
+    # -------------------------------------------------------------------------
+
+    async def add_submodel(self, submodel: Submodel) -> None:
+        if self._root is None:
+            raise RuntimeError("parse() must run before runtime changes")
+        self._historize = False
+        try:
+            await self._parse_submodel(self._root, submodel)
+        finally:
+            self._historize = True
+
+    async def add_submodel_element(
+        self,
+        submodel_id: str,
+        submodel_id_short: str,
+        parent_path: str,
+        element: SubmodelElement,
+    ) -> None:
+        """
+        Cria o elemento sob o submodelo (parent_path "") ou coleção. Elementos
+        cujo pai não tem nó OPC UA (ex.: dentro de SubmodelElementList) só
+        existem no modelo — como na partida.
+        """
+        parent = self._node_registry.get_element_node(submodel_id, parent_path)
+        if parent is None:
+            return
+
+        current_path = "/".join([submodel_id_short or "Submodel", *filter(None, parent_path.split("."))])
+        self._historize = False
+        try:
+            await self._parse_submodel_element(parent, element, submodel_id, current_path)
+        finally:
+            self._historize = True
+
+    async def remove(self, submodel_id: str, id_short_path: str = "") -> None:
+        """Remove do address space o submodelo ("") ou elemento, com toda a subárvore."""
+        node = self._node_registry.get_element_node(submodel_id, id_short_path)
+        if node is not None:
+            await self._address_space.delete_node(node, recursive=True)
+        self._node_registry.remove_subtree(submodel_id, id_short_path)
+
+    async def refresh_metadata(self, submodel_id: str, id_short_path: str, element) -> None:
+        """
+        Recria só os nós de metadados de um Submodel, SubmodelElementCollection
+        ou Property, preservando filhos e nós de valor — e, com eles, os
+        NodeIds, as assinaturas OPC UA e o HDA.
+        """
+        node = self._node_registry.get_element_node(submodel_id, id_short_path)
+        if node is None:
+            return
+
+        keep = {
+            n.node_id
+            for n in [
+                *self._node_registry.child_element_nodes(submodel_id, id_short_path),
+                *self._node_registry.runtime_value_nodes(submodel_id, id_short_path),
+            ]
+        }
+        for child in await node.get_children():
+            if child.node_id not in keep:
+                await self._address_space.delete_node(child, recursive=True)
+
+        await self._creator.refresh_metadata(node, element, self._address_space)
 
     # -------------------------------------------------------------------------
     # ConceptDescriptions
