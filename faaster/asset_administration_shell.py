@@ -24,6 +24,7 @@ from faaster.parser import AASParser, NodeRegistry
 from faaster.hda import HDAManagerFactory
 from faaster.extensions.interfaces import ISubmodelExtension
 from faaster.extensions.loader import ExtensionLoader
+from faaster.api import HttpApiServer
 
 logger = get_logger(__name__)
 
@@ -76,12 +77,24 @@ class AssetAdministrationShell:
 
         self._extension_loader = ExtensionLoader(self._address_space, self._registry)
 
+        self._http_api: Optional[HttpApiServer] = None
+        if getattr(args, "http_port", None):
+            self._http_api = HttpApiServer(
+                parser=self._parser,
+                registry=self._registry,
+                host=args.http_host,
+                port=args.http_port,
+                base_path=args.http_base_path,
+                address_space=self._address_space,
+            )
+
         self._server = OPCUAServer(
             opcua_server=self._opcua_server,
             address_space=self._address_space,
             parser=self._parser,
             hda_manager=self._hda_manager,
-            extension_loader=self._extension_loader
+            extension_loader=self._extension_loader,
+            http_api=self._http_api,
         )
 
         if args.url_database:

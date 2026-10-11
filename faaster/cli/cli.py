@@ -156,6 +156,47 @@ def aas_parser_arguments() -> Namespace:
     )
 
     # -------------------------------------------------------------------------
+    # API HTTP/REST (IDTA-01002-3-2)
+    # -------------------------------------------------------------------------
+    http_api = parser.add_argument_group("HTTP/REST API")
+    http_api.add_argument(
+        "--http-host",
+        action="store",
+        type=str,
+        required=False,
+        default="0.0.0.0",
+        dest="http_host",
+        metavar="HOST",
+        help="Host address to bind the HTTP/REST API (default: 0.0.0.0)."
+    )
+    http_api.add_argument(
+        "--http-port",
+        action="store",
+        type=int,
+        required=False,
+        default=None,
+        dest="http_port",
+        metavar="PORT",
+        help=(
+            "Enable the AAS HTTP/REST API (IDTA-01002-3-2) on this port "
+            "(e.g. 8080). The API is disabled when omitted."
+        )
+    )
+    http_api.add_argument(
+        "--http-base-path",
+        action="store",
+        type=str,
+        required=False,
+        default="/api/v3",
+        dest="http_base_path",
+        metavar="PATH",
+        help=(
+            "Path prefix of the HTTP/REST API endpoints (default: /api/v3, "
+            "as recommended by IDTA-01002-3-2 §API Versioning). Use '' for none."
+        )
+    )
+
+    # -------------------------------------------------------------------------
     # Segurança — certificados e PKI
     # -------------------------------------------------------------------------
     security = parser.add_argument_group("Security")

@@ -4,6 +4,7 @@ from typing import Optional, List
 from asyncua import Server, Client
 from asyncua.ua import BuildInfo, RegisteredServer, ApplicationType, LocalizedText, EndpointType
 
+from faaster.api import HttpApiServer
 from faaster.extensions import ExtensionLoader
 from faaster.gds import GDSClient, GDSCertificateClient, GDSRegistrationManager, ApplicationRecord
 from faaster.interfaces import IOPCUAServer, IAddressSpace
@@ -35,6 +36,7 @@ class OPCUAServer(IOPCUAServer):
         parser: AASParser,
         extension_loader: ExtensionLoader,
         hda_manager: Optional[IHDAManager] = None,
+        http_api: Optional[HttpApiServer] = None,
     ) -> None:
         self._uri = "urn:faaster:server"
         self._opcua_server = opcua_server
@@ -46,6 +48,7 @@ class OPCUAServer(IOPCUAServer):
         self._extension_loader = extension_loader
         self._extensions_tasks: List[asyncio.Task] = []
         self._trust_store = None  # definido em setup() quando --pki-dir é fornecido
+        self._http_api = http_api
 
     async def set_history_storage(self, storage: IHDAStorage) -> None:
         self._opcua_server.iserver.history_manager.set_storage(storage)
@@ -218,6 +221,12 @@ class OPCUAServer(IOPCUAServer):
                     name="faaster.auto_accept_clients",
                 )
 
+            if self._http_api is not None:
+                asyncio.create_task(
+                    self._http_api.serve(),
+                    name="faaster.http_api",
+                )
+
             for name, extension in self._extension_loader.instances.items():
                 task = asyncio.create_task(extension.init(), name=f'TaskSubmodel:{name}')
                 self._extensions_tasks.append(task)
@@ -234,6 +243,9 @@ class OPCUAServer(IOPCUAServer):
         for task in self._extensions_tasks:
             if not task.done():
                 task.cancel()
+
+        if self._http_api is not None:
+            self._http_api.stop()
 
         self._stop_event.set()
 

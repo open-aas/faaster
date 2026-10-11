@@ -1,0 +1,378 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:faaster:test:aas:1",
+      "idShort": "TestAAS",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:faaster:test:asset:1",
+        "specificAssetIds": [
+          {
+            "name": "serialNumber",
+            "value": "SN-001"
+          }
+        ]
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:faaster:test:sm:operational"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:faaster:test:sm:nameplate"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:faaster:test:sm:showcase"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:faaster:test:aas:2",
+      "idShort": "OtherAAS",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:faaster:test:asset:2"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:faaster:test:sm:nameplate"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:faaster:test:sm:operational",
+      "idShort": "OperationalData",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://example.com/sm/OperationalData/1/0"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "Temperature",
+          "category": "VARIABLE",
+          "valueType": "xs:double",
+          "value": "21.5",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "ConceptDescription",
+                "value": "urn:faaster:test:cd:temperature"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Motor",
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "Speed",
+              "valueType": "xs:int",
+              "value": "0"
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Status",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "Running",
+                  "valueType": "xs:boolean",
+                  "value": "false"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "Setpoints",
+          "typeValueListElement": "Property",
+          "valueTypeListElement": "xs:double",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "Setpoint0",
+              "valueType": "xs:double",
+              "value": "10.0"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "Setpoint1",
+              "valueType": "xs:double",
+              "value": "20.0"
+            }
+          ]
+        },
+        {
+          "modelType": "Blob",
+          "idShort": "Firmware",
+          "contentType": "application/octet-stream",
+          "value": "AAECAw=="
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:faaster:test:sm:nameplate",
+      "idShort": "Nameplate",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://admin-shell.io/zvei/nameplate/2/0/Nameplate"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ManufacturerName",
+          "valueType": "xs:string",
+          "value": "Faaster"
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:faaster:test:sm:showcase",
+      "idShort": "Showcase",
+      "submodelElements": [
+        {
+          "modelType": "MultiLanguageProperty",
+          "idShort": "Title",
+          "value": [
+            {
+              "language": "en",
+              "text": "Press"
+            },
+            {
+              "language": "pt",
+              "text": "Prensa"
+            }
+          ]
+        },
+        {
+          "modelType": "Range",
+          "idShort": "Pressure",
+          "valueType": "xs:double",
+          "min": "1.5",
+          "max": "6"
+        },
+        {
+          "modelType": "File",
+          "idShort": "Manual",
+          "contentType": "application/pdf",
+          "value": "/aasx/manual.pdf"
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "Vendor",
+          "value": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://example.com/vendor"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Entity",
+          "idShort": "Gripper",
+          "entityType": "SelfManagedEntity",
+          "globalAssetId": "urn:faaster:test:asset:gripper",
+          "statements": [
+            {
+              "modelType": "Property",
+              "idShort": "Force",
+              "valueType": "xs:int",
+              "value": "120"
+            }
+          ]
+        },
+        {
+          "modelType": "Operation",
+          "idShort": "Reset"
+        },
+        {
+          "modelType": "Operation",
+          "idShort": "Add",
+          "inputVariables": [
+            {
+              "value": {
+                "modelType": "Property",
+                "idShort": "a",
+                "valueType": "xs:int"
+              }
+            },
+            {
+              "value": {
+                "modelType": "Property",
+                "idShort": "b",
+                "valueType": "xs:double",
+                "value": "1.5"
+              }
+            }
+          ],
+          "outputVariables": [
+            {
+              "value": {
+                "modelType": "Property",
+                "idShort": "sum",
+                "valueType": "xs:double"
+              }
+            }
+          ]
+        },
+        {
+          "modelType": "Operation",
+          "idShort": "Swap",
+          "inoutputVariables": [
+            {
+              "value": {
+                "modelType": "Property",
+                "idShort": "x",
+                "valueType": "xs:int"
+              }
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Tools",
+          "value": [
+            {
+              "modelType": "Operation",
+              "idShort": "Echo",
+              "inputVariables": [
+                {
+                  "value": {
+                    "modelType": "Property",
+                    "idShort": "text",
+                    "valueType": "xs:string"
+                  }
+                }
+              ],
+              "outputVariables": [
+                {
+                  "value": {
+                    "modelType": "Property",
+                    "idShort": "echo",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": [
+    {
+      "modelType": "ConceptDescription",
+      "id": "urn:faaster:test:cd:temperature",
+      "idShort": "Temperature",
+      "isCaseOf": [
+        {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#02-AAA001#001"
+            }
+          ]
+        }
+      ],
+      "embeddedDataSpecifications": [
+        {
+          "dataSpecification": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3"
+              }
+            ]
+          },
+          "dataSpecificationContent": {
+            "modelType": "DataSpecificationIec61360",
+            "preferredName": [
+              {
+                "language": "en",
+                "text": "Temperature"
+              }
+            ],
+            "unit": "degC",
+            "valueList": {
+              "valueReferencePairs": [
+                {
+                  "value": "celsius",
+                  "valueId": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "ConceptDescription",
+                        "value": "urn:faaster:test:cd:celsius"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "modelType": "ConceptDescription",
+      "id": "urn:faaster:test:cd:celsius",
+      "idShort": "Celsius"
+    },
+    {
+      "modelType": "ConceptDescription",
+      "id": "urn:faaster:test:cd:unused",
+      "idShort": "Unused"
+    }
+  ]
+}
