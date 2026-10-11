@@ -279,9 +279,12 @@ class AddressSpaceAdapter(IAddressSpace):
         ua_vt = _to_ua_variant_type(variant_type)
         raw_node = self._unwrap(node)
 
+        now = datetime.now(tz=timezone.utc)
         dv = ua.DataValue(
             Value=ua.Variant(value, ua_vt) if ua_vt else ua.Variant(value),
-            ServerTimestamp=source_timestamp if source_timestamp else datetime.now(tz=timezone.utc)
+            # SourceTimestamp: quando o valor foi medido (é o que o HDA grava)
+            SourceTimestamp=source_timestamp or now,
+            ServerTimestamp=now,
         )
 
         await raw_node.write_value(dv)
