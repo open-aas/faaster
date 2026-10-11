@@ -107,6 +107,48 @@ Policies are declared as `Extension` elements with the `faaster:hda:` prefix —
 
 Variables with HDA policies automatically get virtual OPC UA nodes (`Value@1min`, `Value@1hour`, `Value@1day`) that expose the pre-aggregated data directly via standard OPC UA HDA — without requiring clients to know the underlying storage strategy.
 
+### How it is stored
+
+- **Every write is historized**: OPC UA client writes, `PATCH …/$value`, extensions and asset bindings
+  alike, including repeated values and bursts. The value's `SourceTimestamp` (when it was measured)
+  is stored; without one, the server time is used.
+- **Sample mode**: each level (`1min`, `5min`, `10min`, `15min`, `1hour`, `1day`, in any combination
+  and order) is a TimescaleDB continuous aggregate computed **directly from the raw data**: `avg`,
+  `max`, `min`, `stddev` and `count` are exact. The last, not yet materialized buckets are completed at
+  query time (real-time aggregation). `Value@<level>` returns the bucket average as `Double`. The raw
+  hypertable is compressed after 7 days.
+- **Aggregate mode**: windows are aligned to the clock in UTC (a `15min` window closes at :00, :15,
+  :30, :45). Each window is persisted right after it closes, as one row per window. A late sample of
+  an already persisted window is merged into it (weighted mean, sum, max, min, or the latest sample
+  for `last`). When the database is down, results are kept and retried on the next window. On
+  shutdown the open window is persisted too, and merged with the rest of it after restart. The
+  `Value` node returns the window values as `Double`, timestamped with the window start.
+- **Retention**: `<n> <minute|hour|day|week|month|year>[s]` or `none` (no expiry). Defaults: raw
+  30 days, `1min` 1 year, `1hour` 5 years, `1day` none; aggregate mode 5 years. Each level is
+  refreshed from the last minutes/hours/days of raw data (`1day`: 4 days), so the raw retention
+  (and the level's own retention) must be longer than that — the model is rejected otherwise.
+  `faaster:hda:window` is required in aggregate mode.
+
+### Changing a policy
+
+The policy in the model is applied on every startup. Policies (refresh jobs and retention) are
+recreated each time, which only touches TimescaleDB's job catalog. A level's view is only rebuilt
+when it changes:
+
+| Change in the model | What happens |
+|---|---|
+| Level unchanged | View and its data are kept (no cost) |
+| Level added | View created, then the retained raw history is materialized in the background |
+| Level removed | View and its aggregated history are dropped |
+| Retention changed | Retention policy recreated; data already dropped is not recovered |
+| `sample` ↔ `aggregate` | Each mode has its own table; the other mode's data is kept |
+| Policy removed | Raw table kept, without retention (no expiry) |
+
+Rebuilding a view costs one pass over the raw data still retained (e.g. 30 days at 1 Hz ≈ 2.6 M
+rows per variable, typically seconds) and does not block startup: queries are correct meanwhile.
+Aggregated history older than the raw retention cannot be rebuilt — that is why unchanged views are
+never recreated.
+
 ---
 
 ## Getting Started
@@ -150,11 +192,25 @@ python server.py \
   --port 4840
 ```
 
+Stop the server with Ctrl+C (SIGINT) or SIGTERM (`docker stop`): extensions are stopped and the HDA
+writes pending samples and the open aggregate windows before exiting.
+
 ### Validate AAS model only (no server) (development)
 
 ```bash
 python server.py -m models/my_asset.json --validate-only
 ```
+
+### Running the tests
+
+```bash
+pytest tests/ --ignore=tests/interfaces   # tests/interfaces still imports the former core package
+```
+
+The HDA integration tests (`tests/integration/test_hda_*.py`) run against a real TimescaleDB: a
+throwaway container (`timescale/timescaledb:latest-pg17`, or `FAASTER_TEST_TIMESCALE_IMAGE`) is
+started with Docker, or an existing server is used with
+`FAASTER_TEST_TIMESCALE_URL=postgresql://user:pass@host:5432`. Without either, they are skipped.
 
 ---
 
