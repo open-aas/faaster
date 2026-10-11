@@ -51,7 +51,9 @@ system = [
     "structlog (>=25.5.0,<26.0.0)",
     "pycountry (>=26.2.16,<27.0.0)",
     "basyx-python-sdk (>=2.0.0,<3.0.0)",
-    "asyncpg (>=0.31.0,<0.32.0)"
+    "asyncpg (>=0.31.0,<0.32.0)",
+    "fastapi (>=0.115.0,<1.0.0)",
+    "uvicorn (>=0.32.0,<1.0.0)"
 ]
 cobot = [
     "ur-rtde (>=1.6.3,<2.0.0)",
@@ -60,6 +62,7 @@ cobot = [
 tests = [
     "pytest (>=8.0.0,<9.0.0)",
     "pytest-asyncio (>=0.24.0,<1.0.0)",
+    "httpx (>=0.27.0,<1.0.0)",
 ]
 
 [tool.pytest.ini_options]
