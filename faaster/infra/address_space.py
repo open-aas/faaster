@@ -191,7 +191,14 @@ class AddressSpaceAdapter(IAddressSpace):
         ua_vt = _to_ua_variant_type(variant_type)
         converted_value = _convert_value(value, variant_type, is_array)
 
-        node = await raw_parent.add_variable(ns, name, converted_value, ua_vt)
+        if converted_value is None and ua_vt is not None and not is_array:
+            # value é opcional no AAS: nó sem valor (Null), mas com o DataType
+            # declarado, para aceitar escritas do tipo certo depois
+            node = await raw_parent.add_variable(
+                ns, name, ua.Variant(None, ua.VariantType.Null), datatype=ua.NodeId(ua_vt.value)
+            )
+        else:
+            node = await raw_parent.add_variable(ns, name, converted_value, ua_vt)
 
         if is_array:
             await node.write_value_rank(1)
@@ -245,9 +252,12 @@ class AddressSpaceAdapter(IAddressSpace):
         ua_vt = _to_ua_variant_type(variant_type)
         raw_node = self._unwrap(node)
 
+        now = datetime.now(tz=timezone.utc)
         dv = ua.DataValue(
             Value=ua.Variant(value, ua_vt) if ua_vt else ua.Variant(value),
-            ServerTimestamp=source_timestamp if source_timestamp else datetime.now(tz=timezone.utc)
+            # SourceTimestamp: quando o valor foi medido (é o que o HDA grava)
+            SourceTimestamp=source_timestamp or now,
+            ServerTimestamp=now,
         )
 
         await raw_node.write_value(dv)

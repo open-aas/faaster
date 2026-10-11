@@ -154,6 +154,7 @@ def test_aggregate_window_1hour_seconds():
 def test_aggregate_function_sum():
     exts = [
         ext("faaster:hda:mode", "aggregate"),
+        ext("faaster:hda:window", "15min"),
         ext("faaster:hda:function", "sum"),
     ]
     policy = extract_policy(exts)
@@ -163,6 +164,7 @@ def test_aggregate_function_sum():
 def test_aggregate_custom_retention():
     exts = [
         ext("faaster:hda:mode", "aggregate"),
+        ext("faaster:hda:window", "15min"),
         ext("faaster:hda:retention", "10 years"),
     ]
     policy = extract_policy(exts)
@@ -172,6 +174,7 @@ def test_aggregate_custom_retention():
 def test_aggregate_retention_none_string():
     exts = [
         ext("faaster:hda:mode", "aggregate"),
+        ext("faaster:hda:window", "15min"),
         ext("faaster:hda:retention", "none"),
     ]
     policy = extract_policy(exts)
@@ -190,17 +193,84 @@ def test_aggregate_invalid_window_raises():
 def test_aggregate_invalid_function_raises():
     exts = [
         ext("faaster:hda:mode", "aggregate"),
+        ext("faaster:hda:window", "15min"),
         ext("faaster:hda:function", "median"),
     ]
     with pytest.raises(ValueError, match="Invalid faaster:hda:function"):
         extract_policy(exts)
 
 
-def test_aggregate_window_none_returns_none_seconds():
+def test_aggregate_window_is_required():
     exts = [ext("faaster:hda:mode", "aggregate")]
-    policy = extract_policy(exts)
-    assert policy.window is None
-    assert policy.window_seconds is None
+    with pytest.raises(ValueError, match="faaster:hda:window is required"):
+        extract_policy(exts)
+
+
+def test_window_seconds_without_window():
+    assert AggregationPolicy().window_seconds is None
+
+
+# ------------------------------------------------------------------
+# Levels e retenções
+# ------------------------------------------------------------------
+
+def test_levels_any_order_and_deduplicated():
+    exts = [ext("faaster:hda:levels", "1hour, 10min,15min,10min")]
+    assert extract_policy(exts).levels == ["1hour", "10min", "15min"]
+
+
+def test_unknown_level_raises():
+    exts = [ext("faaster:hda:levels", "1min,2min")]
+    with pytest.raises(ValueError, match="Invalid faaster:hda:levels value: '2min'"):
+        extract_policy(exts)
+
+
+@pytest.mark.parametrize("value, normalized", [
+    ("14 days", "14 days"),
+    ("1 year", "1 year"),
+    ("2 Weeks", "2 weeks"),
+    ("6 month", "6 months"),
+    ("12hours", "12 hours"),
+    ("None", None),
+])
+def test_retention_formats(value, normalized):
+    exts = [ext("faaster:hda:levels", "1min"), ext("faaster:hda:retention:1min", value)]
+    assert extract_policy(exts).retention["1min"] == normalized
+
+
+@pytest.mark.parametrize("value", ["forever", "30", "0 days", "1 decade", "-1 day"])
+def test_invalid_retention_raises(value):
+    exts = [ext("faaster:hda:retention:raw", value)]
+    with pytest.raises(ValueError, match="Invalid faaster:hda:retention:raw"):
+        extract_policy(exts)
+
+
+def test_invalid_aggregate_retention_raises():
+    exts = [
+        ext("faaster:hda:mode", "aggregate"),
+        ext("faaster:hda:window", "15min"),
+        ext("faaster:hda:retention", "5 anos"),
+    ]
+    with pytest.raises(ValueError, match="Invalid faaster:hda:retention value"):
+        extract_policy(exts)
+
+
+def test_raw_retention_must_outlive_refresh_window():
+    # o level 1day é recalculado sobre os últimos 4 dias de dados raw
+    exts = [ext("faaster:hda:retention:raw", "3 days")]
+    with pytest.raises(ValueError, match="Level '1day'"):
+        extract_policy(exts)
+
+
+def test_level_retention_must_outlive_its_refresh_window():
+    exts = [ext("faaster:hda:levels", "1hour"), ext("faaster:hda:retention:1hour", "2 hours")]
+    with pytest.raises(ValueError, match="faaster:hda:retention:1hour"):
+        extract_policy(exts)
+
+
+def test_short_raw_retention_allowed_for_short_levels():
+    exts = [ext("faaster:hda:levels", "1min,15min"), ext("faaster:hda:retention:raw", "2 hours")]
+    assert extract_policy(exts).retention["raw"] == "2 hours"
 
 
 # ------------------------------------------------------------------

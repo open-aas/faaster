@@ -62,3 +62,11 @@ class IOPCUAServer(ABC):
         Deve ser chamado após set_history_storage().
         """
         ...
+
+    async def enable_history_read(self, node: INode) -> None:
+        """
+        Marca o nó como historizado (Historizing, AccessLevel HistoryRead) sem
+        gravar suas mudanças: o histórico vem de outro nó (ex.: Value@1hour,
+        lido da view do level do nó Value).
+        """
+        raise NotImplementedError

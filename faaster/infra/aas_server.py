@@ -1,7 +1,7 @@
 from argparse import Namespace
 from datetime import datetime
 from typing import Optional, List
-from asyncua import Server, Client
+from asyncua import Server, Client, ua
 from asyncua.ua import BuildInfo, RegisteredServer, ApplicationType, LocalizedText, EndpointType
 
 from faaster.extensions import ExtensionLoader
@@ -42,6 +42,7 @@ class OPCUAServer(IOPCUAServer):
         self._parser = parser
         self._hda_manager = hda_manager
         self._stop_event = asyncio.Event()
+        self._stopping = False
         self._historized_nodes: list = []
         self._extension_loader = extension_loader
         self._extensions_tasks: List[asyncio.Task] = []
@@ -51,7 +52,33 @@ class OPCUAServer(IOPCUAServer):
         self._opcua_server.iserver.history_manager.set_storage(storage)
 
     async def historize_node(self, node: INode) -> None:
-        await self._opcua_server.iserver.enable_history_data_change(node.raw)
+        """
+        Historiza cada escrita no nó (clientes OPC UA e extensões).
+
+        Não usa enable_history_data_change do asyncua: a subscription interna
+        dele só notifica mudanças de valor, uma por ciclo de publicação, e
+        perderia amostras repetidas ou em rajada — o que falsifica, por
+        exemplo, a soma de uma janela no modo aggregate.
+        """
+        iserver = self._opcua_server.iserver
+        storage = iserver.history_manager.storage
+        raw = node.raw
+
+        await self.enable_history_read(node)
+        await storage.new_historized_node(raw.nodeid, period=None)
+
+        async def on_write(_handle: int, data_value: ua.DataValue) -> None:
+            await storage.save_node_value(raw.nodeid, data_value)
+
+        status, _ = iserver.aspace.add_datachange_callback(raw.nodeid, ua.AttributeIds.Value, on_write)
+        if not status.is_good():
+            raise ValueError(f"cannot historize node {raw.nodeid}: {status.name}")
+
+    async def enable_history_read(self, node: INode) -> None:
+        raw = node.raw
+        await raw.write_attribute(ua.AttributeIds.Historizing, ua.DataValue(True))
+        await raw.set_attr_bit(ua.AttributeIds.AccessLevel, ua.AccessLevel.HistoryRead)
+        await raw.set_attr_bit(ua.AttributeIds.UserAccessLevel, ua.AccessLevel.HistoryRead)
 
     @property
     def address_space(self) -> IAddressSpace:
@@ -227,13 +254,24 @@ class OPCUAServer(IOPCUAServer):
         logger.info("opcua_server.run.stopped")
 
     async def stop(self) -> None:
+        # um segundo Ctrl+C durante o encerramento não repete as etapas
+        if self._stopping:
+            return
+        self._stopping = True
         logger.info("opcua_opcua_server.stop")
         for name, extension in self._extension_loader.instances.items():
-            extension.stop()
+            try:
+                await extension.stop()
+            except Exception as exc:
+                logger.error("opcua_server.stop.extension_failed", extension=name, error=str(exc))
 
         for task in self._extensions_tasks:
             if not task.done():
                 task.cancel()
+
+        if self._hda_manager is not None:
+            # grava as janelas do modo aggregate e encerra o pool do banco
+            await self._hda_manager.stop()
 
         self._stop_event.set()
 
