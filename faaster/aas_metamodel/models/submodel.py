@@ -1,12 +1,14 @@
 """A submodel defines a specific aspect of the asset represented by the AAS."""
 
 from typing import List, Optional
+from pydantic import field_validator
 from faaster.aas_metamodel.models.has_data_specification import HasDataSpecification
 from faaster.aas_metamodel.models.has_kind import HasKind
 from faaster.aas_metamodel.models.has_semantics import HasSemantics
 from faaster.aas_metamodel.models.identifiable import Identifiable
 from faaster.aas_metamodel.models.qualifiable import Qualifiable
 from faaster.aas_metamodel.models.submodel_element_union import SubmodelElementUnion
+from faaster.aas_metamodel.validators import require_id_shorts
 
 
 class Submodel(Identifiable, HasKind, HasSemantics, Qualifiable, HasDataSpecification):
@@ -19,3 +21,10 @@ class Submodel(Identifiable, HasKind, HasSemantics, Qualifiable, HasDataSpecific
     """
 
     submodel_elements: Optional[List[SubmodelElementUnion]] = []
+
+    @field_validator("submodel_elements")
+    @classmethod
+    def validate_id_shorts(cls, value):
+        """Constraint AASd-117 for the elements of the submodel."""
+        require_id_shorts(value, "Submodel")
+        return value

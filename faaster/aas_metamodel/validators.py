@@ -32,3 +32,30 @@ def validate_value_type(value: str, value_type_str: str) -> None:
                 f"(Constraint AASd-020): {e}."
             )
         ) from e
+
+
+def require_id_shorts(elements, container: str) -> None:
+    """Constraint AASd-117.
+
+    The idShort of a non-identifiable referable that is not a direct child of
+    a SubmodelElementList shall be specified.
+
+    :param elements: Child elements, as DTOs or dictionaries.
+    :param container: Name of the container, for the error message.
+    :raises InvalidFieldException: If a child has no idShort.
+    """
+    for index, elem in enumerate(elements or []):
+        if isinstance(elem, dict):
+            id_short = elem.get("idShort") or elem.get("id_short")
+            model_type = elem.get("modelType") or elem.get("type_model")
+        else:
+            id_short = getattr(elem, "id_short", None)
+            model_type = getattr(elem, "type_model", None)
+        if not id_short:
+            raise InvalidFieldException(
+                detail=(
+                    f"Element {index} ({model_type}) of the {container} has no idShort. "
+                    "The idShort is mandatory outside a SubmodelElementList "
+                    "(Constraint AASd-117)."
+                )
+            )

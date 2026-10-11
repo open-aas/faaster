@@ -3,13 +3,16 @@
 # pylint: disable=duplicate-code
 
 from typing import List, Literal, Optional
-from pydantic import Field
+import structlog
+from pydantic import Field, field_validator
 from faaster.aas_metamodel.submodel_element_processor import SubmodelElementProcessor
 from faaster.aas_metamodel.models.aas_submodel_elements import AasSubmodelElements
 from faaster.aas_metamodel.models.data_type_def_xsd import DataTypeDefXsd
 from faaster.aas_metamodel.models.model_type import ModelType
 from faaster.aas_metamodel.models.reference import Reference
 from faaster.aas_metamodel.models.submodel_element import SubmodelElement
+
+logger = structlog.get_logger(__name__)
 
 
 class SubmodelElementList(SubmodelElement):
@@ -52,3 +55,26 @@ class SubmodelElementList(SubmodelElement):
                     processed_values.append(instance.model_dump(by_alias=True))
                 attrs["value"] = processed_values
         super().__init__(**attrs)
+
+    @field_validator("value")
+    @classmethod
+    def warn_id_shorts(cls, value):
+        """Constraint AASd-120.
+
+        The idShort of the direct children of a SubmodelElementList shall not
+        be specified. Many existing models still set it, so a violation is
+        logged instead of rejecting the model.
+        """
+        named = [
+            elem.get("idShort") or elem.get("id_short")
+            for elem in value or []
+            if elem.get("idShort") or elem.get("id_short")
+        ]
+        if named:
+            logger.warning(
+                "aas_metamodel.constraint_violation",
+                constraint="AASd-120",
+                detail="elements of a SubmodelElementList shall not have an idShort",
+                id_shorts=named,
+            )
+        return value

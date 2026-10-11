@@ -1,7 +1,7 @@
 """An entity is a submodel element that is used to model entities."""
 
 from typing import List, Literal, Optional
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 from faaster.aas_metamodel.submodel_element_processor import SubmodelElementProcessor
 from faaster.aas_metamodel.models.entity_type import EntityType
 from faaster.aas_metamodel.models.specific_asset_id import SpecificAssetId
@@ -9,6 +9,7 @@ from faaster.aas_metamodel.exceptions import InvalidFieldException
 from faaster.aas_metamodel.models.identifier import Identifier
 from faaster.aas_metamodel.models.model_type import ModelType
 from faaster.aas_metamodel.models.submodel_element import SubmodelElement
+from faaster.aas_metamodel.validators import require_id_shorts
 
 
 class Entity(SubmodelElement):
@@ -46,6 +47,13 @@ class Entity(SubmodelElement):
                 processed_statements.append(instance.model_dump(by_alias=True))
             attrs["statements"] = processed_statements
         super().__init__(**attrs)
+
+    @field_validator("statements")
+    @classmethod
+    def validate_id_shorts(cls, value):
+        """Constraint AASd-117 for the statements of the entity."""
+        require_id_shorts(value, "Entity")
+        return value
 
     @model_validator(mode="after")
     def validate_entity_type_restriction(self) -> "Entity":
