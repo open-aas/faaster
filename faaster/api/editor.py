@@ -53,6 +53,9 @@ logger = get_logger(__name__)
 # semanticId das extensões): mudar qualquer um exige recriar o nó
 _PROPERTY_RUNTIME_KEYS = ("valueType", "category", "extensions", "semanticId")
 
+# elementos com filhos cujos metadados podem ser recriados no lugar
+_CONTAINER_TYPES = {"SubmodelElementCollection", "SubmodelElementList", "Entity", "AnnotatedRelationshipElement"}
+
 
 def _children_key(element: Dict[str, Any]) -> Optional[str]:
     model_type = element.get("modelType")
@@ -64,6 +67,11 @@ def _parent_path(path: str) -> str:
     if path.endswith("]"):
         return path[: path.rindex("[")]
     return path.rsplit(".", 1)[0] if "." in path else ""
+
+
+def _index_name(path: str) -> Optional[str]:
+    """Nome do nó de um item de SubmodelElementList ("A.L[2]" → "[2]"); None para os demais."""
+    return path[path.rindex("["):] if path.endswith("]") else None
 
 
 def _own(element: Dict[str, Any]) -> Dict[str, Any]:
@@ -164,7 +172,7 @@ def _drop_if_empty(container: Dict[str, Any], children: List[Dict[str, Any]]) ->
 class _Plan:
     """Alterações no address space OPC UA, decididas antes de executar."""
     removes: List[str] = field(default_factory=list)
-    creates: List[Tuple[str, Any]] = field(default_factory=list)       # (pai, modelo)
+    creates: List[Tuple[str, Any, Optional[str]]] = field(default_factory=list)  # (pai, modelo, "[i]")
     refreshes: List[Tuple[str, Any]] = field(default_factory=list)     # (idShortPath, modelo)
     writes: List[ValueWrite] = field(default_factory=list)
     restores: List[Tuple[str, Any]] = field(default_factory=list)      # (idShortPath, valor vivo)
@@ -289,9 +297,11 @@ class StructureEditor:
                 parent = submodel
             children, by_index = _container_children(parent, create=True)
 
+            name = None
             if by_index:
                 # em SubmodelElementList o elemento vai para o fim da lista
                 path = join_path(parent_path, index=len(children))
+                name = _index_name(path)
             else:
                 id_short = body.get("idShort")
                 if not id_short:
@@ -306,7 +316,7 @@ class StructureEditor:
 
             if self._sync is not None:
                 await self._sync.add_submodel_element(
-                    submodel_id, submodel.get("idShort"), parent_path, element_model
+                    submodel_id, submodel.get("idShort"), parent_path, element_model, name
                 )
             self._repository.put_submodel(submodel)
             logger.info("api.element.created", submodel_id=submodel_id, id_short_path=path)
@@ -389,10 +399,13 @@ class StructureEditor:
             submodel = copy.deepcopy(self._repository.get_submodel(submodel_id))
             parent, siblings, index = _locate(submodel, path)
             del siblings[index]
-            _drop_if_empty(parent, siblings)
 
             plan = _Plan()
-            self._plan_remove(plan, submodel_id, path)
+            if _index_name(path) is None:
+                self._plan_remove(plan, submodel_id, path)
+            else:
+                await self._plan_list_shift(plan, submodel_id, _parent_path(path), index, siblings)
+            _drop_if_empty(parent, siblings)
             await self._execute(plan, submodel_id, submodel.get("idShort"), "delete")
             self._repository.put_submodel(submodel)
             logger.info("api.element.deleted", submodel_id=submodel_id, id_short_path=path)
@@ -428,7 +441,55 @@ class StructureEditor:
             if id_short in old_by_id:
                 await self._plan_element(plan, submodel_id, child_path, old_by_id[id_short], child, preserve_live)
             else:
-                plan.creates.append((parent_path, _validate_element(child)))
+                plan.creates.append((parent_path, _validate_element(child), None))
+
+    async def _plan_list_items(
+        self,
+        plan: _Plan,
+        submodel_id: str,
+        list_path: str,
+        old_items: List[Dict[str, Any]],
+        new_items: List[Dict[str, Any]],
+        preserve_live: bool,
+    ) -> None:
+        """Itens de SubmodelElementList, comparados pela posição."""
+        common = min(len(old_items), len(new_items))
+        for index in range(common):
+            await self._plan_element(
+                plan, submodel_id, join_path(list_path, index=index),
+                old_items[index], new_items[index], preserve_live,
+            )
+        for index in range(common, len(old_items)):
+            self._plan_remove(plan, submodel_id, join_path(list_path, index=index))
+        for index in range(common, len(new_items)):
+            plan.creates.append((list_path, _validate_element(new_items[index]), f"[{index}]"))
+
+    async def _plan_list_shift(
+        self,
+        plan: _Plan,
+        submodel_id: str,
+        list_path: str,
+        removed: int,
+        remaining: List[Dict[str, Any]],
+    ) -> None:
+        """
+        Remoção de um item de lista: os seguintes mudam de índice. O asyncua
+        não renomeia nós de forma navegável, então esses itens são recriados
+        com o novo índice, levando os valores vivos de suas Properties.
+        """
+        for index in range(removed, len(remaining) + 1):
+            self._plan_remove(plan, submodel_id, join_path(list_path, index=index))
+
+        for index in range(removed, len(remaining)):
+            plan.creates.append((list_path, _validate_element(remaining[index]), f"[{index}]"))
+            if self._registry is None:
+                continue
+            old_prefix = join_path(list_path, index=index + 1)
+            new_prefix = join_path(list_path, index=index)
+            for path, entry in self._registry.value_nodes_in_subtree(submodel_id, old_prefix).items():
+                value = await entry.node.get_value()
+                if value is not None:
+                    plan.restores.append((new_prefix + path[len(old_prefix):], value))
 
     async def _plan_element(
         self,
@@ -446,12 +507,12 @@ class StructureEditor:
         has_node = self._registry is not None and self._registry.get_element_node(submodel_id, path) is not None
         same_type = has_node and model_type == new.get("modelType")
 
-        if same_type and model_type == "SubmodelElementCollection":
+        if same_type and model_type in _CONTAINER_TYPES:
             if _own(old) != _own(new):
                 plan.refreshes.append((path, _validate_element(new)))
-            await self._plan_children(
-                plan, submodel_id, path, old.get("value") or [], new.get("value") or [], preserve_live
-            )
+            key = _children_key(old)
+            reconcile = self._plan_list_items if model_type in CHILDREN_BY_INDEX else self._plan_children
+            await reconcile(plan, submodel_id, path, old.get(key) or [], new.get(key) or [], preserve_live)
             return
 
         if same_type and model_type == "Property" and all(
@@ -465,7 +526,7 @@ class StructureEditor:
 
         # reconstrução: remove a subárvore e cria de novo a partir do modelo
         self._plan_remove(plan, submodel_id, path)
-        plan.creates.append((_parent_path(path), _validate_element(new)))
+        plan.creates.append((_parent_path(path), _validate_element(new), _index_name(path)))
         if preserve_live:
             live = await self._live_value(submodel_id, path, old, new)
             if live is not None:
@@ -494,8 +555,8 @@ class StructureEditor:
             await self._sync.remove(submodel_id, path)
         if plan.new_submodel is not None:
             await self._sync.add_submodel(plan.new_submodel)
-        for parent_path, element in plan.creates:
-            await self._sync.add_submodel_element(submodel_id, submodel_id_short, parent_path, element)
+        for parent_path, element, name in plan.creates:
+            await self._sync.add_submodel_element(submodel_id, submodel_id_short, parent_path, element, name)
         for path, model in plan.refreshes:
             await self._sync.refresh_metadata(submodel_id, path, model)
         await self._writer.apply(submodel_id, plan.writes)
