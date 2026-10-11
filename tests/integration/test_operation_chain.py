@@ -9,10 +9,10 @@ Usa asyncua.Server in-memory para verificar que:
     5. Operações independentes têm Binders independentes
 """
 import pytest
-from unittest.mock import MagicMock
 from asyncua.common.methods import uamethod
 
 from faaster.infra.address_space import NodeAdapter
+from faaster.aas_metamodel.models.operation import Operation
 from faaster.parser.creators.operation_creator import OperationCreator
 from faaster.extensions.method_binder import MethodBinder
 from faaster.interfaces.types import FaasterVariantType
@@ -23,20 +23,15 @@ from faaster.interfaces.types import FaasterVariantType
 # ------------------------------------------------------------------
 
 def _op_element(id_short="StartProcess", input_vars=None, output_vars=None):
-    el = MagicMock()
-    el.id_short = id_short
-    el.modelType = "Operation"
-    el.inputVariables = input_vars or []
-    el.outputVariables = output_vars or []
-    return el
+    return Operation(
+        idShort=id_short,
+        inputVariables=input_vars or None,
+        outputVariables=output_vars or None,
+    )
 
 
 def _var(id_short, value_type="xs:float"):
-    v = MagicMock()
-    v.value = MagicMock()
-    v.value.id_short = id_short
-    v.value.valueType = value_type
-    return v
+    return {"value": {"modelType": "Property", "idShort": id_short, "valueType": value_type}}
 
 
 # ------------------------------------------------------------------

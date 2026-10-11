@@ -14,6 +14,8 @@ from unittest.mock import AsyncMock, MagicMock, call
 
 from faaster.parser.creators.operation_creator import OperationCreator
 from faaster.extensions.method_binder import MethodBinder
+from faaster.aas_metamodel.models.operation import Operation
+from faaster.aas_metamodel.models.operation_variable import OperationVariable
 
 
 # ------------------------------------------------------------------
@@ -35,22 +37,17 @@ def _make_element(
     input_vars=None,
     output_vars=None,
 ):
-    """Stub de elemento Operation com os atributos acessados pelo creator."""
-    el = MagicMock()
-    el.id_short = id_short
-    el.modelType = model_type
-    el.inputVariables = input_vars or []
-    el.outputVariables = output_vars or []
-    return el
+    """Operation real do metamodelo — stubs escondiam nomes de atributo errados."""
+    return Operation(
+        idShort=id_short,
+        inputVariables=input_vars or None,
+        outputVariables=output_vars or None,
+    )
 
 
 def _make_var(id_short="temperature", value_type="xs:float"):
-    """Stub de OperationVariable com .value.id_short e .value.valueType."""
-    var = MagicMock()
-    var.value = MagicMock()
-    var.value.id_short = id_short
-    var.value.valueType = value_type
-    return var
+    """OperationVariable serializada, como no JSON do AAS."""
+    return {"value": {"modelType": "Property", "idShort": id_short, "valueType": value_type}}
 
 
 # ------------------------------------------------------------------
@@ -157,10 +154,11 @@ async def test_var_without_value_skipped():
     creator = OperationCreator()
     as_ = _make_address_space()
 
-    empty_var = MagicMock()
-    empty_var.value = None
+    # o metamodelo exige value; model_construct monta o caso defensivo sem validar
+    empty_var = OperationVariable.model_construct(value=None)
+    element = Operation.model_construct(id_short="Op", input_variables=[empty_var], output_variables=[])
 
-    await creator.create(MagicMock(), _make_element(input_vars=[empty_var]), as_)
+    await creator.create(MagicMock(), element, as_)
 
     kwargs = as_.add_method.call_args.kwargs
     assert kwargs["input_args"] == []
@@ -172,7 +170,8 @@ async def test_fallback_name_when_id_short_is_none():
     as_ = _make_address_space()
     parent = MagicMock()
 
-    await creator.create(parent, _make_element(id_short=None), as_)
+    element = Operation.model_construct(id_short=None, input_variables=[], output_variables=[])
+    await creator.create(parent, element, as_)
 
     as_.add_object.assert_called_once_with(parent, "Operation")
 
