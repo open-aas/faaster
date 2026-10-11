@@ -10,6 +10,8 @@ início, sem depender da ordem de carregamento das extensões.
 """
 from __future__ import annotations
 
+import inspect
+
 
 class MethodBinder:
     """
@@ -20,10 +22,14 @@ class MethodBinder:
     (comportamento equivalente ao BadNotImplemented do asyncua).
     """
 
-    __slots__ = ("_handler",)
+    __slots__ = ("_handler", "_is_coroutine_marker")
 
     def __init__(self) -> None:
         self._handler = None
+        # o asyncua decide se aguarda o callback com asyncio.iscoroutinefunction,
+        # que é False para instâncias com __call__ assíncrono: sem a marca, o
+        # binder rodaria numa thread e a coroutine nunca seria aguardada
+        inspect.markcoroutinefunction(self)
 
     def bind(self, handler) -> None:
         """Conecta o handler real (já decorado com uamethod)."""
