@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from faaster.aas_metamodel.models.environment import Environment
 
@@ -26,6 +26,15 @@ class ILoader(ABC):
             ValidationLoaderError: estrutura incompatível com AAS V3.
         """
         ...
+
+    @property
+    def document(self) -> Optional[dict]:
+        """
+        Documento AAS V3 original (serialização JSON da Part 1) do último
+        load(), sem a normalização do pydantic. É a fonte usada pela
+        API HTTP/REST para responder fielmente ao modelo de entrada.
+        """
+        return None
 
 
 class ILoaderJson(ILoader, ABC):

@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 from pydantic import ValidationError
 from ..interfaces import ILoaderJson
 from ..exceptions import (
@@ -10,6 +10,7 @@ from ..exceptions import (
 from faaster.aas_metamodel.models.environment import Environment
 from faaster.log import get_logger
 
+import copy
 import json
 
 
@@ -24,12 +25,22 @@ class JsonLoader(ILoaderJson):
     e valida contra o metamodelo AAS V3 via pydantic.
     """
 
+    def __init__(self) -> None:
+        self._document: Optional[dict] = None
+
+    @property
+    def document(self) -> Optional[dict]:
+        return self._document
+
     async def load(self, path: Path) -> Environment:
         logger.info("loader.json.load.start", path=str(path))
 
         self._check_exists(path)
         raw = self._read(path)
         data = self._parse_json(path, raw)
+        # cópia antes de validar: alguns modelos do aas_metamodel alteram
+        # dicts aninhados no __init__, e o documento precisa ficar intacto
+        self._document = copy.deepcopy(data)
         environment = self._validate(path, data)
 
         logger.info(
