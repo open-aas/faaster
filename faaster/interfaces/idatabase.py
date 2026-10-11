@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional, Any, Dict
 from datetime import datetime
-from faaster.hda.policies import AggregationPolicy
+from faaster.hda.buffer import WindowResult
+from faaster.hda.policies import AggregationPolicy, HDAFunction
 
 from .inode import INode
 
@@ -32,7 +33,8 @@ class IDatabase(ABC):
         policy: Optional[AggregationPolicy],
     ) -> None:
         """
-        Cria a hypertable para o nó.
+        Cria a hypertable do nó ou a reconcilia com a policy atual do modelo
+        (chamado a cada partida).
 
         policy=None  → hypertable raw simples, sem continuous aggregates
         policy.is_sample → hypertable raw + continuous aggregates por level
@@ -53,22 +55,42 @@ class IDatabase(ABC):
     async def insert_aggregate(
         self,
         table_name: str,
-        bucket: datetime,
-        value: float,
-        sample_count: int,
+        result: WindowResult,
         window: str,
-        function: str,
-    ) -> None: ...
+        function: HDAFunction,
+    ) -> None:
+        """Grava o agregado de uma janela, combinando com um já gravado na mesma janela."""
+        ...
 
     @abstractmethod
     async def query(
         self,
         table_name: str,
-        start: datetime,
-        end: datetime,
+        start: Optional[datetime],
+        end: Optional[datetime],
         limit: int,
         level: str = "raw",
-    ) -> List[Dict]: ...
+        reverse: bool = False,
+    ) -> List[Dict]:
+        """
+        Linhas com start <= tempo <= end (None = sem limite), em ordem
+        crescente (ou decrescente com reverse), no máximo limit.
+        """
+        ...
+
+    @abstractmethod
+    async def query_aggregate(
+        self,
+        table_name: str,
+        start: Optional[datetime],
+        end: Optional[datetime],
+        limit: int,
+        window: str,
+        function: HDAFunction,
+        reverse: bool = False,
+    ) -> List[Dict]:
+        """Como query(), sobre as janelas gravadas no modo aggregate."""
+        ...
 
 class IHDAManager(ABC):
     """

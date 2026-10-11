@@ -1,7 +1,7 @@
 from argparse import Namespace
 from datetime import datetime
 from typing import Optional, List
-from asyncua import Server, Client
+from asyncua import Server, Client, ua
 from asyncua.ua import BuildInfo, RegisteredServer, ApplicationType, LocalizedText, EndpointType
 
 from faaster.api import HttpApiServer
@@ -57,7 +57,33 @@ class OPCUAServer(IOPCUAServer):
         self._opcua_server.iserver.history_manager.set_storage(storage)
 
     async def historize_node(self, node: INode) -> None:
-        await self._opcua_server.iserver.enable_history_data_change(node.raw)
+        """
+        Historiza cada escrita no nó (cliente OPC UA, API, extensões, binding).
+
+        Não usa enable_history_data_change do asyncua: a subscription interna
+        dele só notifica mudanças de valor, uma por ciclo de publicação, e
+        perderia amostras repetidas ou em rajada — o que falsifica, por
+        exemplo, a soma de uma janela no modo aggregate.
+        """
+        iserver = self._opcua_server.iserver
+        storage = iserver.history_manager.storage
+        raw = node.raw
+
+        await self.enable_history_read(node)
+        await storage.new_historized_node(raw.nodeid, period=None)
+
+        async def on_write(_handle: int, data_value: ua.DataValue) -> None:
+            await storage.save_node_value(raw.nodeid, data_value)
+
+        status, _ = iserver.aspace.add_datachange_callback(raw.nodeid, ua.AttributeIds.Value, on_write)
+        if not status.is_good():
+            raise ValueError(f"cannot historize node {raw.nodeid}: {status.name}")
+
+    async def enable_history_read(self, node: INode) -> None:
+        raw = node.raw
+        await raw.write_attribute(ua.AttributeIds.Historizing, ua.DataValue(True))
+        await raw.set_attr_bit(ua.AttributeIds.AccessLevel, ua.AccessLevel.HistoryRead)
+        await raw.set_attr_bit(ua.AttributeIds.UserAccessLevel, ua.AccessLevel.HistoryRead)
 
     @property
     def address_space(self) -> IAddressSpace:
