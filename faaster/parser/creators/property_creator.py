@@ -1,8 +1,8 @@
-from typing import List, Any, Optional, Tuple
+from typing import List, Optional, Tuple
 from faaster.interfaces import IAddressSpace, INode
 from faaster.aas_metamodel.models.property import Property
 from faaster.interfaces.types import FaasterVariantType
-from faaster.hda import HDAMode, extract_policy, AggregationPolicy
+from faaster.hda import extract_policy, AggregationPolicy
 from faaster.log import get_logger
 from .base import BaseCreator, resolve_variant_type, cast_value
 
@@ -56,28 +56,6 @@ class PropertyCreator(BaseCreator):
             await self.add_descriptions(prop_node, element.description, address_space)
 
     @staticmethod
-    async def _create_virtual_nodes(
-        parent: INode,
-        levels: List[str],
-        value: Any,
-        variant_type: FaasterVariantType,
-        address_space: IAddressSpace,
-    ) -> List[INode]:
-        nodes = []
-        for level in levels:
-            node = await address_space.add_variable(
-                parent=parent,
-                name=f"Value@{level}",
-                value=value,
-                variant_type=variant_type,
-                writable=False,
-            )
-
-            nodes.append(node)
-
-        return nodes
-
-    @staticmethod
     async def create_virtual_nodes(
         parent: INode,
         element: Property,
@@ -85,17 +63,17 @@ class PropertyCreator(BaseCreator):
     ) -> Tuple[List[Tuple[INode, str]], Optional[AggregationPolicy]]:
         is_variable = element.category == "VARIABLE"
         policy = extract_policy(element.extensions)
-        variant_type = resolve_variant_type(element.value_type)
-        casted_value = cast_value(element.value, variant_type)
         result: List[Tuple[INode,  str]] = []
 
         if is_variable and policy is not None and policy.is_sample:
             for level in policy.levels:
+                # o histórico é a média de cada bucket: sempre Double, mesmo
+                # para Properties inteiras; o valor corrente fica vazio
                 node = await address_space.add_variable(
                     parent=parent,
                     name=f"Value@{level}",
-                    value=casted_value,
-                    variant_type=variant_type,
+                    value=None,
+                    variant_type=FaasterVariantType.Double,
                     writable=False,
                 )
                 result.append((node, level))

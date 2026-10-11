@@ -13,6 +13,7 @@ from faaster.aas_metamodel.models.submodel_element_collection import SubmodelEle
 from faaster.aas_metamodel.models.operation import Operation
 from faaster.aas_metamodel.submodel_element_processor import SubmodelElementProcessor
 from faaster.interfaces import IAddressSpace, IElementCreator, INode
+from faaster.interfaces.types import FaasterVariantType
 from faaster.hda import HDAMode, extract_policy, AggregationPolicy
 from faaster.log import get_logger
 from .node_registry import NodeMetadata, NodeRegistry
@@ -367,7 +368,7 @@ class AASParser:
                 submodel_id=submodel_id,
                 category=element.category or "VARIABLE",
                 variant_type=variant_type,
-                semantic_id=str(semantic_id),
+                semantic_id=semantic_id,
                 aggregation_policy=policy
             )
 
@@ -388,8 +389,9 @@ class AASParser:
                     submodel=submodel_name,
                     submodel_id=submodel_id,
                     category=element.category or "VARIABLE",
-                    variant_type=variant_type,
-                    semantic_id=str(semantic_id)
+                    variant_type=FaasterVariantType.Double,
+                    semantic_id=semantic_id,
+                    level=level,
                 )
 
                 self._node_registry.register(metadata)
