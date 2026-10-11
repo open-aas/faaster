@@ -34,7 +34,12 @@ class HDAManager(IHDAManager):
         for node in nodes:
             await self._server.historize_node(node)
 
-        logger.info("hda_manager.init.done", nodes=len(nodes))
+        # Value@nível: o histórico é lido da view do level do nó raw
+        virtual_nodes = [metadata.node for metadata in self._registry.all if metadata.is_virtual]
+        for node in virtual_nodes:
+            await self._server.enable_history_read(node)
+
+        logger.info("hda_manager.init.done", nodes=len(nodes), virtual_nodes=len(virtual_nodes))
 
     async def stop(self) -> None:
         logger.info("hda_manager.stop")

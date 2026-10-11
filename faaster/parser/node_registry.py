@@ -1,45 +1,16 @@
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, TYPE_CHECKING
-from datetime import datetime
 from faaster.interfaces import INode
 from faaster.interfaces.types import FaasterVariantType
 from faaster.log import get_logger
+from faaster.hda.buffer import AggregateBuffer
 from faaster.hda.policies import AggregationPolicy
 
 if TYPE_CHECKING:
     from faaster.extensions.method_binder import MethodBinder
 
-import asyncio
-
 
 logger = get_logger(__name__)
-
-
-@dataclass
-class AggregateBuffer:
-    """
-    Buffer em memória para o modo aggregate.
-    Usado apenas quando AggregationPolicy.mode == aggregate.
-    """
-    values: List[float] = field(default_factory=list)
-    window_start: Optional[datetime] = None
-    task: Optional[asyncio.Task] = None
-
-    def push(self, value: float, timestamp: datetime) -> None:
-        if self.window_start is None:
-            self.window_start = timestamp
-        self.values.append(value)
-
-    def flush(self) -> List[float]:
-        return self.values.copy()
-
-    def clear(self) -> None:
-        self.values.clear()
-        self.window_start = None
-
-    @property
-    def is_empty(self) -> bool:
-        return len(self.values) == 0
 
 
 @dataclass
