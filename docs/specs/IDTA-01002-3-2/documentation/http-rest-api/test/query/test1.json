@@ -1,0 +1,21 @@
+{
+    "$select": "id",
+    "$condition": {
+        "$boolean": true
+    },
+    "$filters": [
+        {
+            "$fragment": "$sme#value",
+            "$condition": {
+                "$eq": [
+                    {
+                        "$field": "$sm#semanticId.keys[].value"
+                    },
+                    {
+                        "$strVal": "https://example.org/value"
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+Source: https://github.com/admin-shell-io/aas-specs-api @ f136ba1465e4c6b5b25444e0609d4de8f7429044 (tag v3.2.0, 2026-07-20)

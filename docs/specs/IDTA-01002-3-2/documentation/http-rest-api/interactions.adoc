@@ -1,0 +1,367 @@
+////
+Copyright (c) 2023 Industrial Digital Twin Association
+
+This work is licensed under a [Creative Commons Attribution 4.0 International License](
+https://creativecommons.org/licenses/by/4.0/). 
+
+SPDX-License-Identifier: CC-BY-4.0
+
+////
+
+
+= Interactions
+
+== General
+
+Interactions describe the sequence of calls of operations by a client application to achieve a defined goal in a use case.
+In the following, exemplary interaction sequences are depicted.
+
+Currently, only the key use case "Access a submodel in a distributed system" with focus on a completely decentralized Industry 4.0 system or dataspace is described.
+
+Some constraints and assumptions are made according to the configuration and qualities of the system.
+
+Constraints and assumptions for calling an AAS and a submodel operation by a client application:
+
+* The calling application has to be aware that endpoints may change at any time.
+If the application has cached an endpoint that is no longer vivid, the application needs to start the interaction to resolve the appropriate endpoint again from the beginning.
+* Several ways are possible to get to know the endpoints for the infrastructure interfaces of AAS Discovery and/or Registries before calling the APIs. Some examples:
+ - A discovery service for dataspace connectors as well as endpoints for AAS services can be found as part of the registered applications on a connector, as e.g. specified in the Catena-X dataspace.
+ - The endpoints can be configured in the application during start or dynamically at runtime by a user.
+* The asset IDs (either the global asset ID or some specific asset IDs) are known to the calling application.
+* Access to any API is allowed only if the caller is authenticated.
+* Response to any API call takes access rules as defined for the services into account, e.g. access rules for the AASs, the Submodels, or SubmodelElements within a Submodel.
+
+
+== Accessing Submodel Data
+
+An interaction typically starts with a client application using the discovery service to get the IDs of the AAS representing the asset under consideration.
+In the second step the AAS Registry is called to get the relevant endpoints for the AASs found.
+The AAS Registry provides the AAS Descriptor object belonging to this AAS ID (and thus the asset ID used for discovery) and containing the Submodel Descriptors of the Submodels, which are part of the related AAS.
+
+As explained in Clause xref:specification/interfaces-payload.adoc#descriptor[Descriptor], there are two ways of using the AssetAdministrationShellDescriptor when registering an Asset Administration Shell:
+
+1. Either add the endpoint of the Asset Administration Shell (usage by client see <<fig:seq-aas-endpoints>>)
+
+2. Or add the endpoints of its Submodels (usage by client see <<fig:seq-sm-endpoints>>)
+
+There is also a third way to combine both.
+In this case the endpoint of the Asset Administration Shell and the information that can be retrieved at this endpoint is the master and a separate Submodel Registry would provide the Submodel endpoints as single source of truth.
+
+====
+Note: It is not recommended to combine the two approaches in one and the same AAS Registry.
+An AAS Registry either should always contain the AAS Endpoint or the AAS Endpoint should always be omitted and Submodel endpoints shall be added.
+====
+
+In the second case, the lookup of the Submodel IDs and the Submodel endpoints can be skipped (compare <<fig:seq-sm-endpoints>> and <<fig:seq-aas-endpoints>> ).
+No separate AAS Service or Submodel Registry Service needs to be offered to the Client.
+From the point of view of a data provider the Submodel Registry interfaces are still needed to add new SubmodelDescriptors to an existing AssetAdministrationShellDescriptor.
+
+.Interaction for Client Application using Submodel Endpoints
+[[fig:seq-sm-endpoints]]
+[plantuml, seq-sm-endpoints, svg]
+....
+include::partial$diagrams/seq-sm-endpoints.puml[]
+....
+
+For accessing Submodels there are two different ways to do so:
+
+1. Access a Submodel via an AAS or Submodel Server
+
+2. Access a Submodel via a standardized Repository, either AAS or Submodel Repository
+
+In the sequence shown in <<fig:seq-sm-endpoints>>, the first submodel is get via an AAS or Submodel interface whereas the second submodel is get via an AAS or Submodel Repository Service.
+
+====
+Note: The client application just uses the endpoint as provided in the Registry.
+Thus, for the client there is no difference in the interaction with a pure submodel server or a submodel repository server.
+====
+
+<<fig:seq-aas-endpoints>> shows a sequence with a Registry providing AAS endpoints.
+In this case the client needs to look up the corresponding submodel IDs in an AAS or AAS Repository Service first.
+After looking up the relevant submodel IDs the client calls the Submodel Registry to get the Submodel Descriptors containing the endpoints of the submodels.
+
+====
+Note: If the AAS or AAS Repository Service is used to get the submodel IDs it is recommended that the data provider adds a link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/referencing.html#Reference[referredSemanticId] to the references of the submodels.
+Otherwise, it is not possible for the client to decide which of the submodels is relevant.
+This is typically done via the semanticId of the submodel.
+====
+
+.Interaction for Client Application using AAS Endpoints and Repositories
+[[fig:seq-aas-endpoints]]
+[plantuml, seq-aas-endpoints, svg]
+....
+include::partial$diagrams/seq-aas-endpoints.puml[]
+....
+
+The difference between Interface and API Operations is outlined in <<fig:seq-sm-endpoints-http>>.
+This sequence translates the interaction on the interface level of <<fig:seq-sm-endpoints>>, which is protocol-independent and therefore can be implemented in several different manners, to the specific HTTP API Operations.
+The generic operations are replaced with HTTP requests, e.g. "GetSubmodelById" can be realized by either "GET /shells/<aas-id>/submodels/<submodel-id>" within an AAS Repository or "GET /submodels/<submodel-id>" within a Submodel Repository.
+The returned objects are shortened for better readability.
+
+.Interaction for Client Application using Submodel Endpoints (for HTTP API Operations)
+[[fig:seq-sm-endpoints-http]]
+[plantuml, seq-sm-endpoints-http, svg]
+....
+include::partial$diagrams/seq-sm-endpoints-http.puml[]
+....
+
+== Accessing recently changes objects
+
+For recently changed Asset Administration Shells or Submodels there are the two API Operations 
+xref:specification/interfaces-payload.adoc#GetAllSubmodelsRecentChanges[GetAllSubmodelsRecentChanges] and 
+xref:specification/interfaces-payload.adoc#GetAllAssetAdministrationShellsRecentChanges[GetAllAssetAdministrationShellsRecentChanges].
+
+For AAS Registry and Submodel Registry recently changed Asset Administration Shells or Submodels corresponding date input parameters are directly added to   
+xref:specification/interfaces.adoc#GetAllAssetAdministrationShellDescriptors[GetAllAssetAdministrationShellDescriptors] and
+xref:specification/interfaces.adoc#GetAllSubmodelDescriptors[GetAllSubmodelDescriptors]. 
+
+In <<fig:seq-repo-recent-changes>> a sequence interaction is described for an application looking for Asset Administration Shells created after a specified date interacting directly with an AAS repository.
+In <<fig:seq-registry-recent-changes>> a sequence interaction is described for an application looking for Asset Administration Shells created after a specified date but using the AAS Registry as entry point.
+
+
+
+.Interaction for Client Application looking for Recent Changes using an Asset Administration Shell Repository 
+[[fig:seq-repo-recent-changes]]
+[plantuml, seq-repo-recent-changes, svg]
+....
+include::partial$diagrams/seq-repo-recent-changes.puml[]
+....
+
+
+.Interaction for Client Application looking for Recent Changes using an Asset Administration Shell Registry
+[[fig:seq-registry-recent-changes]]
+[plantuml, seq-registry-recent-changes, svg]
+....
+include::partial$diagrams/seq-registry-recent-changes.puml[]
+....
+
+
+== Direct Discovery of AAS Objects based on ID Link and LinkSets
+
+This section describes how a client can discover AAS and related resources by using an ID Link as the globalAssetId combined with RFC 9264 LinkSets.
+The ID Link is a resolvable HTTP(S) URL representing the asset identity (globalAssetId).
+The landing endpoint for the ID Link returns a LinkSet (media type application/linkset+json) that contains typed relations to AAS, Submodels, repositories, registries, and Digital Product Passport resources.
+
+Concept:
+- The globalAssetId is an ID Link, e.g., https://id.example.com/my-asset-id.
+- A GET on the ID Link with Accept: application/linkset+json returns a LinkSet anchored at the ID Link.
+- The LinkSet provides relations such as:
+  - aas: direct representations/endpoints of the Asset Administration Shell.
+  - aas-service-endpoints: a LinkSet enumerating infrastructure endpoints (AAS Repository, Submodel Repository, Discovery, Registry).
+  - dpp: direct represenation of the Digital Product Passport.
+    - dpp-service-endpoints: a LinkSet enumerating infrastructure endpoints for DPP services.
+- Links may carry metadata (profiles, authentication, versions) to guide client interaction.
+
+Example for the content of the LinkSet returned by the ID Link endpoint:
+[source,json]
+----
+{
+  "linkset": [
+    {
+      "anchor": "https://id.example.com/my-asset-id",
+      "aas": [
+        {
+          "href": "https://service.example.com/aas/shells/aHR0cHM6Ly9pZC5leGFtcGxlLmNvbS9teS1hc3NldC1pZA",
+          "type": "application/json",
+          "profiles": {
+            "https://admin-shell.io/aas/API/3/2/AssetAdministrationShellServiceSpecification/SSP-001": [
+              "GetAllAssetAdministrationShells",
+              "PostAssetAdministrationShells",
+              "GetAssetAdministrationShellById"
+            ],
+            "https://admin-shell.io/aas/API/3/2/AssetAdministrationShellServiceSpecification/SSP-004": [
+              "GetAssetAdministrationShellVersionByIdAndDate"
+            ]
+          },
+          "authentication": [
+            {
+              "id": "oidc",
+              "type": "OIDC",
+              "well_known_url": "https://auth.example.com/realm/.well-known/openid-configuration"
+            },
+            {
+              "id": "another-oauth2",
+              "type": "OAuth2",
+              "base_url": "https://auth.example.com/realms/aas",
+              "flows": ["client-credential-flow"],
+              "scopes": ["whatever", "onemore"],
+              "well_known_url": "https://auth.example.com/.well-known/oauth-authorization-server"
+            }
+          ]
+        }
+      ],
+      "aas-service-endpoints": [
+        {
+          "href": "https://service.example.com/aas/aas-service-endpoints",
+          "type": "application/linkset+json",
+          "returns": "linkset"
+        }
+      ],
+      "dpp": [
+        {
+          "href": "https://service.example.com/dpp/v1/dpps/https%3A//id.example.com/my-asset-id",
+          "type": "application/json",
+          "dppSchemaVersion": "1.0", // the concrete url needs a concrete version, that's why single version is given here
+          "delegatedActs": [ // I forgot the requested term...
+            { "act": "BatteryPassport", "version": "1.0" }
+          ]
+        }
+      ],
+      "dpp-service-endpoint":
+        {
+          "href": "https://service.example.com/dpp", // Official API to append is 'v1/dpps/{dppId}'
+          "type": "application/json",
+          "dppSchemaVersions": ["1.0"], // This schema allows for multiple versions
+          "delegatedActs": [
+            { "act": "BatteryPassport", "version": "1.0" }
+          ]
+        }
+
+    }
+  ]
+}
+----
+
+Example for the content of the LinkSet returned by the AAS Service Endpoints endpoint:
+[source,json]
+----
+{
+  "linkset": [
+    {
+      "anchor": "https://service.example.com/aas/aas-service-endpoints",
+      "aas-repository": [
+        {
+          "href": "https://serviceprovider.example.com/aas/shells",
+          "type": "application/json",
+          "profiles": {
+            "https://admin-shell.io/aas/API/3/2/AssetAdministrationShellServiceSpecification/SSP-001": [
+              "GetAllAssetAdministrationShells",
+              "PostAssetAdministrationShells",
+              "GetAssetAdministrationShellById"
+            ],
+            "https://admin-shell.io/aas/API/3/2/AssetAdministrationShellServiceSpecification/SSP-004": ["GetAssetAdministrationShellVersionByIdAndDate"]
+          },
+          "authentication": [
+            {
+              "id": "objective-partner",
+              "type": "OAuth2",
+              "base_url": "https://auth.example.com/realms/aas",
+              "flow": "client-credential-flow",
+              "scope": "<whatever>"
+            }
+          ]
+        }
+      ],
+      "sm-repository": [
+        {
+          "href": "https://serviceprovider.example.com/aas/submodels",
+          "type": "application/json",
+          "profiles": {
+            "https://admin-shell.io/aas/API/3/2/SubmodelServiceSpecification/SSP-001": [
+              "GetAllSubmodels",
+              "PostSubmodels",
+              "GetSubmodelById"
+            ],
+            "https://admin-shell.io/aas/API/3/2/SubmodelServiceSpecification/SSP-004": ["GetSubmodelVersionByIdAndDate"]
+          },
+          "authentication": [
+            {
+              "id": "objective-partner",
+              "type": "OAuth2",
+              "base_url": "https://auth.example.com/realms/aas",
+              "flow": "client-credential-flow",
+              "scope": "<whatever>"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+----
+
+
+Example for the content of the LinkSet returned by the ID Link endpoint:
+[source,json]
+----
+{
+  "linkset": [
+    {
+      "anchor": "https://service.example.com/dpp/dpp-service-endpoints",
+      "dpp-service-endpoints": [
+        {
+          "href": "https://service.example.com/dpps/https%3A//id.example.com/my-asset-id",
+          "type": "application/json",
+          "provides": "ReadDPPByProductId"
+        },
+        {
+          "href": "https://service.example.com/dppsByProductIdAndDate/https%3A//id.example.com/my-asset-id?date={date}",
+          "type": "application/json",
+          "provides": "ReadDPPVersionByProductIdAndDate"
+        }
+      ]
+    }
+  ]
+}
+----
+
+Client interaction patterns:
+
+1) LinkSet-aware client
+- Request:
+  - GET https://id.example.com/my-asset-id
+  - Accept: application/linkset+json, application/json;q=0.9
+- Behavior:
+  - Parse LinkSet and select the appropriate relation (e.g., "aas" for a direct shell, or "aas-service-endpoints" to obtain repositories).
+  - Follow the selected href; apply authentication as indicated.
+- Example follow-up:
+  - GET https://service.example.com/aas/shells/aHR0cHM6Ly9pZC5leGFtcGxlLmNvbS9teS1hc3NldC1pZA
+  - Accept: application/json
+
+2) LinkSet-unaware client (fallback via redirect)
+- If the client requests JSON directly:
+  - Server may respond 302 Found with Location pointing to the specific AAS resource.
+  - Server may also include a Link header with rel="alternate" and type="application/linkset+json" to advertise discovery per RFC 8288.
+
+[plantuml, seq-idlink-linkset, svg]
+....
+@startuml
+actor Client
+participant IDProvider as "ID Link Landing"
+participant AASService as "AAS / Repo"
+
+Client -> IDProvider: GET /my-asset-id\nAccept: application/linkset+json
+IDProvider --> Client: 200 OK\nContent-Type: application/linkset+json\n{ 'aas', 'aas-service-endpoints', 'dpp', 'dpp-service-endpoints' }
+
+note right
+AAS endpoint lookup can be done in the background.
+No need for the client to figure it out by itself.
+end note
+
+Client -> AASService: GET /aas/shells/<encoded-shellId>\nAccept: application/json
+AASService --> Client: 200 OK\n{ AssetAdministrationShell ... }
+
+note right
+Select relation 'aas' and follow href
+with 'AAS Service Interface'.
+Superpathes enable access to Submodels.
+end note
+
+Client -> AASService: GET /aas/shells/<encoded-shellId>/submodels/<encoded-submodelId>\nAccept: application/json
+AASService --> Client: 200 OK\n{ Submodel ... }
+@enduml
+....
+
+====
+// Guidance
+* Servers should support application/linkset+json (RFC 9264).
+* Use RFC 8288 relations; include profiles and auth hints where applicable.
+* The ID Link acts as a stable proxy; backend changes do not break clients.
+* Using referredSemanticId on Submodels is recommended to help clients select relevant Submodels.
+====
+
+References:
+- RFC 8288 Web Linking: https://www.rfc-editor.org/rfc/rfc8288.html
+- RFC 9264 LinkSet: https://www.rfc-editor.org/rfc/rfc9264.html
+
