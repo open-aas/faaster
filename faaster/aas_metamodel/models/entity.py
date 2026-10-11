@@ -18,18 +18,18 @@ class Entity(SubmodelElement):
     :param statements: Describes statements applicable to the entity by a set of submodel elements,
     typically with a qualified value.
     :param entity_type: Describes whether the entity is a co-managed entity or a
-    self-managed entity.
+    self-managed entity (optional since AAS V3.1).
     :param global_asset_id: Global identifier of the asset the entity is representing.
-    :param specific_asset_id: Reference to a specific asset ID representing a
-    supplementary identifier
-    of the asset represented by the Asset Administration Shell.
+    :param specific_asset_ids: Specific asset IDs representing supplementary
+    identifiers of the asset represented by the entity. The singular
+    "specificAssetId" (one object) of older serializations is also accepted.
     """
 
     type_model: Literal[ModelType.ENTITY] = Field(alias="modelType", default=ModelType.ENTITY)
     statements: Optional[List[dict]] = []
-    entity_type: EntityType
+    entity_type: Optional[EntityType] = None
     global_asset_id: Optional[Identifier] = None
-    specific_asset_id: Optional[SpecificAssetId] = None
+    specific_asset_ids: Optional[List[SpecificAssetId]] = None
 
     def __init__(self, **attrs):
         """Initialize an Entity, processing nested statements into proper submodel element DTOs.
@@ -38,10 +38,13 @@ class Entity(SubmodelElement):
         :param attrs: Attributes dictionary including optional 'statements'.
         :return: None
         """
+        if "specificAssetIds" not in attrs and attrs.get("specificAssetId") is not None:
+            attrs["specificAssetIds"] = [attrs.pop("specificAssetId")]
+
         submodel_element_union, type_model = SubmodelElementProcessor.process_elements(attrs)
         if type_model == "Entity":
             processed_statements = []
-            for elem in attrs.get("statements", []):
+            for elem in attrs.get("statements") or []:
                 model_type = elem.get("modelType", None) or elem.get("type_model", None)
                 instance = getattr(submodel_element_union, model_type)(**elem)
                 processed_statements.append(instance.model_dump(by_alias=True))
@@ -64,14 +67,14 @@ class Entity(SubmodelElement):
         :raises InvalidFieldException: If the constraint AASd-014 is violated.
         """
         if self.entity_type == "CoManagedEntity":
-            if self.global_asset_id or self.specific_asset_id:
+            if self.global_asset_id or self.specific_asset_ids:
                 raise InvalidFieldException(
                     detail="A co-managed entity has to have neither a globalAssetId nor a "
                     "specificAssetId (Constraint AASd-014)"
                 )
 
         if self.entity_type == "SelfManagedEntity":
-            if not self.global_asset_id and not self.specific_asset_id:
+            if not self.global_asset_id and not self.specific_asset_ids:
                 raise InvalidFieldException(
                     detail="A self-managed entity has to have a globalAssetId or a "
                     "specificAssetId (Constraint AASd-014)"
