@@ -116,7 +116,8 @@ class NodeRegistry:
         self._nodes[node_id] = metadata
         self._by_path[metadata.path] = node_id
 
-        if metadata.semantic_id:
+        # Value@nível compartilha o semanticId da Property: o índice aponta para o nó raw
+        if metadata.semantic_id and not metadata.is_virtual:
             self._by_semantic_id[metadata.semantic_id] = node_id
 
         if metadata.submodel not in self._by_submodel:
