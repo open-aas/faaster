@@ -191,7 +191,14 @@ class AddressSpaceAdapter(IAddressSpace):
         ua_vt = _to_ua_variant_type(variant_type)
         converted_value = _convert_value(value, variant_type, is_array)
 
-        node = await raw_parent.add_variable(ns, name, converted_value, ua_vt)
+        if converted_value is None and ua_vt is not None and not is_array:
+            # value é opcional no AAS: nó sem valor (Null), mas com o DataType
+            # declarado, para aceitar escritas do tipo certo depois
+            node = await raw_parent.add_variable(
+                ns, name, ua.Variant(None, ua.VariantType.Null), datatype=ua.NodeId(ua_vt.value)
+            )
+        else:
+            node = await raw_parent.add_variable(ns, name, converted_value, ua_vt)
 
         if is_array:
             await node.write_value_rank(1)
