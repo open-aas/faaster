@@ -42,6 +42,7 @@ class OPCUAServer(IOPCUAServer):
         self._parser = parser
         self._hda_manager = hda_manager
         self._stop_event = asyncio.Event()
+        self._stopping = False
         self._historized_nodes: list = []
         self._extension_loader = extension_loader
         self._extensions_tasks: List[asyncio.Task] = []
@@ -253,13 +254,24 @@ class OPCUAServer(IOPCUAServer):
         logger.info("opcua_server.run.stopped")
 
     async def stop(self) -> None:
+        # um segundo Ctrl+C durante o encerramento não repete as etapas
+        if self._stopping:
+            return
+        self._stopping = True
         logger.info("opcua_opcua_server.stop")
         for name, extension in self._extension_loader.instances.items():
-            extension.stop()
+            try:
+                await extension.stop()
+            except Exception as exc:
+                logger.error("opcua_server.stop.extension_failed", extension=name, error=str(exc))
 
         for task in self._extensions_tasks:
             if not task.done():
                 task.cancel()
+
+        if self._hda_manager is not None:
+            # grava as janelas do modo aggregate e encerra o pool do banco
+            await self._hda_manager.stop()
 
         self._stop_event.set()
 
