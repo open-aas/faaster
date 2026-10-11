@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Awaitable, Callable, List, Optional, Tuple
 from asyncua import Server, Node, ua
 
 from faaster.interfaces import IAddressSpace, INode
@@ -285,6 +285,29 @@ class AddressSpaceAdapter(IAddressSpace):
         )
 
         await raw_node.write_value(dv)
+
+    async def watch_value(
+        self,
+        node: INode,
+        callback: Callable[[Any], Awaitable[None]],
+    ) -> int:
+        raw_node = self._unwrap(node)
+
+        async def on_change(_handle: int, data_value: ua.DataValue) -> None:
+            await callback(data_value.Value.Value if data_value.Value is not None else None)
+
+        status, handle = self._server.iserver.aspace.add_datachange_callback(
+            raw_node.nodeid, ua.AttributeIds.Value, on_change
+        )
+        if not status.is_good():
+            raise ValueError(f"cannot watch node {raw_node.nodeid}: {status.name}")
+        return handle
+
+    def unwatch_value(self, handle: int) -> None:
+        self._server.iserver.aspace.delete_datachange_callback(handle)
+
+    async def set_writable(self, node: INode, writable: bool = True) -> None:
+        await self._unwrap(node).set_writable(writable)
 
     async def set_display_name(self, node: INode, value: FaasterLocalizedText) -> None:
         raw_node = self._unwrap(node)

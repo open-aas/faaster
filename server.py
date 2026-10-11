@@ -16,6 +16,7 @@ async def main(args: Namespace):
 
     await aas.server.setup(args)
     await aas.server.build_address_space(args.modeling_file)
+    await aas.server.bind_assets()
     await aas.server.init_hda()
     await aas.server.load_extension()
     await aas.server.run()

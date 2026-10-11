@@ -74,6 +74,17 @@ def aas_parser_arguments() -> Namespace:
         default="FaasterAASUniqueId"
     )
 
+    modeling.add_argument(
+        "--no-asset-binding",
+        action="store_false",
+        dest="asset_binding",
+        help=(
+            "Do not bind the AAS to the asset through the Asset Interfaces "
+            "Description (IDTA 02017) and Mapping Configuration (IDTA 02027) "
+            "submodels. Binding is enabled by default when the model has them."
+        )
+    )
+
     # -------------------------------------------------------------------------
     # Servidor OPC UA
     # -------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Optional, Any, List, Callable, Tuple
+from typing import Optional, Any, Awaitable, List, Callable, Tuple
 from .types import FaasterVariantType, MethodArgument, MethodCallResult, FaasterLocalizedText
 from .inode import INode
 
@@ -79,6 +79,27 @@ class IAddressSpace(ABC):
         Chama um método OPC UA pelo mesmo caminho de um cliente (Call
         service), sobre o objeto pai do método. inputs: (valor, tipo).
         """
+        raise NotImplementedError
+
+    async def watch_value(
+        self,
+        node: INode,
+        callback: Callable[[Any], Awaitable[None]],
+    ) -> Any:
+        """
+        Chama callback(valor) a cada escrita no nó, venha ela de um cliente
+        OPC UA, da API HTTP/REST ou do próprio runtime. O callback roda dentro
+        da escrita, então não deve bloquear. Devolve um handle para
+        unwatch_value.
+        """
+        raise NotImplementedError
+
+    def unwatch_value(self, handle: Any) -> None:
+        """Cancela um watch_value."""
+        raise NotImplementedError
+
+    async def set_writable(self, node: INode, writable: bool = True) -> None:
+        """Permite (ou não) que clientes OPC UA escrevam no nó."""
         raise NotImplementedError
 
     @abstractmethod

@@ -5,6 +5,7 @@ from asyncua import Server, Client
 from asyncua.ua import BuildInfo, RegisteredServer, ApplicationType, LocalizedText, EndpointType
 
 from faaster.api import HttpApiServer
+from faaster.binding import AssetBinder
 from faaster.extensions import ExtensionLoader
 from faaster.gds import GDSClient, GDSCertificateClient, GDSRegistrationManager, ApplicationRecord
 from faaster.interfaces import IOPCUAServer, IAddressSpace
@@ -37,6 +38,7 @@ class OPCUAServer(IOPCUAServer):
         extension_loader: ExtensionLoader,
         hda_manager: Optional[IHDAManager] = None,
         http_api: Optional[HttpApiServer] = None,
+        asset_binder: Optional[AssetBinder] = None,
     ) -> None:
         self._uri = "urn:faaster:server"
         self._opcua_server = opcua_server
@@ -49,6 +51,7 @@ class OPCUAServer(IOPCUAServer):
         self._extensions_tasks: List[asyncio.Task] = []
         self._trust_store = None  # definido em setup() quando --pki-dir é fornecido
         self._http_api = http_api
+        self._asset_binder = asset_binder
 
     async def set_history_storage(self, storage: IHDAStorage) -> None:
         self._opcua_server.iserver.history_manager.set_storage(storage)
@@ -149,6 +152,19 @@ class OPCUAServer(IOPCUAServer):
             historized_nodes=len(self._historized_nodes),
         )
 
+    async def bind_assets(self) -> None:
+        """
+        Monta o vínculo AAS ↔ ativo (AID + AIMC) sobre o espaço de endereços
+        já construído. As conexões com o ativo abrem em run(), antes das
+        extensões, para que elas já encontrem os nós alimentados.
+        """
+        if self._asset_binder is None:
+            logger.info("opcua_server.bind_assets.disabled")
+            return
+
+        mappings = self._asset_binder.configure(self._parser.document)
+        logger.info("opcua_server.bind_assets.done", mappings=mappings)
+
     async def load_extension(self) -> None:
         """
         Delegado ao ExtensionLoader — o servidor apenas
@@ -227,6 +243,9 @@ class OPCUAServer(IOPCUAServer):
                     name="faaster.http_api",
                 )
 
+            if self._asset_binder is not None and not self._asset_binder.is_empty:
+                await self._asset_binder.start()
+
             for name, extension in self._extension_loader.instances.items():
                 task = asyncio.create_task(extension.init(), name=f'TaskSubmodel:{name}')
                 self._extensions_tasks.append(task)
@@ -246,6 +265,9 @@ class OPCUAServer(IOPCUAServer):
 
         if self._http_api is not None:
             self._http_api.stop()
+
+        if self._asset_binder is not None:
+            await self._asset_binder.stop()
 
         self._stop_event.set()
 

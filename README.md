@@ -32,6 +32,7 @@ However, implementing a Reactive AAS (Type 2) over OPC UA still requires signifi
 - **Selective HDA** — Enables Historical Data Access for variables marked as `VARIABLE` in the metamodel, with configurable time-series backends (TimescaleDB)
 - **Policy-driven storage** — HDA aggregation and retention policies defined directly in the AAS model via `Extension` elements (`faaster:hda:*`), aligned with industrial standards such as IEC 61000-4-30 and ANEEL Module 8
 - **Threshold-based OPC UA events** — Configurable event generation via JSON configuration file, with custom `EventType` derived from `BaseEventType`
+- **Declarative asset binding** — Connects the AAS to the physical asset from the *Asset Interfaces Description* (IDTA 02017) and *Asset Interfaces Mapping Configuration* (IDTA 02027) submodels, with no asset-specific code; built-in OPC UA client driver, other protocols as plugins
 - **Extension mechanism** — User-defined runtime extensions via Python scripts or packages loaded from the `sources/` directory, receiving a `SubmodelContext` with full access to the OPC UA address space and node registry
 - **OPC UA Security** — Standalone X.509 certificate management (self-signed bootstrap + PKI store per OPC 10000-12 Annex F) with configurable security policies (`basic256`, `aes128`, `aes256`) and modes (`sign`, `sign-and-encrypt`)
 - **GDS Integration** — Application registration and Pull Certificate Management against an OPC UA Global Discovery Server (OPC 10000-12 §6–7), including automatic TrustList updates
@@ -385,6 +386,46 @@ curl -X DELETE "http://localhost:8080/api/v3/submodels/$SM/submodel-elements/Mot
 
 ---
 
+## Asset Binding (AID + AIMC)
+
+When the model contains an *Asset Interfaces Description* (AID, IDTA 02017) and an
+*Asset Interfaces Mapping Configuration* (AIMC 2.x, IDTA 02027), Faaster binds the AAS
+to the asset by itself — no extension script is needed for the I/O. Both submodels are
+found by their `semanticId`, never by `idShort`.
+
+| AIMC mapping | Direction | Behaviour |
+|---|---|---|
+| Source = AID property, Sink = Property | asset → AAS | Observable points become OPC UA monitored items (initial value included); others are polled at `PollingInterval` / `DefaultPollingInterval` |
+| Source = Property, Sink = AID property | AAS → asset | Any write to the Property node — OPC UA client, REST `PATCH …/$value` or an extension — is forwarded to the asset. **Faaster extension:** AIMC 2 lists writing to assets as an upcoming use case |
+
+Rules:
+
+- **AID without AIMC binds nothing** (warning). Bindings are never inferred from names.
+- **The binding owns the nodes it feeds.** Extensions write to the AAS node; with an
+  AAS → asset mapping the value reaches the asset. A write to a node fed only by the asset
+  is overwritten by the next reading (warning).
+- **No echo loop:** each node keeps the expected asset state (last reading or last command),
+  and a write equal to it is not sent back. Fast pulses (`True` then `False`) are preserved.
+- A failed write to the asset restores the node to the last value read from the asset.
+- Mappings with a Lua `Transformation`, AAS → AAS mappings and AIMC 1.x are not supported yet
+  (skipped with a warning).
+
+OPC UA points are resolved by the NodeId in `href` (`?id=ns=3;s=…`) or, when it is absent,
+by `uav_browsePath` (relative to `Objects`). The driver reconnects on its own and re-subscribes
+after an outage. Only the `nosec` security scheme is supported for now.
+
+Other protocols are plugins, selected by the URI scheme of `EndpointMetadata/base`:
+
+```toml
+# pyproject.toml of the plugin package
+[project.entry-points."faaster.bindings"]
+"modbus+tcp" = "my_package.modbus:ModbusDriver"   # implements faaster.binding.IAssetDriver
+```
+
+Binding is on by default; `--no-asset-binding` disables it.
+
+---
+
 ## Writing a Submodel Extension
 
 Extensions are Python scripts placed in the `sources/` directory. Each script corresponds to a submodel, following the naming convention `{submodel_id_short_snake_case}.py`.
@@ -437,6 +478,7 @@ Modeling:
   -m, --modeling-file PATH      Path to the AAS V3 JSON modeling file (required)
   --aas_id_short                The IdShort of the AAS model
   --aas_id                      The Id of the AAS model, must be unique for each AAS
+  --no-asset-binding            Do not bind the AAS to the asset through AID + AIMC
 
 OPC UA Server:
   --host HOST                   Host address to bind (default: 0.0.0.0)
@@ -524,6 +566,10 @@ During validation with AAS models from the official IDTA dataset, Faaster automa
 faaster/
 ├── aas_metamodel/       — AAS V3 metamodel Pydantic models + validators
 ├── api/                 — AAS HTTP/REST API (IDTA-01002-3-2) over FastAPI
+├── binding/             — Asset binding from AID (IDTA 02017) + AIMC (IDTA 02027)
+│   ├── model.py         — reads AID/AIMC from the AAS document
+│   ├── binder.py        — AssetBinder: asset → AAS and AAS → asset mappings
+│   └── drivers/         — IAssetDriver, OPC UA client driver, entry-point plugins
 ├── cli/                 — CLI argument parsing
 ├── extensions/          — Extension loader, context and interfaces
 ├── gds/                 — GDS client, registration manager, certificate client
@@ -553,7 +599,9 @@ server.py                — entry point
 ## Roadmap
 
 - [ ] Semantic mapping based on OPC UA ObjectTypes and Interfaces (Braunisch et al., 2025)
-- [ ] Sensor driver SDK for direct mapping between AAS variables and physical devices
+- [x] Declarative asset binding from AID (IDTA 02017) + AIMC (IDTA 02027), OPC UA driver
+- [ ] AIMC Lua transformations, AAS → AAS mappings and secure (`uav_channelsec`) asset connections
+- [ ] Further asset drivers (Modbus, MQTT) as `faaster.bindings` plugins
 - [ ] OPC UA events based on `Range` and `BasicEventElement` metamodel elements
 - [ ] Machine Learning integration at the edge for anomaly detection in historized variables
 - [x] OPC UA security with X.509 certificates (standalone PKI + GDS Pull Management)

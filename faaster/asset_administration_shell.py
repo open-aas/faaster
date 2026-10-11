@@ -24,6 +24,7 @@ from faaster.parser import AASParser, NodeRegistry
 from faaster.hda import HDAManagerFactory
 from faaster.extensions.interfaces import ISubmodelExtension
 from faaster.extensions.loader import ExtensionLoader
+from faaster.binding import AssetBinder
 from faaster.api import HttpApiServer
 
 logger = get_logger(__name__)
@@ -43,8 +44,9 @@ class AssetAdministrationShell:
         aas = AssetAdministrationShell(args)
         await aas.server.setup(args)
         await aas.server.build_address_space(args.modeling_file)
-        await aas.server.load_extension(args.config_sensor)
+        await aas.server.bind_assets()
         await aas.server.init_hda()
+        await aas.server.load_extension()
         await aas.server.run()
     """
 
@@ -77,6 +79,10 @@ class AssetAdministrationShell:
 
         self._extension_loader = ExtensionLoader(self._address_space, self._registry)
 
+        self._asset_binder: Optional[AssetBinder] = None
+        if getattr(args, "asset_binding", True):
+            self._asset_binder = AssetBinder(self._address_space, self._registry)
+
         self._http_api: Optional[HttpApiServer] = None
         if getattr(args, "http_port", None):
             self._http_api = HttpApiServer(
@@ -95,6 +101,7 @@ class AssetAdministrationShell:
             hda_manager=self._hda_manager,
             extension_loader=self._extension_loader,
             http_api=self._http_api,
+            asset_binder=self._asset_binder,
         )
 
         if args.url_database:

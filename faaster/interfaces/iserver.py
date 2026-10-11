@@ -14,9 +14,10 @@ class IOPCUAServer(ABC):
     Ordem obrigatória de execução:
         1. setup()
         2. build_address_space()
-        3. load_extension()
+        3. bind_assets()
         4. init_hda()
-        5. run()
+        5. load_extension()
+        6. run()
     """
 
     @abstractmethod
@@ -26,6 +27,13 @@ class IOPCUAServer(ABC):
     @abstractmethod
     async def build_address_space(self, modeling_file: str) -> None:
         ...
+
+    async def bind_assets(self) -> None:
+        """
+        Prepara o vínculo AAS ↔ ativo a partir do AID/AIMC do modelo.
+        As conexões com o ativo abrem em run().
+        """
+        return None
 
     @abstractmethod
     async def load_extension(self) -> None:
