@@ -281,6 +281,110 @@ Certificate renewal runs automatically every `--renew-interval` seconds. If the 
 
 ---
 
+## AAS HTTP/REST API (IDTA-01002-3-2)
+
+Faaster can serve the AAS Part 2 HTTP/REST API ([IDTA-01002-3-2](docs/specs/IDTA-01002-3-2/)) alongside
+the OPC UA server, in the same process and event loop. The API is optional and is enabled with `--http-port`. The model structure is served exactly as
+authored in the AAS JSON file, while `Property` values are read live from the OPC UA address space,
+so a REST client always sees the same value as an OPC UA client.
+
+```bash
+python server.py -m models/my_asset.json --port 4840 --http-port 8080
+curl http://localhost:8080/api/v3/description
+curl http://localhost:8080/api/v3/submodels
+```
+
+Interactive documentation (Swagger UI): `http://localhost:8080/api/v3/docs`.
+
+Identifiers in the URL are base64url-encoded without padding, and `idShortPath` uses dots and
+URL-encoded brackets (e.g. `Motor.Status.Running`, `Setpoints%5B1%5D`):
+
+```bash
+SM=$(printf 'urn:example:sm:operational' | base64 -w0 | tr '+/' '-_' | tr -d '=')
+curl "http://localhost:8080/api/v3/submodels/$SM/submodel-elements/Motor.Speed"
+curl "http://localhost:8080/api/v3/submodels/$SM/\$value"            # {"Motor": {"Speed": 1450, ...}}
+curl "http://localhost:8080/api/v3/submodels/$SM/\$path?level=core"  # ["Temperature", "Motor", ...]
+```
+
+Values of `Property` elements can be written with `PATCH …/$value` (ValueOnly body). The write goes
+straight to the OPC UA node — like an OPC UA client write, so OPC UA subscribers see it and HDA
+historizes it for `VARIABLE` properties — and is **not** persisted to the model file:
+
+```bash
+curl -X PATCH -H 'Content-Type: application/json' -d '1450' \
+  "http://localhost:8080/api/v3/submodels/$SM/submodel-elements/Motor.Speed/\$value"   # 204
+curl -X PATCH -H 'Content-Type: application/json' -d '{"Temperature": 21.5, "Motor": {"Speed": 900}}' \
+  "http://localhost:8080/api/v3/submodels/$SM/\$value"                                 # 204
+```
+
+The whole body is validated against each `valueType` (and the OPC UA node type) before anything is
+written: an invalid value returns `400` and leaves every node untouched. Elements whose value is not
+backed by an OPC UA node yet (MultiLanguageProperty, Range, File, Blob, …) return `501`.
+
+Operations are invoked through the same OPC UA Call service used by OPC UA clients, so the handler is
+the method of the submodel extension bound to the Operation (method name = `idShort` in snake_case):
+
+```python
+# sources/showcase.py — submodel "Showcase" with an Operation "Add" (inputs a, b; output sum)
+class Showcase(ISubmodelExtension):
+    async def add(self, parent, a, b):
+        return float(a + b)
+```
+
+```bash
+OP="http://localhost:8080/api/v3/submodels/$SM/submodel-elements/Add"
+curl -X POST -H 'Content-Type: application/json' -d '{"inputArguments": {"a": 2, "b": 1.5}}' "$OP/invoke/\$value"
+# {"executionState": "Completed", "success": true, "outputArguments": {"sum": 3.5}}
+
+curl -i -X POST -H 'Content-Type: application/json' \
+  -d '{"inputArguments": {"a": 2}, "clientTimeoutDuration": "PT30S"}' "$OP/invoke-async/\$value"
+# 202 + Location: …/Add/operation-status/{handleId}  →  200 Running … then 302 to …/operation-results/{handleId}
+```
+
+Inputs are validated against each `valueType` before the call (`400`); a missing input falls back to
+the value declared in the model. An Operation with no bound extension method returns `501`. Errors
+raised by the handler, or an expired `clientTimeoutDuration`, return `200` with `executionState`
+`Failed`/`Timeout`, as required by the spec.
+
+Submodels and submodel elements can also be created, replaced, patched and deleted
+(`POST`/`PUT`/`PATCH`/`PATCH …/$metadata`/`DELETE`). Each change is applied to the model served by the
+API **and** to the OPC UA address space, and — like value writes — is not persisted to the model file.
+The old and new models are reconciled element by element, touching only what changed:
+
+- new / removed elements get their OPC UA subtree created / removed (new elements are live but not
+  historized: HDA tables are built at startup);
+- a Submodel, SubmodelElementCollection or Property whose runtime attributes (`valueType`, `category`,
+  `extensions`, `semanticId`) are unchanged is **updated in place** — only its metadata nodes are recreated
+  and new values written, so NodeIds, OPC UA subscriptions, HDA and extensions keep working. A
+  `GET` → edit → `PUT` round trip therefore never disturbs the address space beyond the edit;
+- any other change rebuilds the element's subtree;
+- removing or rebuilding a subtree in use by the runtime (a historized property or an Operation bound to
+  an extension) returns `409`; values remain writable with `PATCH …/$value`.
+
+```bash
+curl -X POST -H 'Content-Type: application/json' \
+  -d '{"modelType": "Property", "idShort": "Torque", "valueType": "xs:double", "value": "1.5"}' \
+  "http://localhost:8080/api/v3/submodels/$SM/submodel-elements/Motor"      # 201 + Location
+curl -X DELETE "http://localhost:8080/api/v3/submodels/$SM/submodel-elements/Motor.Torque"   # 204
+```
+
+| Service / profile | Status |
+|---|---|
+| Submodel Repository — read (`SSP-002`): `GetAllSubmodels`, `GetSubmodelById`, `GetAllSubmodelElements`, `GetSubmodelElementByPath`, with `level`, `extent`, `limit`/`cursor`, `idShort` and `semanticId` | ✅ |
+| Content modifiers `$value` (ValueOnly), `$metadata`, `$reference`, `$path` on all of the above | ✅ |
+| AAS Repository — read (`SSP-002`): `/shells` (filters `assetIds`, `idShort`), `$reference`, `asset-information`, `submodel-refs` and the superpath `/shells/{aas}/submodels/{sm}/…` | ✅ |
+| Concept Description Repository — read: `/concept-descriptions` (filters `idShort`, `isCaseOf`, `dataSpecificationRef`) | ✅ |
+| `/serialization` (JSON, with live values and referenced Concept Descriptions) | ✅ |
+| `/attachment`, `asset-information/thumbnail`, `$recent-changes`, XML/AASX serialization | 🚧 |
+| Value writes — `PatchSubmodelById-ValueOnly`, `PatchSubmodelElementByPath-ValueOnly` (Property → OPC UA node, also via the superpath) | ✅ |
+| Value writes for MultiLanguageProperty, Range, File, Blob, SubmodelElementList | 🚧 |
+| Operation invocation — `/invoke`, `/invoke-async`, `operation-status`, `operation-results` (normal and `$value`, also via the superpath) | ✅ |
+| Operations with `inoutputVariables` or non-Property arguments | 🚧 |
+| Structural writes — `PostSubmodel`, `Put`/`Patch`(+`$metadata`)/`DeleteSubmodelById`, `PostSubmodelElement(ByPath)`, `Put`/`Patch`(+`$metadata`)/`DeleteSubmodelElementByPath`, synchronized with the OPC UA address space | ✅ |
+| Structural writes for AAS and Concept Descriptions (`/shells`, `/concept-descriptions`, `submodel-refs`) | 🚧 |
+
+---
+
 ## Writing a Submodel Extension
 
 Extensions are Python scripts placed in the `sources/` directory. Each script corresponds to a submodel, following the naming convention `{submodel_id_short_snake_case}.py`.
@@ -341,6 +445,11 @@ OPC UA Server:
   --discovery-url URL           External URL advertised to the LDS
   --gds-url URL                 GDS URL for registration and certificate management
   --renew-interval SEC          LDS/GDS renewal interval in seconds (default: 60)
+
+HTTP/REST API (IDTA-01002-3-2) — optional:
+  --http-host HOST              Host address to bind (default: 0.0.0.0)
+  --http-port PORT              Enable the HTTP/REST API on this port (disabled if omitted)
+  --http-base-path PATH         Endpoint prefix (default: /api/v3)
 
 Security:
   --pki-dir PATH                PKI directory (OPC 10000-12 Annex F layout)
@@ -414,6 +523,7 @@ During validation with AAS models from the official IDTA dataset, Faaster automa
 ```
 faaster/
 ├── aas_metamodel/       — AAS V3 metamodel Pydantic models + validators
+├── api/                 — AAS HTTP/REST API (IDTA-01002-3-2) over FastAPI
 ├── cli/                 — CLI argument parsing
 ├── extensions/          — Extension loader, context and interfaces
 ├── gds/                 — GDS client, registration manager, certificate client
@@ -450,6 +560,7 @@ server.py                — entry point
 - [x] Global Discovery Server integration (OPC UA Part 12 §6–7)
 - [ ] Horizontal scaling of Faaster instances in distributed industrial environments
 - [ ] MongoDB HDA backend
+- [ ] Full AAS HTTP/REST API (IDTA-01002-3-2) — AAS and Submodel Repository read profiles, Property value writes, Operation invocation and Submodel structural writes available
 
 ---
 
