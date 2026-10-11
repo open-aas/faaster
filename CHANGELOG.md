@@ -1,3 +1,16 @@
+## v1.0.0a3 (2026-10-11)
+
+### Fix
+
+- **server**: shut down gracefully on SIGINT and SIGTERM
+- **hda**: make TimescaleDB storage follow the model policies
+- **infra**: keep the measurement time as the value SourceTimestamp
+- **parser**: register Value@level nodes as virtual HDA nodes
+- **infra**: create typed null variables for properties without value
+- accept supplementary Unicode planes in AASd-130 pattern
+- align idShort regex with AASd-002 of AAS v3.2
+- make idShort optional for SubmodelElementList children (AASd-117)
+
 ## v1.0.0a2 (2026-06-15)
 
 ### Feat
