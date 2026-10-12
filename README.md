@@ -385,6 +385,7 @@ Certificate renewal runs automatically every `--renew-interval` seconds. If the 
 ### GDS CLI reference
 
 ```
+--application-uri URI   ApplicationUri of this instance (unique per twin; matches its certificate)
 --gds-url URL           GDS endpoint (e.g. opc.tcp://gds:58810)
 --gds-username NAME     GDS user with ApplicationSelfAdmin or DiscoveryAdmin role
 --gds-password PASS     GDS password

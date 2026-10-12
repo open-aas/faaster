@@ -448,7 +448,11 @@ class OPCUAServer(IOPCUAServer):
         )
 
         self._opcua_server.set_server_name(args.product_name)
-        await self._opcua_server.set_application_uri(build_info.ProductUri)
+        # ApplicationUri identifies the instance (unique per twin: GDS registration and the
+        # certificate's URI depend on it); ProductUri identifies the product. Default: as before.
+        await self._opcua_server.set_application_uri(
+            getattr(args, "application_uri", None) or build_info.ProductUri
+        )
 
         await self._opcua_server.set_build_info(
             product_uri=build_info.ProductUri,
