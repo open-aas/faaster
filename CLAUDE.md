@@ -26,10 +26,11 @@ python server.py -m models/my_asset.json \
   --db-backend timescaledb --db-name my_asset_001
 ```
 
-### Validate AAS model only (no server)
+### Validate AAS model and extensions only (no server)
 ```bash
-python server.py -m models/my_asset.json --validate-only
+python server.py -m models/my_asset.json --validate-only [--report-format json] [--sources sources/]
 ```
+Pipeline stages 4, 6, 7 and 8 (`faaster/validation/`); extensions are analysed by AST, never executed; exit code 1 on a blocking failure. Before this change `--validate-only` returned without loading the model.
 
 ### Run tests
 ```bash

@@ -82,6 +82,28 @@ since AAS v3.1); the parser logs `aas_parser.dynamic.category_deprecated` for it
 
 ---
 
+## Validation before deployment
+
+`--validate-only` loads the model and analyses the extensions **without starting the server**
+and exits with code `1` when a blocking stage fails (stages numbered as in the deployment
+pipeline of the Faaster Twin Manager):
+
+| Stage | Checks | Blocking |
+|---|---|---|
+| 4 metamodel | the model loads and passes the AAS V3 constraints (AASd) | yes |
+| 6 operations | every Operation has a `snake_case` method in the extension class | warning |
+| 7 extensions | a submodel with dynamic variables or Operations has an extension; every literal `context.get_node("…")` points to a dynamic variable (or its `Value@level` HDA node) | yes |
+| 8 dynamic | `faaster:dynamic` is a boolean; `faaster:hda:*` policies are valid and only on dynamic variables; Extension names are unique (AASd-077) | yes |
+
+```bash
+python server.py -m models/my_asset.json --validate-only                          # text
+python server.py -m models/my_asset.json --validate-only --report-format json \
+  --sources sources/                                                               # JSON on stdout, logs on stderr
+```
+
+Extensions are parsed (AST), **never imported or executed**: validation is safe to run on
+untrusted packages. The JSON report carries the Faaster version that validated the model.
+
 ## HDA Policy via AAS Extensions (*Development)
 
 Faaster introduces a novel approach to HDA configuration: **storage policies are defined in the AAS model itself**, not in the monitoring system. This means the policy travels with the asset throughout its lifecycle, independent of which monitoring platform is in use.
