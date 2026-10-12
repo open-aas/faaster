@@ -290,6 +290,10 @@ class ExtensionLoader:
     def instances(self) -> Dict[str, ISubmodelExtension]:
         return self._instances
 
+    def record_failure(self, submodel_id_short: str, reason: str) -> None:
+        """Record a failure found after loading (e.g. init() raised in its task)."""
+        self._failures[submodel_id_short] = reason
+
     @property
     def failures(self) -> Dict[str, str]:
         """Extensions that could not be loaded: idShort -> reason category and exception type

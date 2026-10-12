@@ -15,13 +15,29 @@ from faaster.interfaces.types import FaasterVariantType
 RUNTIME_OBJECT = "FaasterRuntime"
 
 
+class RuntimeInfo:
+    """Handle of the published object, to reflect failures that happen after start."""
+
+    def __init__(self, node: INode, loaded: INode, failed: INode, errors: INode) -> None:
+        self.node, self._loaded, self._failed, self._errors = node, loaded, failed, errors
+
+    async def update(self, *, loaded: List[str], failed: Dict[str, str]) -> None:
+        await self._loaded.set_value(sorted(loaded), FaasterVariantType.String)
+        await self._failed.set_value(_failed_list(failed), FaasterVariantType.String)
+        await self._errors.set_value(len(failed), FaasterVariantType.Int32)
+
+
+def _failed_list(failed: Dict[str, str]) -> List[str]:
+    return [f"{name}: {reason}" for name, reason in sorted(failed.items())]
+
+
 async def publish_runtime_info(
     address_space: IAddressSpace,
     *,
     version: str,
     loaded: List[str],
     failed: Dict[str, str],
-) -> INode:
+) -> RuntimeInfo:
     """Cria ``Objects/FaasterRuntime`` com Version, StartedAt, ExtensionsLoaded,
     ExtensionsFailed (``"<idShort>: <categoria>"``) e ExtensionErrors.
 
@@ -34,17 +50,14 @@ async def publish_runtime_info(
     await address_space.add_variable(
         runtime, "StartedAt", datetime.now(timezone.utc), FaasterVariantType.DateTime
     )
-    await address_space.add_variable(
+    loaded_node = await address_space.add_variable(
         runtime, "ExtensionsLoaded", sorted(loaded), FaasterVariantType.String, is_array=True
     )
-    await address_space.add_variable(
-        runtime,
-        "ExtensionsFailed",
-        [f"{name}: {reason}" for name, reason in sorted(failed.items())],
-        FaasterVariantType.String,
+    failed_node = await address_space.add_variable(
+        runtime, "ExtensionsFailed", _failed_list(failed), FaasterVariantType.String,
         is_array=True,
     )
-    await address_space.add_variable(
+    errors_node = await address_space.add_variable(
         runtime, "ExtensionErrors", len(failed), FaasterVariantType.Int32
     )
-    return runtime
+    return RuntimeInfo(runtime, loaded_node, failed_node, errors_node)

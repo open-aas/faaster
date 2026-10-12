@@ -119,7 +119,8 @@ the data — no extra port:
 | `ExtensionErrors` | Int32 | number of failed extensions |
 
 A failing extension does not stop the server (the twin keeps serving its model), so this is
-where a manager such as the Faaster Twin Manager detects it. Only the category and the exception type are
+where a manager such as the Faaster Twin Manager detects it. Failures of an extension's `init()`, which runs in
+the background after start, are added to these variables when they happen. Only the category and the exception type are
 published — never the exception message, which may carry credentials or internal addresses and
 would be readable by any OPC UA client; the full message stays in the runtime log.
 

@@ -204,7 +204,7 @@ class OPCUAServer(IOPCUAServer):
             loaded=list(loaded.keys()),
             failed=self._extension_loader.failures,
         )
-        await publish_runtime_info(
+        self._runtime_info = await publish_runtime_info(
             self._address_space,
             version=faaster_version(),
             loaded=list(loaded.keys()),
@@ -271,12 +271,22 @@ class OPCUAServer(IOPCUAServer):
             for name, extension in self._extension_loader.instances.items():
                 task = asyncio.create_task(extension.init(), name=f'TaskSubmodel:{name}')
                 # init() runs in the background: its exception used to be silently lost
-                task.add_done_callback(lambda done, name=name: report_extension_task(name, done))
+                task.add_done_callback(lambda done, name=name: self._on_extension_done(name, done))
                 self._extensions_tasks.append(task)
 
             await self._stop_event.wait()
 
         logger.info("opcua_server.run.stopped")
+
+    def _on_extension_done(self, name: str, task: "asyncio.Task") -> None:
+        """Log a failed init() and reflect it in Objects/FaasterRuntime (D16)."""
+        reason = report_extension_task(name, task)
+        if reason is None or getattr(self, "_runtime_info", None) is None:
+            return
+        self._extension_loader.record_failure(name, reason)
+        failed = self._extension_loader.failures
+        loaded = [n for n in self._extension_loader.instances if n not in failed]
+        asyncio.create_task(self._runtime_info.update(loaded=loaded, failed=failed))
 
     async def stop(self) -> None:
         # um segundo Ctrl+C durante o encerramento não repete as etapas

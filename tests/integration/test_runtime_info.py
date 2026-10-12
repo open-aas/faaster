@@ -15,12 +15,12 @@ async def _child_value(obj, name):
 async def test_runtime_object_exposes_version_extensions_and_errors(address_space, objects_node):
     before = datetime.now(timezone.utc)
 
-    obj = await publish_runtime_info(
+    obj = (await publish_runtime_info(
         address_space,
         version="1.0.0a3",
         loaded=["Energy", "Nameplate"],
         failed={"Maintenance": "import_error: ModuleNotFoundError"},
-    )
+    )).node
 
     names = [(await c.raw.read_browse_name()).Name for c in await objects_node.get_children()]
     assert RUNTIME_OBJECT in names
@@ -36,7 +36,18 @@ async def test_runtime_object_exposes_version_extensions_and_errors(address_spac
 
 
 async def test_runtime_object_without_extensions(address_space, objects_node):
-    obj = await publish_runtime_info(address_space, version="x", loaded=[], failed={})
+    obj = (await publish_runtime_info(address_space, version="x", loaded=[], failed={})).node
 
     assert await _child_value(obj, "ExtensionsLoaded") == []
     assert await _child_value(obj, "ExtensionErrors") == 0
+
+
+async def test_runtime_object_can_be_updated_after_publication(address_space, objects_node):
+    """An extension whose init() fails after start (background task) must show up."""
+    info = await publish_runtime_info(address_space, version="x", loaded=["Energy"], failed={})
+
+    await info.update(loaded=[], failed={"Energy": "init_error: RuntimeError"})
+
+    assert await _child_value(info.node, "ExtensionsLoaded") == []
+    assert await _child_value(info.node, "ExtensionsFailed") == ["Energy: init_error: RuntimeError"]
+    assert await _child_value(info.node, "ExtensionErrors") == 1
