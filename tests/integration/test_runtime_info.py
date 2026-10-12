@@ -19,7 +19,7 @@ async def test_runtime_object_exposes_version_extensions_and_errors(address_spac
         address_space,
         version="1.0.0a3",
         loaded=["Energy", "Nameplate"],
-        failed={"Maintenance": "import failed: ModuleNotFoundError: No module named 'x'"},
+        failed={"Maintenance": "import_error: ModuleNotFoundError"},
     )
 
     names = [(await c.raw.read_browse_name()).Name for c in await objects_node.get_children()]
@@ -27,7 +27,7 @@ async def test_runtime_object_exposes_version_extensions_and_errors(address_spac
     assert await _child_value(obj, "Version") == "1.0.0a3"
     assert await _child_value(obj, "ExtensionsLoaded") == ["Energy", "Nameplate"]
     assert await _child_value(obj, "ExtensionsFailed") == [
-        "Maintenance: import failed: ModuleNotFoundError: No module named 'x'"
+        "Maintenance: import_error: ModuleNotFoundError"
     ]
     assert await _child_value(obj, "ExtensionErrors") == 1
     started = await _child_value(obj, "StartedAt")

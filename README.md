@@ -115,11 +115,13 @@ the data — no extra port:
 | `Version` | String | Faaster version |
 | `StartedAt` | DateTime | when the runtime finished starting (UTC) |
 | `ExtensionsLoaded` | String[] | submodel idShorts whose extension loaded |
-| `ExtensionsFailed` | String[] | `"<idShort>: <reason>"` (import error, class not found, `__init__` failure) |
+| `ExtensionsFailed` | String[] | `"<idShort>: <category>"`: `import_error: <ExceptionType>`, `class_not_found` or `init_error: <ExceptionType>` |
 | `ExtensionErrors` | Int32 | number of failed extensions |
 
 A failing extension does not stop the server (the twin keeps serving its model), so this is
-where a manager such as the Faaster Twin Manager detects it.
+where a manager such as the Faaster Twin Manager detects it. Only the category and the exception type are
+published — never the exception message, which may carry credentials or internal addresses and
+would be readable by any OPC UA client; the full message stays in the runtime log.
 
 ## HDA Policy via AAS Extensions (*Development)
 

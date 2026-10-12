@@ -129,18 +129,14 @@ class ExtensionLoader:
 
         module = self._import_module(snake_name, load_path)
         if module is None:
-            self._failures[submodel_id_short] = (
-                f"import failed: {self._last_import_error or 'see logs'}"
-            )
+            self._failures[submodel_id_short] = f"import_error: {self._last_import_error}"
             return
 
         class_name = _to_pascal_case(snake_name)
         instance = self._instantiate(module, class_name, submodel_id_short)
 
         if instance is None:
-            self._failures[submodel_id_short] = (
-                f"class {class_name} not found or not an ISubmodelExtension"
-            )
+            self._failures[submodel_id_short] = "class_not_found"
             return
 
         context = SubmodelContext(
@@ -161,7 +157,9 @@ class ExtensionLoader:
             )
 
         except Exception as e:
-            self._failures[submodel_id_short] = f"init failed: {type(e).__name__}: {e}"
+            # Only the exception type: the message may carry credentials or internal
+            # addresses and the FaasterRuntime nodes are readable by OPC UA clients.
+            self._failures[submodel_id_short] = f"init_error: {type(e).__name__}"
             logger.error(
                 "extension_loader.init.error",
                 id_short=submodel_id_short,
@@ -234,7 +232,7 @@ class ExtensionLoader:
             return module
 
         except Exception as e:
-            cls._last_import_error = f"{type(e).__name__}: {e}"
+            cls._last_import_error = type(e).__name__
             logger.error(
                 "extension_loader.import.error",
                 module=name,
@@ -294,5 +292,7 @@ class ExtensionLoader:
 
     @property
     def failures(self) -> Dict[str, str]:
-        """Extensions that could not be loaded: idShort -> reason."""
+        """Extensions that could not be loaded: idShort -> reason category and exception type
+        (``import_error: <Type>``, ``class_not_found``, ``init_error: <Type>``). Messages stay
+        in the logs only: they may contain secrets and these values are published over OPC UA."""
         return dict(self._failures)

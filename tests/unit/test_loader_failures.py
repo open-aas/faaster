@@ -31,13 +31,25 @@ async def test_failures_are_recorded_per_submodel(tmp_path, monkeypatch):
         "broken.py": "import does_not_exist\n",
         "missing.py": "class Other: ...\n",
         "crashes.py": GOOD.replace("Energy", "Crashes").replace(
-            "self.context = context", "raise RuntimeError('boom')"),
+            "self.context = context", "raise RuntimeError('mqtt://user:s3cret@10.0.0.5')"),
     })
 
     loaded = await loader.load(MagicMock())
 
     assert set(loaded) == {"Energy"}
     assert set(loader.failures) == {"Broken", "Missing", "Crashes"}
-    assert "does_not_exist" in loader.failures["Broken"]
-    assert "Missing" in loader.failures["Missing"]
-    assert "boom" in loader.failures["Crashes"]
+    assert loader.failures == {
+        "Broken": "import_error: ModuleNotFoundError",
+        "Missing": "class_not_found",
+        "Crashes": "init_error: RuntimeError",
+    }
+
+
+async def test_failure_messages_never_leave_the_logs(tmp_path, monkeypatch):
+    """Security: exception messages may hold credentials; only categories are published."""
+    loader = _loader(tmp_path, monkeypatch, {"crashes.py": GOOD.replace("Energy", "Crashes")
+        .replace("self.context = context", "raise RuntimeError('mqtt://user:s3cret@10.0.0.5')")})
+
+    await loader.load(MagicMock())
+
+    assert "s3cret" not in str(loader.failures) and "10.0.0.5" not in str(loader.failures)

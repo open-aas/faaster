@@ -23,7 +23,11 @@ async def publish_runtime_info(
     failed: Dict[str, str],
 ) -> INode:
     """Cria ``Objects/FaasterRuntime`` com Version, StartedAt, ExtensionsLoaded,
-    ExtensionsFailed (``"<idShort>: <motivo>"``) e ExtensionErrors."""
+    ExtensionsFailed (``"<idShort>: <categoria>"``) e ExtensionErrors.
+
+    ``failed`` deve conter só categorias e tipos de exceção, nunca mensagens: estes nós são
+    legíveis por qualquer cliente OPC UA com acesso ao servidor.
+    """
     objects = await address_space.get_objects_node()
     runtime = await address_space.add_object(objects, RUNTIME_OBJECT)
     await address_space.add_variable(runtime, "Version", version, FaasterVariantType.String)
