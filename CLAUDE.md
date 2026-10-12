@@ -74,7 +74,7 @@ Uses [commitizen](https://commitizen-tools.github.io/commitizen/) with `cz_conve
 
 ### AAS V3 → OPC UA mapping
 - `AAS`, `Submodel`, `SubmodelElementCollection` → OPC UA Object/FolderType
-- `Property` → OPC UA DataVariable; if `category = VARIABLE`, also registered in `NodeRegistry` and historized
+- `Property` → OPC UA DataVariable; if dynamic (Qualifier `faaster:dynamic`, or deprecated `category = VARIABLE`), also registered in `NodeRegistry` and historized (`faaster/parser/dynamic.py`)
 - `Operation` → OPC UA Method
 - Virtual nodes (`Value@1min`, `Value@1hour`, `Value@1day`) are created automatically for VARIABLE properties that carry `faaster:hda:*` extensions
 
@@ -84,7 +84,7 @@ Uses [commitizen](https://commitizen-tools.github.io/commitizen/) with `cz_conve
 - `SubmodelContext.get_node("Collection/Property/Value")` resolves a node by path relative to the submodel
 
 ### HDA policy (declared in the AAS model)
-Policies are `Extension` elements prefixed `faaster:hda:` on any `VARIABLE` property:
+Policies are `Extension` elements prefixed `faaster:hda:` on any dynamic property:
 - `mode: sample` — raw hypertable + continuous aggregates per level (default)
 - `mode: aggregate` — in-memory buffer flushed at window boundary (e.g. ANEEL 15-min intervals)
 - Supported windows: `1min`, `5min`, `10min`, `15min`, `1hour`, `1day`
@@ -100,6 +100,6 @@ All infrastructure is hidden behind interfaces in `faaster/interfaces/`. Parser 
 ## Gotchas
 - `models/` e `sources/` estão no `.gitignore` (atenção: a regra `models/` também casa com `faaster/aas_metamodel/models/` — arquivos novos ali precisam de `git add -f`).
 - Operations: idShort PascalCase → método snake_case na extensão; sem método → retorna `[]` (não é erro).
-- Só Properties com `category: VARIABLE` entram no `NodeRegistry` e podem ser historizadas.
+- Só Properties dinâmicas (Qualifier `faaster:dynamic`; `category: VARIABLE` aceito com aviso) entram no `NodeRegistry` e podem ser historizadas.
 - `docker-compose-dev.yaml` usa rede externa: `docker network create faaster-network` antes do `up`.
 - Instalar testes: `poetry install --with system,tests`.

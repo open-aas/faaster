@@ -64,7 +64,21 @@ Faaster initializes in the following sequential steps:
 | Property                    | VariableType (DataVariable) |
 | Operation                   | MethodType                |
 
-Variables marked with `category = VARIABLE` in the metamodel have HDA enabled automatically and are included in the historized node list, avoiding the overhead of historizing all nodes.
+Dynamic variables — values updated by the extension and eligible for HDA — are marked with the
+**Qualifier `faaster:dynamic`** and are included in the historized node list, avoiding the
+overhead of historizing all nodes:
+
+```json
+{
+  "idShort": "Voltage", "modelType": "Property", "valueType": "xs:double",
+  "qualifiers": [
+    { "type": "faaster:dynamic", "kind": "ValueQualifier", "valueType": "xs:boolean", "value": "true" }
+  ]
+}
+```
+
+`category: VARIABLE` is still accepted but deprecated (the `category` attribute is deprecated
+since AAS v3.1); the parser logs `aas_parser.dynamic.category_deprecated` for it.
 
 ---
 
@@ -79,7 +93,7 @@ Policies are declared as `Extension` elements with the `faaster:hda:` prefix —
 ```json
 {
   "idShort": "Voltage",
-  "category": "VARIABLE",
+  "qualifiers": [{ "type": "faaster:dynamic", "kind": "ValueQualifier", "valueType": "xs:boolean", "value": "true" }],
   "extensions": [
     { "name": "faaster:hda:mode",          "value": "sample"       },
     { "name": "faaster:hda:levels",        "value": "1min,1hour,1day" },
@@ -94,7 +108,7 @@ Policies are declared as `Extension` elements with the `faaster:hda:` prefix —
 ```json
 {
   "idShort": "ActiveEnergy",
-  "category": "VARIABLE",
+  "qualifiers": [{ "type": "faaster:dynamic", "kind": "ValueQualifier", "valueType": "xs:boolean", "value": "true" }],
   "extensions": [
     { "name": "faaster:hda:mode",      "value": "aggregate" },
     { "name": "faaster:hda:window",    "value": "15min"     },

@@ -5,6 +5,7 @@ from faaster.interfaces.types import FaasterVariantType
 from faaster.hda import extract_policy, AggregationPolicy
 from faaster.log import get_logger
 from .base import BaseCreator, resolve_variant_type, cast_value
+from faaster.parser.dynamic import is_dynamic
 
 
 logger = get_logger(__name__)
@@ -51,7 +52,7 @@ class PropertyCreator(BaseCreator):
         element: Property,
         address_space: IAddressSpace,
     ) -> Tuple[List[Tuple[INode, str]], Optional[AggregationPolicy]]:
-        is_variable = element.category == "VARIABLE"
+        is_variable, _ = is_dynamic(element)
         policy = extract_policy(element.extensions)
         result: List[Tuple[INode,  str]] = []
 
