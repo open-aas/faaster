@@ -16,7 +16,9 @@ from faaster.security import (
     configure_server_security,
     auto_accept_task,
 )
+from faaster.infra.runtime_info import publish_runtime_info
 from faaster.log import get_logger
+from faaster.validation.report import faaster_version
 from faaster.interfaces import INode
 from faaster.interfaces.ihda import IHDAStorage, IHDAManager
 from faaster.parser import AASParser
@@ -186,6 +188,13 @@ class OPCUAServer(IOPCUAServer):
         logger.info(
             "opcua_server.load_extension.done",
             loaded=list(loaded.keys()),
+            failed=self._extension_loader.failures,
+        )
+        await publish_runtime_info(
+            self._address_space,
+            version=faaster_version(),
+            loaded=list(loaded.keys()),
+            failed=self._extension_loader.failures,
         )
 
         logger.info("opcua_server.load_extension.done")

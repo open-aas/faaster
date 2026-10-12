@@ -67,6 +67,8 @@ Uses [commitizen](https://commitizen-tools.github.io/commitizen/) with `cz_conve
 | `faaster/hda/policies.py` | Parses `faaster:hda:*` extensions into `AggregationPolicy` |
 | `faaster/hda/manager.py` | Orchestrates historization: subscribes to node changes, writes to storage |
 | `faaster/infra/aas_server.py` | `OPCUAServer` — asyncua-backed `IOPCUAServer` implementation |
+| `faaster/infra/runtime_info.py` | `Objects/FaasterRuntime` (version, start time, loaded/failed extensions) published after the extensions load |
+| `faaster/validation/` | `--validate-only` pipeline stages 4/6/7/8 and JSON report (extensions parsed by AST) |
 | `faaster/infra/address_space.py` | `AddressSpaceAdapter` — `IAddressSpace` over asyncua |
 | `faaster/infra/database_timescale.py` | TimescaleDB `IHDAStorage` implementation |
 | `faaster/loader/` | `LoaderFactory` dispatches `.json` / `.xml` / `.aasx` to the right `ILoader` |

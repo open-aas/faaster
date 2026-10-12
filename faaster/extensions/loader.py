@@ -55,6 +55,8 @@ class ExtensionLoader:
         self._registry = registry
         self._extensions_dir = Path(_EXTENSIONS_DIR)
         self._instances: Dict[str, ISubmodelExtension] = {}
+        # idShort -> reason; exposed in the FaasterRuntime object (D16)
+        self._failures: Dict[str, str] = {}
 
     async def load(self, server: IOPCUAServer) -> Dict[str, ISubmodelExtension]:
         """
@@ -127,12 +129,18 @@ class ExtensionLoader:
 
         module = self._import_module(snake_name, load_path)
         if module is None:
+            self._failures[submodel_id_short] = (
+                f"import failed: {self._last_import_error or 'see logs'}"
+            )
             return
 
         class_name = _to_pascal_case(snake_name)
         instance = self._instantiate(module, class_name, submodel_id_short)
 
         if instance is None:
+            self._failures[submodel_id_short] = (
+                f"class {class_name} not found or not an ISubmodelExtension"
+            )
             return
 
         context = SubmodelContext(
@@ -153,6 +161,7 @@ class ExtensionLoader:
             )
 
         except Exception as e:
+            self._failures[submodel_id_short] = f"init failed: {type(e).__name__}: {e}"
             logger.error(
                 "extension_loader.init.error",
                 id_short=submodel_id_short,
@@ -202,9 +211,12 @@ class ExtensionLoader:
                 hint="Implemente o método ou ignore — sem impacto no servidor",
             )
 
-    @staticmethod
-    def _import_module(name: str, path: Path):
+    _last_import_error: Optional[str] = None
+
+    @classmethod
+    def _import_module(cls, name: str, path: Path):
         """Importa um módulo ou pacote Python a partir do path."""
+        cls._last_import_error = None
         try:
             if path.is_dir():
                 # Pacote: adiciona sources/ ao sys.path para que imports
@@ -222,6 +234,7 @@ class ExtensionLoader:
             return module
 
         except Exception as e:
+            cls._last_import_error = f"{type(e).__name__}: {e}"
             logger.error(
                 "extension_loader.import.error",
                 module=name,
@@ -278,3 +291,8 @@ class ExtensionLoader:
     @property
     def instances(self) -> Dict[str, ISubmodelExtension]:
         return self._instances
+
+    @property
+    def failures(self) -> Dict[str, str]:
+        """Extensions that could not be loaded: idShort -> reason."""
+        return dict(self._failures)

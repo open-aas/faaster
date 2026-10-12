@@ -104,6 +104,23 @@ python server.py -m models/my_asset.json --validate-only --report-format json \
 Extensions are parsed (AST), **never imported or executed**: validation is safe to run on
 untrusted packages. The JSON report carries the Faaster version that validated the model.
 
+## Runtime diagnostics over OPC UA
+
+After loading the extensions, Faaster publishes `Objects/FaasterRuntime` in its namespace
+(`urn:faaster:server`), so health and runtime metrics are read over the same OPC UA session as
+the data — no extra port:
+
+| Variable | Type | Content |
+|---|---|---|
+| `Version` | String | Faaster version |
+| `StartedAt` | DateTime | when the runtime finished starting (UTC) |
+| `ExtensionsLoaded` | String[] | submodel idShorts whose extension loaded |
+| `ExtensionsFailed` | String[] | `"<idShort>: <reason>"` (import error, class not found, `__init__` failure) |
+| `ExtensionErrors` | Int32 | number of failed extensions |
+
+A failing extension does not stop the server (the twin keeps serving its model), so this is
+where a manager such as the Faaster Twin Manager detects it.
+
 ## HDA Policy via AAS Extensions (*Development)
 
 Faaster introduces a novel approach to HDA configuration: **storage policies are defined in the AAS model itself**, not in the monitoring system. This means the policy travels with the asset throughout its lifecycle, independent of which monitoring platform is in use.
