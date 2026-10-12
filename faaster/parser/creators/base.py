@@ -16,17 +16,24 @@ _VALUE_TYPE_MAP = {
     "xs:boolean": FaasterVariantType.Boolean,
     "xs:byteString": FaasterVariantType.ByteString,
     "xs:decimal": FaasterVariantType.Double,
-    "xs:int": FaasterVariantType.Int16,
-    "xs:integer": FaasterVariantType.Int32,
+    "xs:int": FaasterVariantType.Int32,  # XSD int is 32-bit (xs:short is 16-bit)
+    "xs:integer": FaasterVariantType.Int64,  # unbounded: widest signed type
     "xs:long": FaasterVariantType.Int64,
     "xs:negativeInteger": FaasterVariantType.Int64,
     "xs:nonNegativeInteger": FaasterVariantType.UInt64,
     "xs:nonPositiveInteger": FaasterVariantType.Int64,
     "xs:positiveInteger": FaasterVariantType.UInt64,
     "xs:short": FaasterVariantType.Int16,
+    "xs:unsignedShort": FaasterVariantType.UInt16,
+    "xs:unsignedInt": FaasterVariantType.UInt32,
+    "xs:unsignedLong": FaasterVariantType.UInt64,
     "xs:dateTime": FaasterVariantType.DateTime,
 }
 
+
+# Case-insensitive lookup: the keys above are camelCase (xs:dateTime, xs:anyURI, …) and used to
+# be looked up lowercased, so they never matched and fell back to String.
+_VALUE_TYPE_MAP_CI = {k.lower(): v for k, v in _VALUE_TYPE_MAP.items()}
 
 _VALUE_CONVERTER = {
     FaasterVariantType.Float: float,
@@ -47,7 +54,7 @@ _VALUE_CONVERTER = {
 def resolve_variant_type(value_type: Optional[str]) -> FaasterVariantType:
     if value_type is None:
         return FaasterVariantType.String
-    return _VALUE_TYPE_MAP.get(value_type.strip().lower(), FaasterVariantType.String)
+    return _VALUE_TYPE_MAP_CI.get(value_type.strip().lower(), FaasterVariantType.String)
 
 
 def cast_value(value: Any, variant_type: FaasterVariantType) -> Any:
