@@ -4,7 +4,7 @@ description: Use ao configurar historização (HDA) de variáveis no modelo AAS 
 ---
 # Políticas HDA no modelo AAS
 
-A política é declarada como `extensions` na **Property com `category: "VARIABLE"`**. Sem `faaster:hda:*` → não historiza. Código de referência: `faaster/hda/policies.py` (`extract_policy`, `AggregationPolicy`).
+A política é declarada como `extensions` na **Property dinâmica** (Qualifier `faaster:dynamic` com valor `true`; `category: "VARIABLE"` ainda é aceito, mas descontinuado). `--validate-only` (etapa 8) recusa política HDA em Property não dinâmica. Sem `faaster:hda:*` → não historiza. Código de referência: `faaster/hda/policies.py` (`extract_policy`, `AggregationPolicy`).
 
 ## Modo sample (padrão) — hypertable raw + continuous aggregates
 ```json

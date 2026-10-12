@@ -38,6 +38,6 @@ docs/                             especificação OPC 10000-12 (PDF)
 - **Desacoplamento por interfaces**: parser, HDA e extensões dependem só de `faaster/interfaces/`. Nada fora de `infra/` importa `asyncua` diretamente (exceção pontual: `uamethod` no ExtensionLoader).
 - **Novo backend HDA** = implementar `IHDAStorage` + registrar em `HDAManagerFactory`.
 - **Novo tipo de elemento AAS** = novo `IElementCreator` em `parser/creators/` + registro em `element_creator.py`.
-- **Mapeamento**: `Property` com `category = VARIABLE` vai para o `NodeRegistry` e pode ser historizada; nós virtuais `Value@1min/@1hour/@1day` são criados automaticamente quando há política HDA.
+- **Mapeamento**: `Property` dinâmica (Qualifier `faaster:dynamic`; `category = VARIABLE` aceito com aviso) vai para o `NodeRegistry` e pode ser historizada; nós virtuais `Value@1min/@1hour/@1day` são criados automaticamente quando há política HDA.
 - **Operations**: `OperationCreator` cria o Method com um `MethodBinder` (proxy); o handler real é vinculado depois pela extensão (IdShort PascalCase → método snake_case). Sem handler → retorna `[]`, sem erro.
 - Imports circulares em `faaster.hda` são evitados com `__getattr__` preguiçoso — manter esse padrão.
