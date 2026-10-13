@@ -120,12 +120,16 @@ async def test_operation_without_method_is_a_warning(tmp_path):
     assert "calibrate" in stage(report, 6).issues[0].message
 
 
-async def test_dynamic_submodel_without_extension_fails(tmp_path):
+async def test_dynamic_submodel_without_extension_is_a_warning(tmp_path):
+    """Without an extension the runtime still starts: dynamic values stay static and the
+    Operations return []. A model not yet integrated is not a wrong model (FTM E3: the 42
+    official IDTA templates refused by this rule all start)."""
     report = await validate(*model(tmp_path, GOOD, extension=None))
 
-    assert not report.ok
-    assert stage(report, 7).status == "failed"
+    assert report.ok
+    assert stage(report, 7).status == "warning"
     assert "energy.py" in stage(report, 7).issues[0].message
+    assert "static" in stage(report, 7).issues[0].message
 
 
 async def test_get_node_to_unknown_or_static_path_fails(tmp_path):

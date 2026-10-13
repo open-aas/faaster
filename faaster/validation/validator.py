@@ -147,9 +147,12 @@ def _check_extension(sm: _Submodel, sources: Path, ops: Stage, exts: Stage) -> N
     files = _extension_files(sources, snake)
     if not files:
         if needs_extension:
-            exts.error(
+            # not integrated is not wrong: the runtime starts, values stay static and the
+            # Operations return []; a broken extension, below, is still an error
+            exts.warning(
                 f"submodel {sm.id_short} has dynamic variables or Operations but no extension "
-                f"({sources}/{snake}.py or {sources}/{snake}/__init__.py)",
+                f"({sources}/{snake}.py or {sources}/{snake}/__init__.py): dynamic values stay "
+                "static and Operations return []",
                 sm.id_short,
             )
         return
