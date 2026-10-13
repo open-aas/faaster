@@ -23,7 +23,7 @@ class FileCreator(BaseCreator):
         await address_space.add_property(node, "IdShort", name)
         await address_space.add_property(node, "ModelType", element.type_model)
         await address_space.add_property(node, "Category", element.category)
-        await address_space.add_property(node, "ContentType", element.content_type)
+        await address_space.add_property(node, "ContentType", element.content_type or "")
 
         await address_space.add_variable(
             parent=node,

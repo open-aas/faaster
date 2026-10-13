@@ -59,10 +59,17 @@ Faaster initializes in the following sequential steps:
 
 | AAS V3 Element              | OPC UA Type               |
 |-----------------------------|---------------------------|
-| AAS, Submodel, SubmodelElement | ObjectType             |
-| SubmodelElementList         | ObjectType + FolderType   |
+| AAS, Submodel, SubmodelElementCollection | ObjectType   |
+| SubmodelElementList         | ObjectType; items as children named `[0]`, `[1]`… (they have no idShort, AASd-120) |
+| Entity                      | ObjectType with `EntityType`, `GlobalAssetId`, `SpecificAssetIds`; statements as children |
+| RelationshipElement         | ObjectType with `First`/`Second` keys folders |
+| AnnotatedRelationshipElement | as RelationshipElement, annotations under `Annotations` |
 | Property                    | VariableType (DataVariable) |
+| MultiLanguageProperty, Range, File, Blob, ReferenceElement, BasicEventElement, Capability | ObjectType with the element attributes |
 | Operation                   | MethodType                |
+
+The metadata properties (`IdShort`, `ModelType`, `Category`…) share the parent with the child
+elements; a duplicated BrowseName is added as `name_2`, `name_3`… with a warning.
 
 Dynamic variables — values updated by the extension and eligible for HDA — are marked with the
 **Qualifier `faaster:dynamic`** and are included in the historized node list, avoiding the

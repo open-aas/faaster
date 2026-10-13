@@ -10,6 +10,11 @@ from .creators.reference_element_creator import ReferenceElementCreator
 from .creators.file_creator import FileCreator
 from .creators.basic_event_element_creator import BasicEventElementCreator
 from .creators.concept_description_creator import ConceptDescriptionCreator
+from .creators.submodel_element_list_creator import SubmodelElementListCreator
+from .creators.entity_creator import EntityCreator
+from .creators.relationship_element_creator import RelationshipElementCreator
+from .creators.blob_creator import BlobCreator
+from .creators.capability_creator import CapabilityCreator
 from .creators.base import BaseCreator
 
 
@@ -28,6 +33,11 @@ class AASElementCreator(IElementCreator):
         file: BaseCreator,
         event: BaseCreator,
         concept_description: BaseCreator,
+        element_list: BaseCreator,
+        entity: BaseCreator,
+        relationship: BaseCreator,
+        blob: BaseCreator,
+        capability: BaseCreator,
     ) -> None:
         self._aas = aas
         self._submodel = submodel
@@ -40,6 +50,11 @@ class AASElementCreator(IElementCreator):
         self._file = file
         self._event = event
         self._concept_description = concept_description
+        self._element_list = element_list
+        self._entity = entity
+        self._relationship = relationship
+        self._blob = blob
+        self._capability = capability
 
     async def create_aas(self, parent, element, address_space):
         return await self._aas.create(parent, element, address_space)
@@ -73,3 +88,18 @@ class AASElementCreator(IElementCreator):
 
     async def create_concept_description(self, parent, element, address_space):
         return await self._concept_description.create(parent, element, address_space)
+
+    async def create_submodel_element_list(self, parent, element, address_space):
+        return await self._element_list.create(parent, element, address_space)
+
+    async def create_entity(self, parent, element, address_space):
+        return await self._entity.create(parent, element, address_space)
+
+    async def create_relationship_element(self, parent, element, address_space):
+        return await self._relationship.create(parent, element, address_space)
+
+    async def create_blob(self, parent, element, address_space):
+        return await self._blob.create(parent, element, address_space)
+
+    async def create_capability(self, parent, element, address_space):
+        return await self._capability.create(parent, element, address_space)

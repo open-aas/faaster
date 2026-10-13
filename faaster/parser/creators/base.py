@@ -99,6 +99,20 @@ class BaseCreator:
             )
 
     @staticmethod
+    async def add_reference(
+        parent: INode,
+        name: str,
+        reference: Optional[Reference],
+        address_space: IAddressSpace,
+    ) -> None:
+        """Folder ``name`` with ``Key[i]@<type>`` properties (as in ReferenceElement)."""
+        if reference is None or not reference.keys:
+            return
+        folder = await address_space.add_folder(parent, name)
+        for i, key in enumerate(reference.keys):
+            await address_space.add_property(folder, f"Key[{i}]@{getattr(key.type, 'value', key.type)}", key.value)
+
+    @staticmethod
     async def add_descriptions(
         parent: INode,
         descriptions: list,

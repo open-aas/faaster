@@ -25,17 +25,15 @@ from faaster.interfaces.types import FaasterVariantType
 def _op_element(id_short="StartProcess", input_vars=None, output_vars=None):
     el = MagicMock()
     el.id_short = id_short
-    el.modelType = "Operation"
-    el.inputVariables = input_vars or []
-    el.outputVariables = output_vars or []
+    el.type_model = "Operation"
+    el.input_variables = input_vars or []
+    el.output_variables = output_vars or []
     return el
 
 
 def _var(id_short, value_type="xs:float"):
     v = MagicMock()
-    v.value = MagicMock()
-    v.value.id_short = id_short
-    v.value.valueType = value_type
+    v.value = {"idShort": id_short, "valueType": value_type}
     return v
 
 

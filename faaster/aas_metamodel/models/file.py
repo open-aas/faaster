@@ -21,7 +21,7 @@ class File(DataElement):
 
     type_model: Literal[ModelType.FILE] = Field(alias="modelType", default=ModelType.FILE)
     value: Optional[PathType] = None
-    content_type: ContentType
+    content_type: Optional[ContentType] = None  # optional since AAS v3.1 (#412)
 
     @model_validator(mode="before")
     @classmethod
