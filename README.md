@@ -99,7 +99,7 @@ pipeline of the Faaster Twin Manager):
 |---|---|---|
 | 4 metamodel | the model loads and passes the AAS V3 constraints (AASd) | yes |
 | 6 operations | every Operation has a `snake_case` method in the extension class | warning |
-| 7 extensions | a submodel with dynamic variables or Operations has an extension; every literal `context.get_node("…")` points to a dynamic variable (or its `Value@level` HDA node) | yes |
+| 7 extensions | the extension parses and defines the expected class; every literal `context.get_node("…")` points to a dynamic variable (or its `Value@level` HDA node). A submodel with dynamic variables or Operations but **no** extension is only a warning: values stay static and Operations return `[]` | yes |
 | 8 dynamic | `faaster:dynamic` is a boolean; `faaster:hda:*` policies are valid and only on dynamic variables; Extension names are unique (AASd-077) | yes |
 
 ```bash
