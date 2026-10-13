@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Callable, List, Optional
+from typing import Any, Awaitable, Callable, List, Optional
 from asyncua import Server, Node, ua
 
 from faaster.interfaces import IAddressSpace, INode
@@ -150,6 +150,27 @@ class AddressSpaceAdapter(IAddressSpace):
     async def get_namespace_index(self, uri: str) -> int:
         return await self._server.get_namespace_index(uri)
 
+    @staticmethod
+    async def _unique(parent: Node, name: str, add: Callable[[str], Awaitable[Any]]) -> Any:
+        """Add a node; on a duplicated BrowseName add it as ``name_2``, ``name_3``...
+
+        Metadata properties (IdShort, ModelType, Category...) share the parent with the
+        child elements, so a child named ``Category`` (or a description with two texts in
+        the same language) collided and aborted the start (found by the FTM E3 corpus).
+        asyncua does not detect every duplicate, so the free name is chosen from the
+        children actually present.
+        """
+        try:
+            return await add(name)
+        except ua.uaerrors.BadBrowseNameDuplicated:
+            taken = {(await c.read_browse_name()).Name for c in await parent.get_children()}
+            attempt = 2
+            while f"{name}_{attempt}" in taken:
+                attempt += 1
+            renamed = f"{name}_{attempt}"
+            logger.warning("address_space.browse_name_duplicated", name=name, renamed=renamed)
+            return await add(renamed)
+
     async def add_folder(
         self,
         parent: INode,
@@ -157,7 +178,7 @@ class AddressSpaceAdapter(IAddressSpace):
     ) -> NodeAdapter:
         ns = await self._get_ns()
         raw_parent = self._unwrap(parent)
-        node = await raw_parent.add_folder(ns, name)
+        node = await self._unique(raw_parent, name, lambda n: raw_parent.add_folder(ns, n))
         return NodeAdapter(node)
 
     async def add_object(
@@ -171,9 +192,9 @@ class AddressSpaceAdapter(IAddressSpace):
 
         if object_type_id:
             obj_type = self._server.get_node(object_type_id)
-            node = await raw_parent.add_object(ns, name, obj_type.nodeid)
+            node = await self._unique(raw_parent, name, lambda n: raw_parent.add_object(ns, n, obj_type.nodeid))
         else:
-            node = await raw_parent.add_object(ns, name)
+            node = await self._unique(raw_parent, name, lambda n: raw_parent.add_object(ns, n))
 
         return NodeAdapter(node)
 
@@ -194,11 +215,13 @@ class AddressSpaceAdapter(IAddressSpace):
         if converted_value is None and ua_vt is not None and not is_array:
             # value é opcional no AAS: nó sem valor (Null), mas com o DataType
             # declarado, para aceitar escritas do tipo certo depois
-            node = await raw_parent.add_variable(
-                ns, name, ua.Variant(None, ua.VariantType.Null), datatype=ua.NodeId(ua_vt.value)
-            )
+            node = await self._unique(raw_parent, name, lambda n: raw_parent.add_variable(
+                ns, n, ua.Variant(None, ua.VariantType.Null), datatype=ua.NodeId(ua_vt.value)
+            ))
         else:
-            node = await raw_parent.add_variable(ns, name, converted_value, ua_vt)
+            node = await self._unique(
+                raw_parent, name, lambda n: raw_parent.add_variable(ns, n, converted_value, ua_vt)
+            )
 
         if is_array:
             await node.write_value_rank(1)
@@ -220,7 +243,7 @@ class AddressSpaceAdapter(IAddressSpace):
         raw_parent = self._unwrap(parent)
         ua_vt = _to_ua_variant_type(variant_type)
 
-        node = await raw_parent.add_property(ns, name, value, ua_vt)
+        node = await self._unique(raw_parent, name, lambda n: raw_parent.add_property(ns, n, value, ua_vt))
         return NodeAdapter(node)
 
     async def add_method(
@@ -237,9 +260,9 @@ class AddressSpaceAdapter(IAddressSpace):
         ua_input = [_to_ua_argument(a) for a in (input_args or [])]
         ua_output = [_to_ua_argument(a) for a in (output_args or [])]
 
-        node = await raw_parent.add_method(
-            ns, name, callback, ua_input, ua_output
-        )
+        node = await self._unique(raw_parent, name, lambda n: raw_parent.add_method(
+            ns, n, callback, ua_input, ua_output
+        ))
         return NodeAdapter(node)
 
     async def set_value(
