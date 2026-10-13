@@ -79,6 +79,7 @@ Uses [commitizen](https://commitizen-tools.github.io/commitizen/) with `cz_conve
 - `AAS`, `Submodel`, `SubmodelElementCollection` → OPC UA Object/FolderType
 - `Property` → OPC UA DataVariable; if dynamic (Qualifier `faaster:dynamic`, or deprecated `category = VARIABLE`), also registered in `NodeRegistry` and historized (`faaster/parser/dynamic.py`)
 - `Operation` → OPC UA Method
+- `SubmodelElementList` → Object, items named `[i]` (path `Submodel/List/[i]/Value`); `Entity` (statements), `AnnotatedRelationshipElement` (`Annotations/`) → Object with children; `RelationshipElement`, `Blob`, `Capability` → Object with attributes
 - Virtual nodes (`Value@1min`, `Value@1hour`, `Value@1day`) are created automatically for VARIABLE properties that carry `faaster:hda:*` extensions
 
 ### Extension convention (`sources/`)
