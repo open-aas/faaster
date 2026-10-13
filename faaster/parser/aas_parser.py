@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from .creators.base import resolve_variant_type
 from .creators.property_creator import PropertyCreator
@@ -30,6 +30,8 @@ _DATA_ELEMENT_TYPES = {
     "Blob",
     "ReferenceElement",
     "BasicEventElement",
+    "RelationshipElement",
+    "Capability",
 }
 
 
@@ -189,6 +191,7 @@ class AASParser:
         element: SubmodelElement,
         submodel_id: str,
         current_path: str,
+        name: Optional[str] = None,
     ) -> None:
 
         if isinstance(element, dict):
@@ -199,6 +202,10 @@ class AASParser:
         else:
             model_type = element.type_model
 
+        if name is not None:
+            # items of a SubmodelElementList have no idShort (AASd-120): named by position
+            element = element.model_copy(update={"id_short": name})
+
         logger.info(
             "aas_parser.element.start",
             id_short=element.id_short,
@@ -207,6 +214,26 @@ class AASParser:
 
         if model_type == "SubmodelElementCollection":
             await self._parse_collection(parent, element, submodel_id, current_path)
+
+        elif model_type == "SubmodelElementList":
+            await self._parse_list(parent, element, submodel_id, current_path)
+
+        elif model_type == "Entity":
+            node = await self._creator.create_entity(parent, element, self._address_space)
+            await self._parse_submodel_elements(
+                node, element.statements or [], submodel_id, f"{current_path}/{element.id_short}"
+            )
+
+        elif model_type == "AnnotatedRelationshipElement":
+            node = await self._creator.create_relationship_element(
+                parent, element, self._address_space
+            )
+            if element.annotations:
+                folder = await self._address_space.add_folder(node, "Annotations")
+                await self._parse_submodel_elements(
+                    folder, element.annotations, submodel_id,
+                    f"{current_path}/{element.id_short}/Annotations",
+                )
 
         elif model_type == "Operation":
             submodel_id_short = current_path.split("/")[0]
@@ -229,7 +256,9 @@ class AASParser:
         submodel_id: str,
         current_path: str,
     ) -> None:
-        collection = SubmodelElementCollection(**element.model_dump())
+        # reused when already built: rebuilding re-validates the "[i]" name of a list item
+        collection = (element if isinstance(element, SubmodelElementCollection)
+                      else SubmodelElementCollection(**element.model_dump()))
 
         collection_node = await self._creator.create_submodel_element_collection(
             parent=parent,
@@ -245,13 +274,31 @@ class AASParser:
                 current_path=f"{current_path}/{element.id_short}",  # ← acumula
             )
 
+    async def _parse_list(
+        self,
+        parent: INode,
+        element: SubmodelElement,
+        submodel_id: str,
+        current_path: str,
+    ) -> None:
+        node = await self._creator.create_submodel_element_list(
+            parent, element, self._address_space
+        )
+        path = f"{current_path}/{element.id_short}"
+        for index, item in enumerate(element.value or []):
+            # "[i]" cannot clash with an idShort, which must start with a letter (AASd-002)
+            await self._parse_submodel_element(node, item, submodel_id, path, name=f"[{index}]")
+
     async def _parse_operation(
         self,
         parent: INode,
         element: SubmodelElement,
         submodel_id_short: str,
     ) -> None:
-        operation = Operation(**element.model_dump())
+        # an already-built Operation is reused: rebuilding re-validates the "[i]" name of a
+        # list item (compared by name, the class is patched in the routing tests)
+        operation = (element if type(element).__name__ == "Operation"
+                     else Operation(**element.model_dump()))
 
         method_node, binder = await self._creator.create_operation(
             parent=parent,
@@ -283,6 +330,9 @@ class AASParser:
             "File": self._creator.create_file,
             "ReferenceElement": self._creator.create_reference_element,
             "BasicEventElement": self._creator.create_basic_event_element,
+            "Blob": self._creator.create_blob,
+            "RelationshipElement": self._creator.create_relationship_element,
+            "Capability": self._creator.create_capability,
         }
 
         creator_fn = creator_map.get(model_type)
@@ -308,7 +358,7 @@ class AASParser:
                 id_short=element.id_short,
                 hint="use the Qualifier faaster:dynamic (category is deprecated since v3.1)",
             )
-        if dynamic and node is not None:
+        if dynamic and node is not None and hasattr(element, "value_type"):
             # monta o path relativo ao submodel
             path = f"{current_path}/{element.id_short}/Value"
 

@@ -19,6 +19,11 @@ from faaster.parser.creators import (
     FileCreator,
     BasicEventElementCreator,
     ConceptDescriptionCreator,
+    SubmodelElementListCreator,
+    EntityCreator,
+    RelationshipElementCreator,
+    BlobCreator,
+    CapabilityCreator,
 )
 from faaster.parser import AASParser, NodeRegistry
 from faaster.hda import HDAManagerFactory
@@ -66,6 +71,11 @@ class AssetAdministrationShell:
             file=FileCreator(),
             event=BasicEventElementCreator(),
             concept_description=ConceptDescriptionCreator(),
+            element_list=SubmodelElementListCreator(),
+            entity=EntityCreator(),
+            relationship=RelationshipElementCreator(),
+            blob=BlobCreator(),
+            capability=CapabilityCreator(),
         )
 
         self._parser = AASParser(

@@ -99,3 +99,48 @@ class IElementCreator(ABC):
         address_space: IAddressSpace,
     ) -> INode:
         ...
+
+    @abstractmethod
+    async def create_submodel_element_list(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+    ) -> INode:
+        ...
+
+    @abstractmethod
+    async def create_entity(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+    ) -> INode:
+        ...
+
+    @abstractmethod
+    async def create_relationship_element(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+    ) -> INode:
+        ...
+
+    @abstractmethod
+    async def create_blob(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+    ) -> INode:
+        ...
+
+    @abstractmethod
+    async def create_capability(
+        self,
+        parent: INode,
+        element: Any,
+        address_space: IAddressSpace,
+    ) -> INode:
+        ...
