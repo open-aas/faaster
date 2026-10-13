@@ -1,3 +1,27 @@
+## v1.0.0a4 (2026-10-13)
+
+### Feat
+
+- **parser**: map SubmodelElementList, Entity, relationships, Blob and Capability
+- **cli**: set a per-instance ApplicationUri with --application-uri
+- **runtime**: reflect extension init() failures in FaasterRuntime
+- **runtime**: expose runtime diagnostics as OPC UA nodes
+- **validation**: validate model and extensions with a structured report
+- **parser**: mark dynamic variables with the faaster:dynamic qualifier
+
+### Fix
+
+- **validation**: report a missing extension as a warning
+- **metamodel**: read Entity specificAssetIds and AnnotatedRelationshipElement annotations
+- **infra**: rename a duplicated BrowseName instead of aborting the start
+- **metamodel**: optional File/Blob contentType and unsigned XSD types
+- **loader**: treat every list of the Environment as optional
+- **parser**: create MultiLanguageProperty and Operation from the real models
+- **server**: log extension init() failures
+- **parser**: map XSD integer and camelCase types to the right OPC UA types
+- **security**: use the asyncua 1.1 TrustStore and CertificateValidator API
+- **runtime**: publish only failure categories in FaasterRuntime
+
 ## v1.0.0a3 (2026-10-11)
 
 ### Fix
