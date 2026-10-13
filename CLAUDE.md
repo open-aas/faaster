@@ -26,10 +26,11 @@ python server.py -m models/my_asset.json \
   --db-backend timescaledb --db-name my_asset_001
 ```
 
-### Validate AAS model only (no server)
+### Validate AAS model and extensions only (no server)
 ```bash
-python server.py -m models/my_asset.json --validate-only
+python server.py -m models/my_asset.json --validate-only [--report-format json] [--sources sources/]
 ```
+Pipeline stages 4, 6, 7 and 8 (`faaster/validation/`); extensions are analysed by AST, never executed; exit code 1 on a blocking failure. Before this change `--validate-only` returned without loading the model.
 
 ### Run tests
 ```bash
@@ -66,6 +67,8 @@ Uses [commitizen](https://commitizen-tools.github.io/commitizen/) with `cz_conve
 | `faaster/hda/policies.py` | Parses `faaster:hda:*` extensions into `AggregationPolicy` |
 | `faaster/hda/manager.py` | Orchestrates historization: subscribes to node changes, writes to storage |
 | `faaster/infra/aas_server.py` | `OPCUAServer` — asyncua-backed `IOPCUAServer` implementation |
+| `faaster/infra/runtime_info.py` | `Objects/FaasterRuntime` (version, start time, loaded/failed extensions) published after the extensions load |
+| `faaster/validation/` | `--validate-only` pipeline stages 4/6/7/8 and JSON report (extensions parsed by AST) |
 | `faaster/infra/address_space.py` | `AddressSpaceAdapter` — `IAddressSpace` over asyncua |
 | `faaster/infra/database_timescale.py` | TimescaleDB `IHDAStorage` implementation |
 | `faaster/loader/` | `LoaderFactory` dispatches `.json` / `.xml` / `.aasx` to the right `ILoader` |
@@ -74,7 +77,7 @@ Uses [commitizen](https://commitizen-tools.github.io/commitizen/) with `cz_conve
 
 ### AAS V3 → OPC UA mapping
 - `AAS`, `Submodel`, `SubmodelElementCollection` → OPC UA Object/FolderType
-- `Property` → OPC UA DataVariable; if `category = VARIABLE`, also registered in `NodeRegistry` and historized
+- `Property` → OPC UA DataVariable; if dynamic (Qualifier `faaster:dynamic`, or deprecated `category = VARIABLE`), also registered in `NodeRegistry` and historized (`faaster/parser/dynamic.py`)
 - `Operation` → OPC UA Method
 - Virtual nodes (`Value@1min`, `Value@1hour`, `Value@1day`) are created automatically for VARIABLE properties that carry `faaster:hda:*` extensions
 
@@ -84,7 +87,7 @@ Uses [commitizen](https://commitizen-tools.github.io/commitizen/) with `cz_conve
 - `SubmodelContext.get_node("Collection/Property/Value")` resolves a node by path relative to the submodel
 
 ### HDA policy (declared in the AAS model)
-Policies are `Extension` elements prefixed `faaster:hda:` on any `VARIABLE` property:
+Policies are `Extension` elements prefixed `faaster:hda:` on any dynamic property:
 - `mode: sample` — raw hypertable + continuous aggregates per level (default)
 - `mode: aggregate` — in-memory buffer flushed at window boundary (e.g. ANEEL 15-min intervals)
 - Supported windows: `1min`, `5min`, `10min`, `15min`, `1hour`, `1day`
@@ -100,6 +103,6 @@ All infrastructure is hidden behind interfaces in `faaster/interfaces/`. Parser 
 ## Gotchas
 - `models/` e `sources/` estão no `.gitignore` (atenção: a regra `models/` também casa com `faaster/aas_metamodel/models/` — arquivos novos ali precisam de `git add -f`).
 - Operations: idShort PascalCase → método snake_case na extensão; sem método → retorna `[]` (não é erro).
-- Só Properties com `category: VARIABLE` entram no `NodeRegistry` e podem ser historizadas.
+- Só Properties dinâmicas (Qualifier `faaster:dynamic`; `category: VARIABLE` aceito com aviso) entram no `NodeRegistry` e podem ser historizadas.
 - `docker-compose-dev.yaml` usa rede externa: `docker network create faaster-network` antes do `up`.
 - Instalar testes: `poetry install --with system,tests`.

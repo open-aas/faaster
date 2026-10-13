@@ -16,6 +16,7 @@ from faaster.interfaces import IAddressSpace, IElementCreator, INode
 from faaster.interfaces.types import FaasterVariantType
 from faaster.hda import HDAMode, extract_policy, AggregationPolicy
 from faaster.log import get_logger
+from .dynamic import is_dynamic
 from .node_registry import NodeMetadata, NodeRegistry
 
 logger = get_logger(__name__)
@@ -31,7 +32,6 @@ _DATA_ELEMENT_TYPES = {
     "BasicEventElement",
 }
 
-_VARIABLE_CATEGORY = "VARIABLE"
 
 
 class AASParser:
@@ -301,7 +301,14 @@ class AASParser:
             address_space=self._address_space,
         )
 
-        if element.category == _VARIABLE_CATEGORY and node is not None:
+        dynamic, deprecated = is_dynamic(element)
+        if dynamic and deprecated:
+            logger.warning(
+                "aas_parser.dynamic.category_deprecated",
+                id_short=element.id_short,
+                hint="use the Qualifier faaster:dynamic (category is deprecated since v3.1)",
+            )
+        if dynamic and node is not None:
             # monta o path relativo ao submodel
             path = f"{current_path}/{element.id_short}/Value"
 
@@ -325,7 +332,7 @@ class AASParser:
                 id_short=element.id_short or "",
                 submodel=submodel_name,
                 submodel_id=submodel_id,
-                category=element.category or "VARIABLE",
+                category="VARIABLE",
                 variant_type=variant_type,
                 semantic_id=semantic_id,
                 aggregation_policy=policy
@@ -347,7 +354,7 @@ class AASParser:
                     id_short=f"Value@{level}",
                     submodel=submodel_name,
                     submodel_id=submodel_id,
-                    category=element.category or "VARIABLE",
+                    category="VARIABLE",
                     variant_type=FaasterVariantType.Double,
                     semantic_id=semantic_id,
                     level=level,

@@ -392,6 +392,23 @@ def aas_parser_arguments() -> Namespace:
             "Useful for CI/CD pipelines."
         )
     )
+    diagnostics.add_argument(
+        "--report-format",
+        choices=("text", "json"),
+        default="text",
+        dest="report_format",
+        help=(
+            "Output of --validate-only: 'text' (default) or 'json' (pipeline stages 4, 6, 7, "
+            "8 with issues; exit code 1 when a blocking stage fails)."
+        )
+    )
+    diagnostics.add_argument(
+        "--sources",
+        default="sources",
+        dest="sources_dir",
+        metavar="DIR",
+        help="Extensions directory analysed by --validate-only (default: sources)."
+    )
 
     # -------------------------------------------------------------------------
     # Identificação (build_info OPC UA)

@@ -16,7 +16,9 @@ from faaster.security import (
     configure_server_security,
     auto_accept_task,
 )
+from faaster.infra.runtime_info import publish_runtime_info
 from faaster.log import get_logger
+from faaster.validation.report import faaster_version
 from faaster.interfaces import INode
 from faaster.interfaces.ihda import IHDAStorage, IHDAManager
 from faaster.parser import AASParser
@@ -200,6 +202,13 @@ class OPCUAServer(IOPCUAServer):
         logger.info(
             "opcua_server.load_extension.done",
             loaded=list(loaded.keys()),
+            failed=self._extension_loader.failures,
+        )
+        self._runtime_info = await publish_runtime_info(
+            self._address_space,
+            version=faaster_version(),
+            loaded=list(loaded.keys()),
+            failed=self._extension_loader.failures,
         )
 
         logger.info("opcua_server.load_extension.done")
@@ -262,12 +271,22 @@ class OPCUAServer(IOPCUAServer):
             for name, extension in self._extension_loader.instances.items():
                 task = asyncio.create_task(extension.init(), name=f'TaskSubmodel:{name}')
                 # init() runs in the background: its exception used to be silently lost
-                task.add_done_callback(lambda done, name=name: report_extension_task(name, done))
+                task.add_done_callback(lambda done, name=name: self._on_extension_done(name, done))
                 self._extensions_tasks.append(task)
 
             await self._stop_event.wait()
 
         logger.info("opcua_server.run.stopped")
+
+    def _on_extension_done(self, name: str, task: "asyncio.Task") -> None:
+        """Log a failed init() and reflect it in Objects/FaasterRuntime (D16)."""
+        reason = report_extension_task(name, task)
+        if reason is None or getattr(self, "_runtime_info", None) is None:
+            return
+        self._extension_loader.record_failure(name, reason)
+        failed = self._extension_loader.failures
+        loaded = [n for n in self._extension_loader.instances if n not in failed]
+        asyncio.create_task(self._runtime_info.update(loaded=loaded, failed=failed))
 
     async def stop(self) -> None:
         # um segundo Ctrl+C durante o encerramento não repete as etapas
@@ -429,7 +448,11 @@ class OPCUAServer(IOPCUAServer):
         )
 
         self._opcua_server.set_server_name(args.product_name)
-        await self._opcua_server.set_application_uri(build_info.ProductUri)
+        # ApplicationUri identifies the instance (unique per twin: GDS registration and the
+        # certificate's URI depend on it); ProductUri identifies the product. Default: as before.
+        await self._opcua_server.set_application_uri(
+            getattr(args, "application_uri", None) or build_info.ProductUri
+        )
 
         await self._opcua_server.set_build_info(
             product_uri=build_info.ProductUri,
