@@ -20,4 +20,4 @@ class Blob(DataElement):
 
     type_model: Literal[ModelType.BLOB] = Field(alias="modelType", default=ModelType.BLOB)
     value: Optional[BlobType] = None
-    content_type: ContentType
+    content_type: Optional[ContentType] = None  # optional since AAS v3.1 (#412)
