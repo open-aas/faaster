@@ -27,6 +27,20 @@ import asyncio
 logger = get_logger(__name__)
 
 
+
+def report_extension_task(name: str, task: "asyncio.Task") -> Optional[str]:
+    """Log an extension init() that failed and return its reason category, else ``None``."""
+    if task.cancelled() or task.exception() is None:
+        return None
+    exc = task.exception()
+    logger.error(
+        "opcua_server.extension_init_failed",
+        extension=name,
+        error_type=type(exc).__name__,
+        error=str(exc),
+    )
+    return f"init_error: {type(exc).__name__}"
+
 class OPCUAServer(IOPCUAServer):
     def __init__(
         self,
@@ -247,6 +261,8 @@ class OPCUAServer(IOPCUAServer):
 
             for name, extension in self._extension_loader.instances.items():
                 task = asyncio.create_task(extension.init(), name=f'TaskSubmodel:{name}')
+                # init() runs in the background: its exception used to be silently lost
+                task.add_done_callback(lambda done, name=name: report_extension_task(name, done))
                 self._extensions_tasks.append(task)
 
             await self._stop_event.wait()
