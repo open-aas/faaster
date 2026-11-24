@@ -24,6 +24,9 @@ However, implementing a Reactive AAS (Type 2) over OPC UA still requires signifi
 
 **Faaster** automates all of these tasks from a JSON-serialized AAS V3 metamodel, enabling the deployment of a fully functional OPC UA server in under one minute — with zero additional programming beyond the device integration layer.
 
+Detailed guides (architecture, AAS → OPC UA mapping, extensions, HDA, security, CLI, development)
+live in [`docs/`](docs/index.md).
+
 ---
 
 ## Key Features
