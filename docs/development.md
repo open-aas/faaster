@@ -13,7 +13,7 @@ poetry install --with system,tests
 ## Running
 
 ```bash
-python server.py -m models/my_asset.json --validate-only      # check the model
+python server.py -m models/my_asset.json --validate-only      # check model and extensions
 python server.py -m models/my_asset.json --host 0.0.0.0 --port 4840
 ```
 
@@ -53,7 +53,7 @@ HDA tests need TimescaleDB: they start a container through Docker, or use the da
 
 ## Versioning
 
-Commitizen with `cz_conventional_commits` and PEP 440 versions (currently `1.0.0a3`). Commits follow
+Commitizen with `cz_conventional_commits` and PEP 440 versions (currently `1.0.0a4`). Commits follow
 Conventional Commits; `cz bump` cuts a version and updates `CHANGELOG.md`. Do not bump as a side
 effect of other work.
 
@@ -71,7 +71,8 @@ effect of other work.
 
 - The `.gitignore` rule `models/` also matches `faaster/aas_metamodel/models/`; new files there
   need `git add -f`.
-- Only `category: VARIABLE` data elements are in the `NodeRegistry`; others cannot be found by
+- Only dynamic data elements (Qualifier `faaster:dynamic`; `category: VARIABLE` is accepted with a
+  deprecation warning) are in the `NodeRegistry`; others cannot be found by
   `SubmodelContext.get_node()` nor historized.
 - An Operation without a matching extension method returns `[]` silently.
 - `--db-name` defaults to `--aas_id`, whose own default is `FaasterAASUniqueId`: set one of them,

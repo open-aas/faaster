@@ -12,11 +12,12 @@ The [README](../README.md) is the product overview. These pages go deeper, one s
 | [Architecture](architecture.md) | Startup lifecycle, the dependency container, layers and interfaces |
 | [AAS → OPC UA mapping](aas-opcua-mapping.md) | Loaders, parser, element creators, node registry, address-space layout |
 | [Submodel extensions](extensions.md) | Writing `sources/` extensions, `SubmodelContext`, binding Operations |
+| [Validation](validation.md) | `--validate-only` pipeline stages, report formats, exit code |
 | [Historical Data Access](hda.md) | `faaster:hda:*` policies, storage in TimescaleDB, HistoryRead |
 | [Security and discovery](security-and-discovery.md) | PKI, security policies, client approval, LDS and GDS |
 | [CLI reference](cli.md) | Every `server.py` option, grouped |
 | [Development](development.md) | Setup, tests, Docker, versioning, conventions and gotchas |
-| [Known gaps](known-gaps.md) | Where the code and the README disagree, unsupported elements |
+| [Known gaps](known-gaps.md) | Where the code and the README disagree, features not implemented |
 | [Backlog](backlog.md) | Open and done work items |
 
 Reference material:

@@ -45,11 +45,27 @@ the HDA flushes.
 | `address_space` | `IAddressSpace`: `set_value(node=…, value=…)`, read values, add nodes |
 | `registry` | the whole `NodeRegistry` |
 | `submodel_id_short` | this submodel's idShort |
-| `get_node("Coll/Prop/Value")` | `NodeMetadata` by path relative to the submodel (VARIABLE only) |
+| `get_node("Coll/Prop/Value")` | `NodeMetadata` by path relative to the submodel (dynamic variables only; list items are `List/[i]/Value`) |
 | `get_nodes_by_semantic_id(id)` | lookup by semantic ID |
 | `all_nodes` | every registered node of this submodel |
 
 Every write through the address space is historized when the node has HDA (see [HDA](hda.md)).
+
+## Failures
+
+A failing extension does not stop the server. `ExtensionLoader.failures` maps the idShort to a
+reason category with the exception type only — never the message, which may carry credentials and
+is readable by OPC UA clients:
+
+| Reason | When |
+|---|---|
+| `import_error: <Type>` | the file or package cannot be imported |
+| `class_not_found` | the module has no class with the expected name |
+| `init_error: <Type>` | the constructor raised, or `init()` raised in its task |
+
+The full message goes only to the log. The failures are published in `Objects/FaasterRuntime`
+(see [architecture](architecture.md#runtime-diagnostics)). `--validate-only` checks extensions
+before deployment without importing them (see [validation](validation.md)).
 
 ## Operations
 

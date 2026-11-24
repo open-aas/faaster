@@ -29,7 +29,8 @@ pki/
 
 First start: a self-signed RSA-2048 certificate is generated (CN = `--cert-common-name` or
 `--product-name`, SANs from `--cert-san-dns` / `--cert-san-ip`, application URI from
-`--product-uri`). Later starts load it.
+`--application-uri`, else `--product-uri`). Later starts load it. Each twin needs its own
+`--application-uri`: it identifies the instance in the certificate and in the GDS.
 
 ## Policies
 

@@ -5,12 +5,13 @@
 `server.py` parses the CLI, configures logging and runs `main()` under `uvloop`:
 
 ```
+--validate-only? → validate_only(args)    model + extensions report, exit 0/1 (no server)
 AssetAdministrationShell(args)            build every component (dependency container)
-  └─ --validate-only? → exit              the model was already validated while loading
 server.setup(args)                        endpoint, namespace, BuildInfo, PKI + security policies
-server.build_address_space(model)         loader → parser → OPC UA nodes; returns VARIABLE nodes
-server.init_hda()                         storage init, historize VARIABLE nodes, Value@level reads
-server.load_extension()                   import sources/, instantiate classes, bind Operations
+server.build_address_space(model)         loader → parser → OPC UA nodes; returns dynamic nodes
+server.init_hda()                         storage init, historize dynamic nodes, Value@level reads
+server.load_extension()                   import sources/, instantiate classes, bind Operations,
+                                          publish Objects/FaasterRuntime
 SIGINT/SIGTERM → server.stop()            handlers installed
 server.run()                              start OPC UA, LDS/GDS/certificate tasks, extension.init()
 ```
@@ -20,7 +21,23 @@ this order: `extension.stop()` for each extension, cancel the extension tasks, `
 (persists pending samples and open aggregate windows, closes the pool), then release `run()`.
 
 Note that `extension.init()` is started as a task inside `run()`, after the OPC UA server is
-listening — not in `load_extension()`.
+listening — not in `load_extension()`. A failed `init()` is logged as
+`opcua_server.extension_init_failed` and reflected in `FaasterRuntime`.
+
+`--validate-only` never builds the container nor starts a server: see [validation](validation.md).
+
+## Runtime diagnostics
+
+`faaster/infra/runtime_info.py` publishes `Objects/FaasterRuntime` after the extensions load, so a
+client (e.g. a twin manager) reads the health of the runtime in the same OPC UA session:
+
+| Node | Type | Content |
+|---|---|---|
+| `Version` | String | Faaster package version |
+| `StartedAt` | DateTime | start time |
+| `ExtensionsLoaded` | String[] | idShorts of the loaded extensions |
+| `ExtensionsFailed` | String[] | `"<idShort>: <reason>"`, see [extensions](extensions.md#failures) |
+| `ExtensionErrors` | Int32 | number of failed extensions |
 
 ## Dependency container
 
@@ -51,6 +68,7 @@ faaster/parser/  faaster/loader/     model → address space
 faaster/aas_metamodel/               Pydantic AAS V3 models + AASd constraint validators
 faaster/hda/                         policies, buffers, storage, manager
 faaster/extensions/                  user code integration
+faaster/validation/                  --validate-only pipeline and report
 faaster/security/  faaster/gds/      PKI, policies, GDS client
 faaster/interfaces/                  contracts shared by all of the above
 faaster/log/                         structlog configuration

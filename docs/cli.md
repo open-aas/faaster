@@ -26,7 +26,8 @@
 
 | Option | Default |
 |---|---|
-| `--product-uri` | `urn:faaster:server` (also the certificate application URI) |
+| `--product-uri` | `urn:faaster:server` |
+| `--application-uri URI` | value of `--product-uri`; ApplicationUri of this instance, unique per twin and equal to the URI in its certificate (used for GDS registration) |
 | `--manufacturer-name` | `Faaster` |
 | `--product-name` | `Faaster Server` |
 | `--software-version` | installed package version |
@@ -71,4 +72,8 @@ See [HDA](hda.md).
 |---|---|
 | `--debug` | Debug logging |
 | `--log-file PATH` | Also write logs to a file |
-| `--validate-only` | Load and validate the model, then exit (no server) |
+| `--validate-only` | Validate the model and the extensions, print a report and exit (no server); exit code 1 on a blocking failure |
+| `--report-format` | `text` (default) or `json`; with `json` the report owns stdout and logs go to stderr |
+| `--sources DIR` | Extensions directory analysed by `--validate-only` (default `sources`) |
+
+See [validation](validation.md).

@@ -43,14 +43,42 @@ metadata (`IdShort`, `ModelType`, `Category`, and per type `ValueType`, `Kind`, 
 | ReferenceElement | `reference_element_creator.py` | Object + `Keys` folder |
 | BasicEventElement | `basic_event_element_creator.py` | Object + `Direction`, `State`, … |
 | Operation | `operation_creator.py` | Object + **Method** (bound to an extension, see [extensions](extensions.md)) |
+| SubmodelElementList | `submodel_element_list_creator.py` | Object + `OrderRelevant`, `TypeValueListElement`, `ValueTypeListElement`, `SemanticIdListElement`; items parsed as children |
+| Entity | `entity_creator.py` | Object + `EntityType`, `GlobalAssetId`, `SpecificAssetIds` folder; statements parsed as children |
+| RelationshipElement | `relationship_element_creator.py` | Object + `First` and `Second` references |
+| AnnotatedRelationshipElement | `relationship_element_creator.py` | as RelationshipElement, plus an `Annotations` folder parsed as children |
+| Blob | `blob_creator.py` | Object + `ContentType` and `Value` (base64 text of the model) |
+| Capability | `capability_creator.py` | Object with metadata only |
 | ConceptDescription | `concept_description_creator.py` | Object |
 
-Elements not in this table are logged as `aas_parser.element.unknown_type` and skipped — see
-[known gaps](known-gaps.md).
+Any other `modelType` is logged as `aas_parser.element.unknown_type` and skipped.
 
-## VARIABLE properties
+### Paths of nested elements
 
-A data element whose `category` is `VARIABLE` is the unit of live data and history:
+- **SubmodelElementList** items have no idShort (AASd-120), so they are named by position:
+  `[0]`, `[1]`… A dynamic Property inside a list has the path `Submodel/List/[i]/Value`. The name
+  cannot clash with an idShort, which must start with a letter (AASd-002).
+- **Entity** statements sit directly under the Entity: `Submodel/Entity/<idShort>/Value`.
+- **AnnotatedRelationshipElement** annotations sit under `Annotations`:
+  `Submodel/Rel/Annotations/<idShort>/Value`.
+
+Duplicated BrowseNames under one parent are renamed instead of aborting the build.
+
+## Dynamic variables
+
+A data element is **dynamic** — the unit of live data and history — when it carries the Qualifier
+`faaster:dynamic` with value `true` (or `1`):
+
+```json
+"qualifiers": [
+  { "type": "faaster:dynamic", "kind": "ValueQualifier", "valueType": "xs:boolean", "value": "true" }
+]
+```
+
+The legacy `category: VARIABLE` is still accepted, but logs
+`aas_parser.dynamic.category_deprecated` (`category` is deprecated in AAS v3.1). The rule lives in
+`faaster/parser/dynamic.py` (`is_dynamic(element) -> (dynamic, deprecated)`); only elements with a
+`valueType` are registered. A dynamic element:
 
 - its `Value` node is registered in the `NodeRegistry` with path
   `<Submodel>/<Collection…>/<idShort>/Value`, the submodel, the first `semanticId` key, the variant
@@ -59,8 +87,9 @@ A data element whose `category` is `VARIABLE` is the unit of live data and histo
 - if it carries a `sample` HDA policy, read-only `Value@<level>` Double variables are created next to
   `Value` and registered as virtual nodes (`level != "raw"`). See [HDA](hda.md).
 
-Properties without `category: VARIABLE` exist in the address space but are not in the registry, so
-`SubmodelContext.get_node()` does not find them.
+Non-dynamic properties exist in the address space but are not in the registry, so
+`SubmodelContext.get_node()` does not find them. In the registry the category of a dynamic node is
+still recorded as `"VARIABLE"`.
 
 ## NodeRegistry
 

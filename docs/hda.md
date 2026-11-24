@@ -1,6 +1,6 @@
 # Historical Data Access (HDA)
 
-HDA stores the history of `VARIABLE` properties in TimescaleDB and serves it through the standard
+HDA stores the history of dynamic properties in TimescaleDB and serves it through the standard
 OPC UA HistoryRead service. It is enabled with `--url-database`; without it the server runs with no
 history.
 
@@ -17,7 +17,7 @@ history.
 
 ## Flow
 
-1. The parser returns the `VARIABLE` `Value` nodes and registers their policy in the `NodeRegistry`.
+1. The parser returns the `Value` nodes of dynamic variables and registers their policy in the `NodeRegistry`.
 2. `HDAManager.init()` initializes the storage (connect, create the database if missing,
    reconcile tables/views/policies) and installs it as asyncua's history storage.
 3. For each node, `OPCUAServer.historize_node()` sets `Historizing` and `HistoryRead` access and
@@ -30,7 +30,9 @@ history.
 
 ## Policy extensions
 
-Declared as `Extension` elements on a `VARIABLE` property. A variable without any `faaster:hda:*`
+Declared as `Extension` elements on a dynamic property (Qualifier `faaster:dynamic`, see
+[mapping](aas-opcua-mapping.md#dynamic-variables)); a policy on a non-dynamic property fails
+`--validate-only`. A variable without any `faaster:hda:*`
 extension is stored raw with default retention.
 
 | Name | Values | Mode |
@@ -51,8 +53,10 @@ rejected at startup.
 ```json
 {
   "idShort": "Voltage",
-  "category": "VARIABLE",
   "valueType": "xs:double",
+  "qualifiers": [
+    { "type": "faaster:dynamic", "kind": "ValueQualifier", "valueType": "xs:boolean", "value": "true" }
+  ],
   "extensions": [
     { "name": "faaster:hda:mode", "value": "sample" },
     { "name": "faaster:hda:levels", "value": "1min,1hour,1day" },
