@@ -14,4 +14,4 @@ description: Use ao adicionar ou alterar o mapeamento de um elemento do metamode
    - integração em `tests/integration/` se envolver o servidor real.
 6. Atualize a tabela "AAS V3 → OPC UA Mapping" do `README.md` e a seção de arquitetura do `CLAUDE.md`.
 
-Mapeamentos atuais: AAS/Submodel/SMC → Object/Folder; Property → DataVariable (VARIABLE → registry + HDA); Operation → Method; demais criadores: range, file, reference_element, multi_language_property, basic_event_element, concept_description.
+Mapeamentos atuais: AAS/Submodel/SMC → Object/Folder; Property → DataVariable (dinâmica — Qualifier `faaster:dynamic`, ou `category: VARIABLE` descontinuado — → registry + HDA; `faaster/parser/dynamic.py`); Operation → Method; demais criadores: range, file, reference_element, multi_language_property, basic_event_element, concept_description.

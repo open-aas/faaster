@@ -241,3 +241,22 @@ async def test_set_display_name(address_space, objects_node):
     raw = folder.raw
     dn = await raw.read_attribute(ua.AttributeIds.DisplayName)
     assert dn.Value.Value.Text == "Meu Folder"
+
+
+# ------------------------------------------------------------------
+# BrowseName duplicado (corpus IDTA, experimento E3 do FTM)
+# ------------------------------------------------------------------
+
+@pytest.mark.asyncio
+async def test_duplicated_browse_name_is_renamed_instead_of_aborting(address_space, objects_node):
+    """Um filho ``Category`` colidia com a propriedade de metadado ``Category`` do pai."""
+    element = await address_space.add_object(objects_node, "Classification")
+    await address_space.add_property(element, "Category", "PARAMETER")
+
+    child = await address_space.add_variable(element, "Category", "B", FaasterVariantType.String)
+    again = await address_space.add_object(element, "Category")
+
+    names = [(await c.read_browse_name()).Name for c in await element._node.get_children()]
+    assert names == ["Category", "Category_2", "Category_3"]
+    assert (await child._node.read_browse_name()).Name == "Category_2"
+    assert (await again._node.read_browse_name()).Name == "Category_3"

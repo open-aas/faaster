@@ -2,6 +2,13 @@ from basyx.aas import model
 from basyx.aas.model.datatypes import XSD_TYPE_CLASSES
 from faaster.aas_metamodel.exceptions import InvalidFieldException
 
+# basyx-python-sdk 2.0.0 maps "xs:unsignedByte" to UnsignedInt and has no "xs:unsignedInt"
+_XSD_TYPES = {
+    **XSD_TYPE_CLASSES,
+    "xs:unsignedByte": model.datatypes.UnsignedByte,
+    "xs:unsignedInt": model.datatypes.UnsignedInt,
+}
+
 
 def validate_value_type(value: str, value_type_str: str) -> None:
     """Validate a value against an AAS XSD value type.
@@ -12,10 +19,10 @@ def validate_value_type(value: str, value_type_str: str) -> None:
     :param value_type_str: The XSD type string (e.g. "xs:int", "xs:boolean").
     :raises InvalidFieldException: If the type is unsupported or conversion fails.
     """
-    value_type_class = XSD_TYPE_CLASSES.get(value_type_str)
+    value_type_class = _XSD_TYPES.get(value_type_str)
 
     if value_type_class is None:
-        valid_types = ", ".join(XSD_TYPE_CLASSES.keys())
+        valid_types = ", ".join(_XSD_TYPES.keys())
         raise InvalidFieldException(
             detail=(
                 f"Invalid valueType '{value_type_str}' for value '{value}'. "

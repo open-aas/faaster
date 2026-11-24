@@ -154,6 +154,7 @@ async def configure_server_security(
     se --auto-accept-clients estiver ativado.
     """
     from asyncua.crypto.truststore import TrustStore
+    from asyncua.crypto.validator import CertificateValidator, CertificateValidatorOptions
 
     # 1. Políticas de segurança
     opcua_server.set_security_policy(policies)
@@ -166,13 +167,18 @@ async def configure_server_security(
 
     # 3. TrustStore — valida certificados de clientes entrantes
     #    rejected_dir recebe automaticamente certs não reconhecidos
+    #    (asyncua 1.1: trust and CRL locations; the validator is what the server calls)
     trust_store = TrustStore(
-        trusted=[store.trusted_certs_dir, store.issuers_certs_dir],
-        rejected=store.rejected_dir,
+        [store.trusted_certs_dir, store.issuers_certs_dir],
+        [store.trusted_crls_dir, store.issuers_crls_dir],
     )
     await trust_store.load()
 
-    opcua_server.set_certificate_validator(trust_store)
+    validator = CertificateValidator(
+        CertificateValidatorOptions.TRUSTED_VALIDATION | CertificateValidatorOptions.PEER_CLIENT,
+        trust_store,
+    )
+    opcua_server.set_certificate_validator(validator)
     logger.info(
         "server_security.trust_store_loaded",
         trusted_dir=str(store.trusted_certs_dir),

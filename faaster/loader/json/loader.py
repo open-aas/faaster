@@ -71,10 +71,11 @@ class JsonLoader(ILoaderJson):
             path: Path, data: dict) -> Environment:
 
         try:
+            # AAS Part 1: every list of the Environment is optional
             return Environment(
-                asset_administration_shells=data['assetAdministrationShells'],
-                submodels=data['submodels'],
-                concept_descriptions=data['conceptDescriptions'],
+                asset_administration_shells=data.get('assetAdministrationShells') or [],
+                submodels=data.get('submodels') or [],
+                concept_descriptions=data.get('conceptDescriptions') or [],
             )
 
         except ValidationError as e:

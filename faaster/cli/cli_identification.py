@@ -54,6 +54,21 @@ def make_identification_cli(parser: ArgumentParser) -> ArgumentParser:
     )
 
     group.add_argument(
+        "--application-uri",
+        action="store",
+        type=str,
+        required=False,
+        default=None,
+        dest="application_uri",
+        metavar="URI",
+        help=(
+            "ApplicationUri of this OPC UA server instance; must be unique per twin and match "
+            "the URI in its X.509 certificate (used to register it in a GDS). Default: the "
+            "OPC UA stack default."
+        )
+    )
+
+    group.add_argument(
         "--manufacturer-name",
         action="store",
         type=str,

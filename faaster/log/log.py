@@ -5,7 +5,9 @@ import sys
 import structlog
 
 
-def configure_logging(debug: bool = False, log_file: Optional[str] = None) -> None:
+def configure_logging(
+    debug: bool = False, log_file: Optional[str] = None, stream=None
+) -> None:
     """
     Configura o structlog para o Faaster.
 
@@ -19,7 +21,7 @@ def configure_logging(debug: bool = False, log_file: Optional[str] = None) -> No
     level = logging.DEBUG if debug else logging.INFO
 
     # --- handlers stdlib ---
-    handlers: list[logging.Handler] = [logging.StreamHandler(sys.stdout)]
+    handlers: list[logging.Handler] = [logging.StreamHandler(stream or sys.stdout)]
 
     if log_file:
         handlers.append(logging.FileHandler(log_file, encoding="utf-8"))
@@ -29,6 +31,12 @@ def configure_logging(debug: bool = False, log_file: Optional[str] = None) -> No
         handlers=handlers,
         format="%(message)s",  # structlog cuida da formatação
     )
+
+    # structlog is not configured below (default PrintLogger, which writes to stdout and
+    # ignores the stdlib handlers); an explicit stream (e.g. stderr while a JSON report owns
+    # stdout) redirects it.
+    if stream is not None:
+        structlog.configure(logger_factory=structlog.PrintLoggerFactory(file=stream))
 
     # silencia libs verbosas em modo não-debug
     if not debug:

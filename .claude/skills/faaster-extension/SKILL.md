@@ -53,7 +53,7 @@ class ConditionMonitoring(ISubmodelExtension):
 
 ## Checklist
 - [ ] Nome do arquivo/classe confere com o idShort (confirme no modelo em `models/`).
-- [ ] Paths usados em `get_node` existem (use `context.all_nodes` para listar) e a Property tem `category: VARIABLE` (só essas entram no registry/HDA).
+- [ ] Paths usados em `get_node` existem (use `context.all_nodes` para listar) e a Property é dinâmica (Qualifier `faaster:dynamic`; só essas entram no registry/HDA). `python server.py -m <modelo> --validate-only --sources sources/` confere os paths de `get_node` e os métodos das Operations sem executar a extensão.
 - [ ] Nenhuma chamada bloqueante; tasks canceladas em `stop()`; conexões fechadas.
 - [ ] Dependências de dispositivo no grupo Poetry adequado (`cobot` para ur-rtde/pymodbus).
 - [ ] Lembre: `sources/` é gitignored — a extensão é artefato do usuário, não do framework.

@@ -24,6 +24,9 @@ However, implementing a Reactive AAS (Type 2) over OPC UA still requires signifi
 
 **Faaster** automates all of these tasks from a JSON-serialized AAS V3 metamodel, enabling the deployment of a fully functional OPC UA server in under one minute — with zero additional programming beyond the device integration layer.
 
+Detailed guides (architecture, AAS → OPC UA mapping, extensions, HDA, security, CLI, development)
+live in [`docs/`](docs/index.md).
+
 ---
 
 ## Key Features
@@ -59,14 +62,77 @@ Faaster initializes in the following sequential steps:
 
 | AAS V3 Element              | OPC UA Type               |
 |-----------------------------|---------------------------|
-| AAS, Submodel, SubmodelElement | ObjectType             |
-| SubmodelElementList         | ObjectType + FolderType   |
+| AAS, Submodel, SubmodelElementCollection | ObjectType   |
+| SubmodelElementList         | ObjectType; items as children named `[0]`, `[1]`… (they have no idShort, AASd-120) |
+| Entity                      | ObjectType with `EntityType`, `GlobalAssetId`, `SpecificAssetIds`; statements as children |
+| RelationshipElement         | ObjectType with `First`/`Second` keys folders |
+| AnnotatedRelationshipElement | as RelationshipElement, annotations under `Annotations` |
 | Property                    | VariableType (DataVariable) |
+| MultiLanguageProperty, Range, File, Blob, ReferenceElement, BasicEventElement, Capability | ObjectType with the element attributes |
 | Operation                   | MethodType                |
 
-Variables marked with `category = VARIABLE` in the metamodel have HDA enabled automatically and are included in the historized node list, avoiding the overhead of historizing all nodes.
+The metadata properties (`IdShort`, `ModelType`, `Category`…) share the parent with the child
+elements; a duplicated BrowseName is added as `name_2`, `name_3`… with a warning.
+
+Dynamic variables — values updated by the extension and eligible for HDA — are marked with the
+**Qualifier `faaster:dynamic`** and are included in the historized node list, avoiding the
+overhead of historizing all nodes:
+
+```json
+{
+  "idShort": "Voltage", "modelType": "Property", "valueType": "xs:double",
+  "qualifiers": [
+    { "type": "faaster:dynamic", "kind": "ValueQualifier", "valueType": "xs:boolean", "value": "true" }
+  ]
+}
+```
+
+`category: VARIABLE` is still accepted but deprecated (the `category` attribute is deprecated
+since AAS v3.1); the parser logs `aas_parser.dynamic.category_deprecated` for it.
 
 ---
+
+## Validation before deployment
+
+`--validate-only` loads the model and analyses the extensions **without starting the server**
+and exits with code `1` when a blocking stage fails (stages numbered as in the deployment
+pipeline of the Faaster Twin Manager):
+
+| Stage | Checks | Blocking |
+|---|---|---|
+| 4 metamodel | the model loads and passes the AAS V3 constraints (AASd) | yes |
+| 6 operations | every Operation has a `snake_case` method in the extension class | warning |
+| 7 extensions | the extension parses and defines the expected class; every literal `context.get_node("…")` points to a dynamic variable (or its `Value@level` HDA node). A submodel with dynamic variables or Operations but **no** extension is only a warning: values stay static and Operations return `[]` | yes |
+| 8 dynamic | `faaster:dynamic` is a boolean; `faaster:hda:*` policies are valid and only on dynamic variables; Extension names are unique (AASd-077) | yes |
+
+```bash
+python server.py -m models/my_asset.json --validate-only                          # text
+python server.py -m models/my_asset.json --validate-only --report-format json \
+  --sources sources/                                                               # JSON on stdout, logs on stderr
+```
+
+Extensions are parsed (AST), **never imported or executed**: validation is safe to run on
+untrusted packages. The JSON report carries the Faaster version that validated the model.
+
+## Runtime diagnostics over OPC UA
+
+After loading the extensions, Faaster publishes `Objects/FaasterRuntime` in its namespace
+(`urn:faaster:server`), so health and runtime metrics are read over the same OPC UA session as
+the data — no extra port:
+
+| Variable | Type | Content |
+|---|---|---|
+| `Version` | String | Faaster version |
+| `StartedAt` | DateTime | when the runtime finished starting (UTC) |
+| `ExtensionsLoaded` | String[] | submodel idShorts whose extension loaded |
+| `ExtensionsFailed` | String[] | `"<idShort>: <category>"`: `import_error: <ExceptionType>`, `class_not_found` or `init_error: <ExceptionType>` |
+| `ExtensionErrors` | Int32 | number of failed extensions |
+
+A failing extension does not stop the server (the twin keeps serving its model), so this is
+where a manager such as the Faaster Twin Manager detects it. Failures of an extension's `init()`, which runs in
+the background after start, are added to these variables when they happen. Only the category and the exception type are
+published — never the exception message, which may carry credentials or internal addresses and
+would be readable by any OPC UA client; the full message stays in the runtime log.
 
 ## HDA Policy via AAS Extensions (*Development)
 
@@ -79,7 +145,7 @@ Policies are declared as `Extension` elements with the `faaster:hda:` prefix —
 ```json
 {
   "idShort": "Voltage",
-  "category": "VARIABLE",
+  "qualifiers": [{ "type": "faaster:dynamic", "kind": "ValueQualifier", "valueType": "xs:boolean", "value": "true" }],
   "extensions": [
     { "name": "faaster:hda:mode",          "value": "sample"       },
     { "name": "faaster:hda:levels",        "value": "1min,1hour,1day" },
@@ -94,7 +160,7 @@ Policies are declared as `Extension` elements with the `faaster:hda:` prefix —
 ```json
 {
   "idShort": "ActiveEnergy",
-  "category": "VARIABLE",
+  "qualifiers": [{ "type": "faaster:dynamic", "kind": "ValueQualifier", "valueType": "xs:boolean", "value": "true" }],
   "extensions": [
     { "name": "faaster:hda:mode",      "value": "aggregate" },
     { "name": "faaster:hda:window",    "value": "15min"     },
@@ -329,6 +395,7 @@ Certificate renewal runs automatically every `--renew-interval` seconds. If the 
 ### GDS CLI reference
 
 ```
+--application-uri URI   ApplicationUri of this instance (unique per twin; matches its certificate)
 --gds-url URL           GDS endpoint (e.g. opc.tcp://gds:58810)
 --gds-username NAME     GDS user with ApplicationSelfAdmin or DiscoveryAdmin role
 --gds-password PASS     GDS password

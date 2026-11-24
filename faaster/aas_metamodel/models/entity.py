@@ -20,7 +20,7 @@ class Entity(SubmodelElement):
     :param entity_type: Describes whether the entity is a co-managed entity or a
     self-managed entity.
     :param global_asset_id: Global identifier of the asset the entity is representing.
-    :param specific_asset_id: Reference to a specific asset ID representing a
+    :param specific_asset_ids: Reference to a specific asset ID representing a
     supplementary identifier
     of the asset represented by the Asset Administration Shell.
     """
@@ -29,7 +29,7 @@ class Entity(SubmodelElement):
     statements: Optional[List[dict]] = []
     entity_type: EntityType
     global_asset_id: Optional[Identifier] = None
-    specific_asset_id: Optional[SpecificAssetId] = None
+    specific_asset_ids: Optional[List[SpecificAssetId]] = []
 
     def __init__(self, **attrs):
         """Initialize an Entity, processing nested statements into proper submodel element DTOs.
@@ -65,14 +65,14 @@ class Entity(SubmodelElement):
         :raises InvalidFieldException: If the constraint AASd-014 is violated.
         """
         if self.entity_type == "CoManagedEntity":
-            if self.global_asset_id or self.specific_asset_id:
+            if self.global_asset_id or self.specific_asset_ids:
                 raise InvalidFieldException(
                     detail="A co-managed entity has to have neither a globalAssetId nor a "
                     "specificAssetId (Constraint AASd-014)"
                 )
 
         if self.entity_type == "SelfManagedEntity":
-            if not self.global_asset_id and not self.specific_asset_id:
+            if not self.global_asset_id and not self.specific_asset_ids:
                 raise InvalidFieldException(
                     detail="A self-managed entity has to have a globalAssetId or a "
                     "specificAssetId (Constraint AASd-014)"

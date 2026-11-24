@@ -38,18 +38,16 @@ def _make_element(
     """Stub de elemento Operation com os atributos acessados pelo creator."""
     el = MagicMock()
     el.id_short = id_short
-    el.modelType = model_type
-    el.inputVariables = input_vars or []
-    el.outputVariables = output_vars or []
+    el.type_model = model_type
+    el.input_variables = input_vars or []
+    el.output_variables = output_vars or []
     return el
 
 
 def _make_var(id_short="temperature", value_type="xs:float"):
-    """Stub de OperationVariable com .value.id_short e .value.valueType."""
+    """Stub de OperationVariable: .value é o elemento serializado (chaves camelCase)."""
     var = MagicMock()
-    var.value = MagicMock()
-    var.value.id_short = id_short
-    var.value.valueType = value_type
+    var.value = {"idShort": id_short, "valueType": value_type}
     return var
 
 
